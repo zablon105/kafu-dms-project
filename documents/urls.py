@@ -1,0 +1,67 @@
+from django.contrib import admin
+from django.urls import path
+from documents import views as doc_views
+from django.contrib.auth import views as auth_views
+from . import views 
+
+urlpatterns = [
+    #path('admin/', admin.site.urls),
+
+    # Home
+    path('', doc_views.home, name='home'),
+
+    # Profile
+    path('profile/', doc_views.profile, name='profile'),
+
+    # Dashboards
+    path('admin-dashboard/', doc_views.admin_dashboard, name='admin_dashboard'),
+    path('staff-dashboard/', doc_views.staff_dashboard, name='staff_dashboard'),
+    path('student-dashboard/', doc_views.student_dashboard, name='student_dashboard'),
+
+    # Upload Document  ✅ ADDED
+    path('upload/', doc_views.upload_document, name='upload_document'),
+
+    # Share document
+    path('share/<int:doc_id>/', doc_views.share_document, name='share_document'),
+
+    # Delete document
+    path('delete/<int:doc_id>/', doc_views.delete_document, name='delete_document'),
+
+    # Register
+    path('register/', doc_views.register, name='register'),
+    #notification
+    path('notifications/read/', views.mark_notifications_read, name='mark_read'),
+
+    # Login
+    path('login/', doc_views.login_view, name='login'),
+
+    # Logout
+    path('logout/', doc_views.logout_view, name='logout'),
+    #fetch view
+    path('notifications/fetch/', views.fetch_notifications, name='fetch_notifications'),
+
+    # Password reset
+    path('password-reset/',
+         auth_views.PasswordResetView.as_view(
+             template_name='registration/password_reset.html'
+         ),
+         name='password_reset'),
+
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='registration/password_reset_done.html'
+         ),
+         name='password_reset_done'),
+
+    path('reset/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='registration/password_reset_confirm.html'
+         ),
+         name='password_reset_confirm'),
+
+    path('reset/done/',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='registration/password_reset_complete.html'
+         ),
+         name='password_reset_complete'),
+]

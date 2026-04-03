@@ -1,0 +1,129 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>KAFU DMS</title>
+
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=3">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div id="loader-screen">
+    <div class="loader-box">
+        <h2>KAFU DMS</h2>
+        <p id="loadingText">0%</p>
+        <div class="progress-bar">
+            <div id="progressFill"></div>
+        </div>
+    </div>
+</div>
+
+<div id="pageLoader">
+   <div class="loader-bar"></div>
+</div>
+
+<div class="layout">
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+
+    <!-- 🔔 NOTIFICATION -->
+    <div class="notification" style="position: relative;">
+
+        <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
+
+        {% if notifications %}
+        <span id="notifCount" class="notif-count">
+            {{ notifications|length }}
+        </span>
+        {% endif %}
+
+        <div id="notifDropdown" class="notif-dropdown" style="display:none;">
+
+            {% if notifications %}
+                {% for notif in notifications %}
+                    <div class="notif-item">
+                        {{ notif.message }}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="empty">No notifications</p>
+            {% endif %}
+
+        </div>
+    </div>
+
+<h2>
+    <i class="fa-solid fa-folder-open"></i>
+    <span>KAFU DMS</span>
+</h2>
+
+{% if is_admin %}
+<a href="{% url 'admin_dashboard' %}">
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Dashboard</span>
+</a>
+
+{% elif is_staff %}
+<a href="{% url 'staff_dashboard' %}">
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Dashboard</span>
+</a>
+
+{% elif is_student %}
+<a href="{% url 'student_dashboard' %}">
+    <i class="fa-solid fa-chart-line"></i>
+    <span>Dashboard</span>
+</a>
+{% endif %}
+
+<a href="{% url 'home' %}">
+    <i class="fa-solid fa-house"></i>
+    <span>Home</span>
+</a>
+
+<a href="{% url 'profile' %}">
+    <i class="fa-solid fa-user"></i>
+    <span>Profile</span>
+</a>
+
+<a href="{% url 'logout' %}">
+    <i class="fa-solid fa-right-from-bracket"></i>
+    <span>Logout</span>
+</a>
+
+<!-- DARK MODE BUTTON -->
+<button onclick="toggleDarkMode()" class="btn" style="width:100%; margin-top:15px;">
+    🌙 <span>Dark Mode</span>
+</button>
+
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+{% block content %}{% endblock %}
+</div>
+
+</div>
+
+<!-- CSRF TOKEN (needed for fetch) -->
+<form style="display:none;">
+    {% csrf_token %}
+</form>
+
+<!-- JS -->
+<script src="{% static 'js/main.js' %}"></script>
+
+</body>
+</html>

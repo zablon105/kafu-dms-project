@@ -1,0 +1,332 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<script src="{% static 'js/main.js' %}" defer></script>
+
+<div class="card">
+<h3>Welcome, {{ request.user.username }}</h3>
+</div>
+
+<!-- ===== DASHBOARD STATISTICS ===== -->
+
+<div class="stats">
+
+<div class="stat-card">
+<i class="fa-solid fa-file"></i>
+<h4>Total Documents</h4>
+<p>{{ total_documents }}</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-folder"></i>
+<h4>Categories</h4>
+<p>{{ total_categories }}</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-upload"></i>
+<h4>My Uploads</h4>
+<p>{{ my_uploads }}</p>
+</div>
+
+<div class="stat-card">
+<i class="fa-solid fa-globe"></i>
+<h4>Public Files</h4>
+<p>{{ public_documents }}</p>
+</div>
+
+</div>
+
+
+<div class="card">
+
+<h3><i class="fa-solid fa-search"></i> Search & Filter</h3>
+
+<form method="GET" class="search-box">
+
+<!--              SEARCH INPUT                   -->
+<input type="text"
+id="searchInput"
+name="q"
+placeholder="Search by title..."
+value="{{ search_query|default:'' }}">
+
+<select name="category">
+
+<option value="">All Categories</option>
+
+{% for cat in categories %}
+<option value="{{ cat.id }}"
+{% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>
+{{ cat.name }}
+</option>
+{% endfor %}
+
+</select>
+
+<button type="submit">Apply</button>
+
+</form>
+
+</div>
+
+
+{% if can_upload %}
+
+<div class="card">
+
+<h3><i class="fa-solid fa-upload"></i> Upload Document</h3>
+
+<form method="POST" enctype="multipart/form-data" id="uploadForm">
+
+{% csrf_token %}
+
+<input type="text" name="title" placeholder="Document Title" required>
+
+<!-- DRAG & DROP ZONE -->
+<div class="drop-zone" id="dropZone">
+    <p>Drag & Drop file here or click to upload</p>
+    <input type="file" name="file" id="fileInput"
+           accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" required hidden>
+</div>
+
+<!-- SELECTED FILE NAME -->
+<p id="fileName" class="file-name"></p>
+
+<select name="visibility" required>
+<option value="public">Public</option>
+<option value="staff">Staff Only</option>
+<option value="student">Students Only</option>
+<option value="private">Private</option>
+<option value="shared">Shared Users Only</option>
+</select>
+
+<select name="category">
+<option value="">Select Category</option>
+{% for cat in categories %}
+<option value="{{ cat.id }}">{{ cat.name }}</option>
+{% endfor %}
+</select>
+
+<button type="submit">Upload</button>
+
+</form>
+
+{% csrf_token %}
+
+<input type="text" name="title" placeholder="Document Title" required>
+
+<input type="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.txt" required>
+
+<select name="visibility" required>
+
+<option value="public">Public</option>
+<option value="staff">Staff Only</option>
+<option value="student">Students Only</option>
+<option value="private">Private</option>
+<option value="shared">Shared Users Only</option>
+
+</select>
+
+<select name="category">
+
+<option value="">Select Category</option>
+
+{% for cat in categories %}
+<option value="{{ cat.id }}">{{ cat.name }}</option>
+{% endfor %}
+
+</select>
+
+<button type="submit">Upload</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+
+<!-- ===== DOCUMENTS TABLE ===== -->
+
+<div class="card">
+
+<h3><i class="fa-solid fa-folder-open"></i> Documents</h3>
+
+<table class="doc-table">
+
+<thead>
+<tr>
+<th>Type</th>
+<th>Title</th>
+<th>Category</th>
+<th>Uploaded By</th>
+<th>Date</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="documentTable">
+
+{% for doc in documents %}
+
+<tr>
+
+<td>
+
+{% with name=doc.file.name|lower %}
+
+{% if name|slice:"-4:" == ".pdf" %}
+<span class="file-badge pdf">PDF</span>
+
+{% elif name|slice:"-4:" == ".doc" or name|slice:"-5:" == ".docx" %}
+<span class="file-badge word">DOC</span>
+
+{% elif name|slice:"-4:" == ".xls" or name|slice:"-5:" == ".xlsx" %}
+<span class="file-badge excel">XLS</span>
+
+{% elif name|slice:"-4:" == ".txt" %}
+<span class="file-badge txt">TXT</span>
+
+{% else %}
+<span class="file-badge default">FILE</span>
+{% endif %}
+
+{% endwith %}
+
+</td>
+
+<td>{{ doc.title }}</td>
+
+<td>
+{% if doc.category %}
+{{ doc.category.name }}
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>{{ doc.uploaded_by.username }}</td>
+
+<td>{{ doc.created_at|date:"Y-m-d" }}</td>
+
+<td class="action-buttons">
+
+<!-- PREVIEW -->
+<button class="btn preview-btn"
+onclick="previewFile('{{ doc.file.url }}')">
+<i class="fa-solid fa-eye"></i>
+</button>
+
+<!-- DOWNLOAD -->
+<a href="{{ doc.file.url }}" download class="btn download-btn">
+<i class="fa-solid fa-download"></i>
+</a>
+
+<!-- DELETE (ADMIN ONLY) -->
+{% if is_admin %}
+<button class="btn delete-btn"
+data-id="{{ doc.id }}"
+onclick="deleteDocument(this)"
+<i class="fa-solid fa-trash"></i>
+</button>
+{% endif %}
+
+<!-- SHARE (ADMIN ONLY) -->
+{% if is_admin %}
+<button class="btn share-btn"
+data-id="{{ doc.id }}"
+onclick="openShareModal(this)">
+<i class="fa-solid fa-share"></i>
+</button>
+<i class="fa-solid fa-share"></i>
+</a>
+{% endif %}
+
+</td>
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="6">No documents available</td>
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<!-- ===== PAGINATION ===== -->
+
+<div class="pagination" id="paginationContainer">
+
+{% if page_obj.has_previous %}
+<a href="?page={{ page_obj.previous_page_number }}">Previous</a>
+{% endif %}
+
+<span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+
+{% if page_obj.has_next %}
+<a href="?page={{ page_obj.next_page_number }}"
+onclick="loadPage(event, this.href)">Next</a>
+{% endif %}
+
+</div>
+
+
+<!-- ===== DOCUMENT PREVIEW MODAL ===== -->
+
+<div id="previewModal" class="preview-modal">
+
+<div class="preview-content">
+
+<span class="close-btn" onclick="closePreview()">×</span>
+
+<iframe id="previewFrame" src="" width="100%" height="500px"></iframe>
+
+</div>
+
+</div>
+
+<div id="shareModal" class="preview-modal">
+
+<div class="preview-content">
+
+<span class="close-btn" onclick="closeShareModal()">×</span>
+
+<h3>Share Document</h3>
+
+<!-- ===== MODAL SELECT===== -->
+<select id="lecturerSelect">
+<option value="">Select Lecturer</option>
+
+{% for lecturer in lecturers %}
+<option value="{{ lecturer.id }}">
+{{ lecturer.first_name }} {{ lecturer.last_name }} ({{ lecturer.username }})
+</option>
+{% endfor %}
+
+</select>
+
+<button onclick="shareDocument()">Share</button>
+
+</div>
+
+</div>
+<!--              lecturer count           -->
+<p>Lecturers count: {{ lecturers|length }}</p>
+
+<!--            pop up notification        -->
+<div id="toastContainer" class="toast-container"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

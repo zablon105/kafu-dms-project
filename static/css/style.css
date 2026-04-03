@@ -1,0 +1,388 @@
+/* =====================================
+   GLOBAL SYSTEM STYLES
+===================================== */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:#f4f6f9;
+}
+
+/* ===== GENERAL CARD ===== */
+
+.card{
+background:white;
+padding:22px;
+border-radius:12px;
+box-shadow:0 6px 18px rgba(0,0,0,0.06);
+margin-bottom:25px;
+transition:0.2s;
+}
+
+.card:hover{
+transform: translateY(-2px);
+}
+
+.card h3{
+margin-bottom:15px;
+font-weight:600;
+}
+
+/* ===== INPUT FIELDS ===== */
+
+input,select{
+padding:10px;
+margin-bottom:10px;
+width:100%;
+border:1px solid #d1d5db;
+border-radius:8px;
+transition:0.2s;
+}
+
+input:focus,select:focus{
+outline:none;
+border-color:#3b82f6;
+box-shadow:0 0 0 2px rgba(59,130,246,0.2);
+}
+
+/* ===== BUTTONS ===== */
+
+button{
+background:#2563eb;
+color:white;
+border:none;
+padding:9px 16px;
+border-radius:8px;
+cursor:pointer;
+transition:0.2s;
+font-weight:500;
+}
+
+button:hover{
+background:#1d4ed8;
+transform: translateY(-1px);
+}
+
+/* ===== DELETE BUTTON ===== */
+
+.delete-btn{
+background:#dc2626;
+}
+
+.delete-btn:hover{
+background:#b91c1c;
+}
+
+/* ===== SEARCH BOX ===== */
+
+.search-box{
+display:flex;
+gap:10px;
+flex-wrap:wrap;
+align-items:center;
+}
+
+.search-box input{
+flex:2;
+}
+
+.search-box select{
+flex:1;
+}
+
+.search-box button{
+flex:0.5;
+}
+
+/* ===== TABLE ===== */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table thead{
+background:#1e293b;
+color:white;
+}
+
+table th{
+padding:14px;
+text-align:left;
+font-weight:600;
+}
+
+table td{
+padding:14px;
+border-bottom:1px solid #e5e7eb;
+vertical-align:middle;
+}
+
+table tbody tr:hover{
+background:#f9fafb;
+}
+
+/* ===== FILE ICON COLORS ===== */
+
+.file-icon{
+font-size:22px;
+}
+
+.pdf{ color:#e74c3c; }
+.word{ color:#2e86de; }
+.excel{ color:#27ae60; }
+
+/* ===== MODAL VIEWER ===== */
+
+.modal{
+display:none;
+position:fixed;
+z-index:999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+}
+
+.modal-content{
+position:relative;
+margin:5% auto;
+background:white;
+padding:20px;
+width:70%;
+height:80%;
+border-radius:10px;
+}
+
+.modal-content iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+/* ===== PREVIEW MODAL ===== */
+
+.preview-modal{
+display:none;
+position:fixed;
+z-index:999;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+}
+
+.preview-content{
+background:#fff;
+margin:5% auto;
+padding:20px;
+width:80%;
+border-radius:10px;
+box-shadow:0 10px 30px rgba(0,0,0,0.2);
+}
+
+.close-btn{
+float:right;
+font-size:26px;
+cursor:pointer;
+}
+
+/* ===== ACTION BUTTONS ===== */
+
+.action-buttons {
+display:flex;
+gap:10px;
+align-items:center;
+}
+
+.btn {
+border:none;
+padding:8px 12px;
+cursor:pointer;
+border-radius:8px;
+color:white;
+font-size:14px;
+display:flex;
+align-items:center;
+justify-content:center;
+min-width:36px;
+transition:all 0.2s ease;
+}
+
+/* COLORS */
+.preview-btn { background:#3b82f6; }
+.download-btn { background:#16a34a; text-decoration:none; display:inline-block; }
+.delete-btn { background:#dc2626; }
+.share-btn { background:#f59e0b; }
+
+/* HOVER EFFECT */
+.btn:hover {
+transform:translateY(-2px);
+opacity:0.9;
+}
+
+/* ===== TOAST ===== */
+
+.toast-container {
+position:fixed;
+top:20px;
+right:20px;
+z-index:9999;
+}
+
+.toast {
+background:#333;
+color:#fff;
+padding:12px 16px;
+margin-bottom:10px;
+border-radius:8px;
+opacity:0.95;
+animation:fadeIn 0.3s ease;
+font-size:14px;
+}
+
+.toast.success { background:#16a34a; }
+.toast.error { background:#dc2626; }
+
+@keyframes fadeIn {
+from { opacity:0; transform:translateY(-10px); }
+to { opacity:1; transform:translateY(0); }
+}
+
+/* ===== DARK MODE ===== */
+
+body.dark-mode {
+    background: #111827;
+    color: #e5e7eb;
+}
+
+/* cards */
+body.dark-mode .card {
+    background: #1f2937;
+    color: #e5e7eb;
+}
+
+/* table */
+body.dark-mode table thead {
+    background: #374151;
+}
+
+body.dark-mode table td {
+    border-bottom: 1px solid #374151;
+}
+
+body.dark-mode table tbody tr:hover {
+    background: #1f2937;
+}
+
+/* inputs */
+body.dark-mode input,
+body.dark-mode select {
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid #374151;
+}
+
+/* sidebar */
+body.dark-mode .sidebar {
+    background: #020617;
+}
+
+body.dark-mode .sidebar a {
+    color: #9ca3af;
+}
+
+body.dark-mode .sidebar a:hover {
+    background: #1f2937;
+    color: white;
+}
+
+/* ===== FILE TYPE BADGES (PRO UI) ===== */
+
+.file-badge{
+    padding:4px 10px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:600;
+    color:white;
+    display:inline-block;
+}
+
+/* COLORS */
+.file-badge.pdf{
+    background:#dc2626;
+}
+
+.file-badge.word{
+    background:#2563eb;
+}
+
+.file-badge.excel{
+    background:#16a34a;
+}
+
+.file-badge.txt{
+    background:#6b7280;
+}
+
+.file-badge.default{
+    background:#374151;
+}
+
+/* ===== DRAG & DROP UPLOAD ===== */
+
+.drop-zone {
+    border: 2px dashed #3b82f6;
+    padding: 30px;
+    text-align: center;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #f8fafc;
+    color: #1e293b;
+    transition: all 0.2s ease;
+}
+
+.drop-zone:hover {
+    background: #e0f2fe;
+}
+
+.drop-zone.dragover {
+    background: #dbeafe;
+    border-color: #2563eb;
+}
+
+.file-name {
+    margin-top: 10px;
+    font-size: 14px;
+    color: #374151;
+}
+
+/* ===== DARK MODE DRAG & DROP FIX ===== */
+
+body.dark-mode .drop-zone {
+    background: #1e293b;
+    border-color: #3b82f6;
+    color: #e5e7eb;
+}
+
+body.dark-mode .drop-zone:hover {
+    background: #334155;
+}
+
+body.dark-mode .drop-zone.dragover {
+    background: #1d4ed8;
+    border-color: #60a5fa;
+}
+
+body.dark-mode .file-name {
+    color: #cbd5f5;
+}
+

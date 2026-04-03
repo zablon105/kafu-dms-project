@@ -1,0 +1,57 @@
+{% extends "documents/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="profile-container">
+
+    <!-- PROFILE CARD -->
+    <div class="profile-card">
+
+        <div class="profile-header">
+
+            <!-- Avatar (auto initials) -->
+            <div class="avatar">
+                {{ request.user.username|slice:":1"|upper }}
+            </div>
+
+            <div>
+                <h2>{{ request.user.username }}</h2>
+
+                <!-- ROLE BADGE -->
+                {% if is_admin %}
+                    <span class="role-badge admin">Admin</span>
+                {% elif is_staff %}
+                    <span class="role-badge staff">Staff</span>
+                {% elif is_student %}
+                    <span class="role-badge student">Student</span>
+                {% endif %}
+            </div>
+
+        </div>
+
+        <!-- USER DETAILS -->
+        <div class="profile-info">
+
+            <div class="info-row">
+                <span>Email</span>
+                <p>{{ request.user.email }}</p>
+            </div>
+
+            <div class="info-row">
+                <span>Username</span>
+                <p>{{ request.user.username }}</p>
+            </div>
+
+            <div class="info-row">
+                <span>Date Joined</span>
+                <p>{{ request.user.date_joined|date:"Y-m-d" }}</p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

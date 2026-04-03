@@ -1,0 +1,194 @@
+{% extends "documents/base.html" %}
+{% load static %}
+
+{% block content %}
+
+<!-- ===== TOPBAR ===== -->
+<div class="topbar">
+    <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+    </button>
+
+    <div class="topbar-right">
+        <h2>Admin Dashboard</h2>
+    </div>
+</div>
+
+
+<!-- ===== STATS ===== -->
+<div class="stats pro-stats">
+
+    <div class="stat-card pro">
+        <div class="icon blue"><i class="fa-solid fa-users"></i></div>
+        <div>
+            <h4>Total Users</h4>
+            <p>{{ total_users }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card pro">
+        <div class="icon green"><i class="fa-solid fa-file"></i></div>
+        <div>
+            <h4>Total Documents</h4>
+            <p>{{ total_documents }}</p>
+        </div>
+    </div>
+
+    <div class="stat-card pro">
+        <div class="icon purple"><i class="fa-solid fa-user-graduate"></i></div>
+        <div>
+            <h4>Total Students</h4>
+            <p>{{ total_students }}</p>
+        </div>
+    </div>
+
+</div>
+
+
+<!-- ===== CHART (ONLY ONE) ===== -->
+<div class="card chart-card">
+    <h3><i class="fa-solid fa-chart-line"></i> Upload Trends</h3>
+
+    <div class="chart-wrapper">
+        <canvas id="uploadChart"></canvas>
+    </div>
+</div>
+
+
+<!-- ===== SEARCH ===== -->
+<div class="card modern-card">
+    <h3><i class="fa-solid fa-search"></i> Search Documents</h3>
+
+    <form method="GET" class="search-box">
+        <input type="text"
+               name="q"
+               placeholder="Search document by title..."
+               value="{{ request.GET.q }}">
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+
+<!-- ===== TABLE ===== -->
+<div class="card modern-card">
+
+    <h3><i class="fa-solid fa-folder-open"></i> All Documents</h3>
+
+    <div class="table-wrapper">
+
+        <table class="doc-table modern-table">
+
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Uploaded By</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for doc in documents %}
+                <tr>
+
+                    <td class="file-cell">
+
+   {% with doc.file.name|lower as filename %}
+
+    {% if filename|slice:"-4:" == ".pdf" %}
+        <span class="file-badge pdf">PDF</span>
+        <i class="fa-solid fa-file-pdf file-icon pdf"></i>
+
+    {% elif filename|slice:"-4:" == ".doc" or filename|slice:"-5:" == ".docx" %}
+        <span class="file-badge word">DOC</span>
+        <i class="fa-solid fa-file-word file-icon word"></i>
+
+    {% elif filename|slice:"-4:" == ".xls" or filename|slice:"-5:" == ".xlsx" %}
+        <span class="file-badge excel">XLS</span>
+        <i class="fa-solid fa-file-excel file-icon excel"></i>
+
+    {% elif filename|slice:"-4:" == ".png" or filename|slice:"-4:" == ".jpg" or filename|slice:"-5:" == ".jpeg" %}
+        <span class="file-badge image">IMG</span>
+        <i class="fa-solid fa-file-image file-icon image"></i>
+
+    {% else %}
+        <span class="file-badge other">FILE</span>
+        <i class="fa-solid fa-file file-icon"></i>
+    {% endif %}
+
+{% endwith %}
+                    </td>
+
+                    <td>
+                        <span class="user-pill">
+                            {{ doc.uploaded_by.username }}
+                        </span>
+                    </td>
+
+                    <td class="doc-date">
+                        {{ doc.created_at|date:"Y-m-d" }}
+                    </td>
+
+                    <td class="action-buttons">
+
+                        <a href="{% url 'share_document' doc.id %}" class="btn share-btn">
+                            <i class="fa-solid fa-share"></i>
+                        </a>
+
+                        <button class="btn delete-btn"
+                                data-id="{{ doc.id }}"
+                                onclick="deleteDocument(this)">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+
+                    </td>
+
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="empty-row">
+                        No documents found
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+
+<!-- ===== PAGINATION ===== -->
+<div class="pagination">
+
+    {% if documents.has_previous %}
+        <a href="?page=1">First</a>
+        <a href="?page={{ documents.previous_page_number }}">Previous</a>
+    {% endif %}
+
+    <span class="current">
+        Page {{ documents.number }} of {{ documents.paginator.num_pages }}
+    </span>
+
+    {% if documents.has_next %}
+        <a href="?page={{ documents.next_page_number }}">Next</a>
+        <a href="?page={{ documents.paginator.num_pages }}">Last</a>
+    {% endif %}
+
+</div>
+
+
+<!-- ===== SAFE JSON (ONLY DATA, NO DEBUG TEXT) ===== -->
+{{ months|json_script:"months-data" }}
+{{ counts|json_script:"counts-data" }}
+
+{% endblock %}
+
+
+{% block scripts %}
+<script src="{% static 'js/main.js' %}"></script>
+{% endblock %}

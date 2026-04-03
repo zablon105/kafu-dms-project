@@ -1,0 +1,129 @@
+/* ===== LOGO ===== */
+.logo {
+    width: 90px;
+    margin-bottom: 15px;
+}
+
+/* ===== PAGE LAYOUT ===== */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f6f9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* ===== AUTH CONTAINER ===== */
+.auth-container {
+    background: white;
+    padding: 35px;
+    width: 400px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.auth-container h2 {
+    color: #003366;
+    margin-bottom: 5px;
+}
+
+.auth-container h3 {
+    margin-bottom: 20px;
+    color: #444;
+}
+
+/* ===== ALL INPUT FIELDS SAME SIZE ===== */
+.auth-container input[type="text"],
+.auth-container input[type="email"],
+.auth-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+/* ===== PASSWORD WRAPPER ===== */
+.password-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.password-wrapper input {
+    padding-right: 55px; /* space for show button */
+}
+
+/* ===== SHOW/HIDE BUTTON ===== */
+.toggle-btn {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #003366;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 0;
+}
+
+.toggle-btn:focus {
+    outline: none;
+}
+
+/* ===== SUBMIT BUTTON ===== */
+.auth-container button[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.auth-container button[type="submit"]:hover {
+    background-color: #00509e;
+}
+
+/* ===== MESSAGES ===== */
+.message {
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.success {
+    background-color: #d4edda;
+    color: #155724;
+}
+
+.error {
+    background-color: #f8d7da;
+    color: #721c24;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    width: 100%;
+    padding-right: 40px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #6b7280;
+}
