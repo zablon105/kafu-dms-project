@@ -1431,3 +1431,86 @@ body.dark-mode .download-item .doc-info {
         font-size: 26px !important;
     }
 }
+
+/* ===== FIX BLACK SPACE ON LEFT SIDE (MOBILE) ===== */
+
+/* Force main content to take full width on mobile */
+@media (max-width: 768px) {
+    
+    /* Fix the layout container */
+    .layout {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Fix sidebar positioning */
+    .sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        background: #1e293b !important;
+        transition: left 0.3s ease !important;
+    }
+    
+    /* When sidebar is active/open */
+    .sidebar.active {
+        left: 0 !important;
+    }
+    
+    /* Main content - take FULL width, no margin */
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+        min-height: 100vh !important;
+        background: var(--body-bg, #f4f6f9) !important;
+    }
+    
+    /* Content inside main */
+    .main > * {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px !important;
+    }
+    
+    /* Remove any leftover margin from body or html */
+    body, html {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+    
+    /* Fix any white/black space on right */
+    .layout,
+    .main,
+    .sidebar {
+        overflow-x: hidden !important;
+    }
+}
+
+/* Also fix for profile page specifically */
+@media (max-width: 768px) {
+    .profile-container {
+        width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    .profile-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        box-sizing: border-box !important;
+    }
+    
+    /* Fix any extra spacing */
+    .main .profile-container,
+    .main .profile-card {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}
