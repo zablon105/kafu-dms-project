@@ -58,6 +58,7 @@ body {
 .layout {
     display: flex;
     min-height: 100vh;
+    width: 100%;
 }
 
 /* ===== SIDEBAR ===== */
@@ -143,6 +144,8 @@ body {
     flex: 1;
     padding: 30px;
     transition: var(--transition);
+    width: calc(100% - 260px);
+    background: var(--body-bg);
 }
 
 /* ===== TOPBAR ===== */
@@ -184,6 +187,11 @@ body {
 .welcome-text {
     color: var(--text-secondary);
     font-size: 14px;
+}
+
+/* ===== MOBILE TOPBAR (Hidden on desktop) ===== */
+.mobile-topbar {
+    display: none;
 }
 
 /* ===== PAGE HEADER ===== */
@@ -727,145 +735,292 @@ body {
     transition: width 0.3s ease;
 }
 
-/* ===== RESPONSIVE DESIGN ===== */
+/* ===== RESPONSIVE DESIGN - COMPLETE MOBILE FIX ===== */
 
 /* Tablet (768px and below) */
 @media (max-width: 768px) {
+    
+    /* Fix layout - remove flex and make block */
+    .layout {
+        display: block !important;
+        width: 100% !important;
+        overflow-x: hidden !important;
+    }
+    
+    /* Fix sidebar - hidden by default, slides in */
     .sidebar {
-        position: fixed;
-        left: -260px;
-        top: 0;
-        height: 100%;
-        z-index: 1000;
-        transition: left 0.3s ease;
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 1000 !important;
+        background: var(--sidebar-bg) !important;
+        transition: left 0.3s ease !important;
+        padding: 20px !important;
     }
     
+    /* When sidebar is active/open */
     .sidebar.active {
-        left: 0;
+        left: 0 !important;
     }
     
+    /* Main content - take FULL width, no margin */
     .main {
-        margin-left: 0;
-        padding: 20px;
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+        min-height: 100vh !important;
     }
     
+    /* Remove collapsed margin on mobile */
     .main.collapsed {
-        margin-left: 0;
+        margin-left: 0 !important;
     }
     
-    .stats-grid, .pro-stats {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-    }
-    
-    .stat-card {
-        padding: 15px;
-    }
-    
-    .page-header h1 {
-        font-size: 24px;
-    }
-    
-    .chart-wrapper {
-        height: 250px;
-    }
-    
-    .profile-card {
-        max-width: 100%;
-    }
-}
-
-/* Mobile (480px and below) */
-@media (max-width: 480px) {
-    .main {
-        padding: 15px;
+    /* Show mobile topbar, hide desktop topbar */
+    .mobile-topbar {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        background: var(--card-bg) !important;
+        padding: 12px 15px !important;
+        margin-bottom: 15px !important;
+        border-radius: 12px !important;
+        box-shadow: var(--shadow-sm) !important;
     }
     
     .topbar {
-        flex-direction: column;
-        align-items: flex-start;
+        display: none !important;
     }
     
-    .stats-grid, .pro-stats {
-        grid-template-columns: 1fr;
-        gap: 12px;
+    .mobile-menu-btn {
+        background: var(--primary) !important;
+        border: none !important;
+        padding: 10px !important;
+        border-radius: 8px !important;
+        color: white !important;
+        cursor: pointer !important;
+        font-size: 18px !important;
+        width: 40px !important;
+        height: 40px !important;
+    }
+    
+    .mobile-logo h3 {
+        margin: 0 !important;
+        font-size: 18px !important;
+        color: var(--text-primary) !important;
+    }
+    
+    .mobile-user i {
+        font-size: 28px !important;
+        color: var(--primary) !important;
+    }
+    
+    /* Stats cards stack vertically */
+    .stats-grid, 
+    .pro-stats {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
     }
     
     .stat-card {
-        padding: 12px;
+        padding: 15px !important;
     }
     
-    .stat-card p {
-        font-size: 18px;
+    /* Make stat cards horizontal on mobile (better layout) */
+    .stat-card {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
     }
     
-    .stat-card h3 {
-        font-size: 20px;
-    }
-    
-    .card {
-        padding: 15px;
-    }
-    
-    .doc-table th, .doc-table td,
-    .documents-table th, .documents-table td {
-        padding: 10px;
-        font-size: 13px;
-    }
-    
-    .action-btn {
-        padding: 4px 8px;
-        font-size: 11px;
-        margin-right: 3px;
-    }
-    
-    .file-cell {
-        gap: 5px;
-    }
-    
-    .pagination a {
-        padding: 6px 10px;
-        font-size: 12px;
-    }
-    
+    /* Page header */
     .page-header h1 {
-        font-size: 20px;
+        font-size: 22px !important;
     }
     
+    /* Chart wrapper */
     .chart-wrapper {
-        height: 200px;
+        height: 250px !important;
+    }
+    
+    /* Profile card */
+    .profile-card {
+        max-width: 100% !important;
     }
     
     .profile-header {
-        flex-direction: column;
-        text-align: center;
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
     }
     
-    .notif-dropdown {
-        width: 280px;
-        right: -100px;
-    }
-}
-
-/* Small mobile (380px and below) */
-@media (max-width: 380px) {
-    .main {
-        padding: 10px;
+    .avatar {
+        margin: 0 auto !important;
     }
     
-    .doc-table th, .doc-table td {
-        padding: 8px;
-        font-size: 11px;
+    /* Tables - convert to cards */
+    .table-wrapper {
+        overflow-x: visible !important;
+    }
+    
+    .table-wrapper table,
+    .documents-table,
+    .doc-table {
+        display: block !important;
+    }
+    
+    .table-wrapper thead,
+    .documents-table thead,
+    .doc-table thead {
+        display: none !important;
+    }
+    
+    .table-wrapper tbody tr,
+    .documents-table tbody tr,
+    .doc-table tbody tr {
+        display: block !important;
+        margin-bottom: 15px !important;
+        background: var(--card-bg) !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: var(--shadow-sm) !important;
+        border: 1px solid var(--border) !important;
+    }
+    
+    .table-wrapper td,
+    .documents-table td,
+    .doc-table td {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 10px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid var(--border) !important;
+        text-align: left !important;
+    }
+    
+    .table-wrapper td:last-child,
+    .documents-table td:last-child,
+    .doc-table td:last-child {
+        border-bottom: none !important;
+    }
+    
+    /* Add labels to table cells */
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before {
+        content: attr(data-label) !important;
+        font-weight: 600 !important;
+        font-size: 12px !important;
+        color: var(--text-secondary) !important;
+        margin-right: 15px !important;
+        min-width: 100px !important;
+    }
+    
+    /* Search box full width */
+    .search-box {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .search-box input,
+    .search-box select,
+    .search-box button {
+        width: 100% !important;
+    }
+    
+    /* Pagination */
+    .pagination {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px !important;
+    }
+    
+    /* Action buttons */
+    .action-buttons {
+        flex-wrap: wrap !important;
+        gap: 8px !important;
     }
     
     .action-btn {
-        padding: 3px 6px;
-        font-size: 10px;
+        padding: 6px 12px !important;
+        font-size: 12px !important;
     }
     
-    .card-header {
-        flex-direction: column;
-        align-items: flex-start;
+    /* Notifications dropdown */
+    .notif-dropdown {
+        position: fixed !important;
+        right: 10px !important;
+        left: auto !important;
+        width: 280px !important;
+    }
+    
+    /* Remove any body/html overflow */
+    body, html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+    .main {
+        padding: 10px !important;
+    }
+    
+    .stat-card p {
+        font-size: 18px !important;
+    }
+    
+    .stat-card h3 {
+        font-size: 14px !important;
+    }
+    
+    .card {
+        padding: 12px !important;
+    }
+    
+    .page-header h1 {
+        font-size: 20px !important;
+    }
+    
+    .chart-wrapper {
+        height: 200px !important;
+    }
+    
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before {
+        min-width: 80px !important;
+        font-size: 11px !important;
+    }
+    
+    .table-wrapper td,
+    .documents-table td,
+    .doc-table td {
+        font-size: 12px !important;
+        padding: 8px 0 !important;
+    }
+    
+    .action-btn {
+        padding: 5px 10px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Extra Small Mobile (380px and below) */
+@media (max-width: 380px) {
+    .stat-card {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before {
+        min-width: 70px !important;
     }
 }
 
@@ -924,593 +1079,15 @@ body {
 .mb-20 { margin-bottom: 20px; }
 .hidden { display: none; }
 
-/* ===== UNIVERSAL MOBILE DASHBOARD FIXES ===== */
-/* Works for Admin, Staff, and Student dashboards */
-
-/* Tablet & Mobile Responsive (up to 1024px) */
-@media (max-width: 1024px) {
-    
-    /* Fix main content spacing */
-    .main {
-        padding: 0 !important;
-    }
-    
-    .main > * {
-        padding: 15px;
-    }
-    
-    /* Dashboard headers */
-    .dashboard-header,
-    .page-header {
-        margin-bottom: 15px;
-    }
-    
-    .dashboard-header h1,
-    .page-header h1 {
-        font-size: 24px;
-        margin-bottom: 5px;
-    }
-    
-    .welcome-text,
-    .subtitle {
-        font-size: 13px;
-    }
+/* ===== DARK MODE MOBILE SUPPORT ===== */
+body.dark-mode .mobile-topbar {
+    background: var(--card-bg) !important;
+    border-bottom: 1px solid var(--border) !important;
 }
 
-/* Mobile Styles (up to 768px) */
-@media (max-width: 768px) {
-    
-    /* ===== STATS CARDS - Stack vertically for all dashboards ===== */
-    .stats-grid,
-    .pro-stats,
-    .stats,
-    .modern-stats {
-        display: flex !important;
-        flex-direction: column !important;
-        gap: 12px !important;
-        margin-bottom: 20px !important;
-    }
-    
-    /* Universal stat card style */
-    .stat-card {
-        display: flex !important;
-        align-items: center !important;
-        gap: 15px !important;
-        padding: 15px !important;
-        background: var(--card-bg, #ffffff) !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-        width: 100% !important;
-        transition: transform 0.2s ease !important;
-    }
-    
-    .stat-card:active {
-        transform: scale(0.98) !important;
-    }
-    
-    /* Icon styling for all stat cards */
-    .stat-card .icon,
-    .stat-card i,
-    .stat-icon {
-        width: 50px !important;
-        height: 50px !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        font-size: 24px !important;
-        background: rgba(59, 130, 246, 0.1) !important;
-        border-radius: 12px !important;
-    }
-    
-    /* Text styling */
-    .stat-card h3,
-    .stat-card h4 {
-        font-size: 14px !important;
-        font-weight: 500 !important;
-        margin: 0 !important;
-        color: var(--text-secondary, #6b7280) !important;
-    }
-    
-    .stat-card p,
-    .stat-card h2 {
-        font-size: 24px !important;
-        font-weight: bold !important;
-        margin: 0 !important;
-        color: var(--text-primary, #1f2937) !important;
-    }
-    
-    .stat-card .stat-info {
-        flex: 1;
-    }
-    
-    /* ===== CARDS - Universal styling ===== */
-    .documents-card,
-    .card,
-    .chart-card,
-    .profile-card {
-        padding: 15px !important;
-        margin-bottom: 15px !important;
-        border-radius: 12px !important;
-    }
-    
-    .documents-card h3,
-    .card h3,
-    .card-header h3 {
-        font-size: 16px !important;
-        margin-bottom: 12px !important;
-        display: flex !important;
-        align-items: center !important;
-        gap: 8px !important;
-    }
-    
-    .card-header {
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        gap: 10px !important;
-    }
-    
-    /* ===== TABLES - Convert to cards on mobile (Universal) ===== */
-    .table-wrapper {
-        overflow-x: visible !important;
-    }
-    
-    .table-wrapper table,
-    .documents-table,
-    .doc-table,
-    .modern-table {
-        display: block !important;
-    }
-    
-    .table-wrapper thead,
-    .documents-table thead,
-    .doc-table thead,
-    .modern-table thead {
-        display: none !important;
-    }
-    
-    .table-wrapper tbody tr,
-    .documents-table tbody tr,
-    .doc-table tbody tr,
-    .modern-table tbody tr {
-        display: block !important;
-        margin-bottom: 15px !important;
-        background: var(--card-bg, #ffffff) !important;
-        border-radius: 12px !important;
-        padding: 12px !important;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
-        border: none !important;
-    }
-    
-    .table-wrapper td,
-    .documents-table td,
-    .doc-table td,
-    .modern-table td {
-        display: flex !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        padding: 8px 0 !important;
-        border: none !important;
-        text-align: left !important;
-        flex-wrap: wrap !important;
-        gap: 8px !important;
-    }
-    
-    /* Add labels for each cell */
-    .table-wrapper td:before,
-    .documents-table td:before,
-    .doc-table td:before,
-    .modern-table td:before {
-        content: attr(data-label) !important;
-        font-weight: 600 !important;
-        font-size: 12px !important;
-        color: var(--text-secondary, #6b7280) !important;
-        min-width: 100px !important;
-    }
-    
-    /* ===== ACTION BUTTONS - Touch friendly ===== */
-    .action-buttons,
-    .action-btn-group,
-    .btn-group {
-        display: flex !important;
-        gap: 8px !important;
-        flex-wrap: wrap !important;
-        justify-content: flex-start !important;
-    }
-    
-    .action-btn,
-    .btn,
-    button[type="submit"] {
-        padding: 8px 14px !important;
-        font-size: 13px !important;
-        min-height: 40px !important;
-        min-width: 80px !important;
-    }
-    
-    /* ===== SEARCH BOX - Full width ===== */
-    .search-box,
-    .search-card {
-        flex-direction: column !important;
-        gap: 10px !important;
-    }
-    
-    .search-box input,
-    .search-box select,
-    .search-box button,
-    .search-card input,
-    .search-card select,
-    .search-card button {
-        width: 100% !important;
-        padding: 10px !important;
-        font-size: 14px !important;
-    }
-    
-    /* ===== PAGINATION - Touch friendly ===== */
-    .pagination {
-        flex-wrap: wrap !important;
-        justify-content: center !important;
-        gap: 8px !important;
-        margin-top: 20px !important;
-    }
-    
-    .pagination a,
-    .pagination span {
-        padding: 8px 14px !important;
-        font-size: 13px !important;
-        min-width: 40px !important;
-        text-align: center !important;
-    }
-    
-    /* ===== FILE BADGES ===== */
-    .file-badge {
-        padding: 4px 10px !important;
-        font-size: 11px !important;
-    }
-    
-    .file-icon {
-        font-size: 20px !important;
-    }
-    
-    /* ===== CHART - Responsive ===== */
-    .chart-wrapper {
-        height: 250px !important;
-    }
-    
-    canvas {
-        max-height: 250px !important;
-    }
-    
-    /* ===== PROFILE PAGE ===== */
-    .profile-container {
-        margin-top: 15px !important;
-    }
-    
-    .profile-card {
-        max-width: 100% !important;
-    }
-    
-    .profile-header {
-        flex-direction: column !important;
-        text-align: center !important;
-        gap: 10px !important;
-    }
-    
-    .avatar {
-        width: 70px !important;
-        height: 70px !important;
-        font-size: 28px !important;
-        margin: 0 auto !important;
-    }
-    
-    .info-row {
-        margin-bottom: 12px !important;
-    }
-    
-    /* ===== NOTIFICATIONS ===== */
-    .notif-dropdown {
-        width: 280px !important;
-        right: -100px !important;
-        position: fixed !important;
-    }
-    
-    /* ===== WELCOME MESSAGE ===== */
-    .welcome-message {
-        padding: 15px !important;
-        margin-bottom: 20px !important;
-    }
-    
-    .welcome-message h2 {
-        font-size: 18px !important;
-    }
-    
-    .welcome-message p {
-        font-size: 13px !important;
-    }
-}
-
-/* Small Mobile (480px and below) */
-@media (max-width: 480px) {
-    
-    .main > * {
-        padding: 12px !important;
-    }
-    
-    /* Smaller stat cards */
-    .stat-card {
-        padding: 12px !important;
-        gap: 12px !important;
-    }
-    
-    .stat-card .icon,
-    .stat-card i,
-    .stat-icon {
-        width: 45px !important;
-        height: 45px !important;
-        font-size: 20px !important;
-    }
-    
-    .stat-card p,
-    .stat-card h2 {
-        font-size: 20px !important;
-    }
-    
-    .stat-card h3,
-    .stat-card h4 {
-        font-size: 12px !important;
-    }
-    
-    /* Smaller headers */
-    .dashboard-header h1,
-    .page-header h1 {
-        font-size: 20px !important;
-    }
-    
-    /* Smaller cards */
-    .documents-card,
-    .card {
-        padding: 12px !important;
-    }
-    
-    /* Table labels smaller */
-    .table-wrapper td:before,
-    .documents-table td:before,
-    .doc-table td:before,
-    .modern-table td:before {
-        min-width: 80px !important;
-        font-size: 11px !important;
-    }
-    
-    .table-wrapper td,
-    .documents-table td,
-    .doc-table td,
-    .modern-table td {
-        font-size: 12px !important;
-        padding: 6px 0 !important;
-    }
-    
-    /* Smaller buttons */
-    .action-btn,
-    .btn {
-        padding: 6px 10px !important;
-        font-size: 11px !important;
-        min-height: 36px !important;
-        min-width: 70px !important;
-    }
-    
-    /* Smaller chart */
-    .chart-wrapper {
-        height: 200px !important;
-    }
-    
-    /* Notification dropdown */
-    .notif-dropdown {
-        width: 260px !important;
-        right: -80px !important;
-    }
-}
-
-/* Extra Small Mobile (380px and below) */
-@media (max-width: 380px) {
-    
-    .stat-card {
-        flex-direction: column !important;
-        text-align: center !important;
-    }
-    
-    .stat-card .icon,
-    .stat-card i,
-    .stat-icon {
-        margin: 0 auto !important;
-    }
-    
-    .table-wrapper td:before,
-    .documents-table td:before,
-    .doc-table td:before,
-    .modern-table td:before {
-        min-width: 70px !important;
-    }
-    
-    .action-buttons {
-        flex-wrap: wrap !important;
-    }
-    
-    .profile-header h2 {
-        font-size: 18px !important;
-    }
-}
-
-/* ===== HELPER CLASSES FOR MOBILE ===== */
-.mobile-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.mobile-full-width {
-    width: 100% !important;
-}
-
-.mobile-text-center {
-    text-align: center !important;
-}
-
-/* Document list items for better mobile display */
-.document-item,
-.download-item {
-    background: var(--card-bg, #ffffff);
-    border-radius: 12px;
-    padding: 12px;
-    margin-bottom: 10px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.document-item .doc-name,
-.download-item .doc-name {
-    font-weight: 600;
-    font-size: 14px;
-    margin-bottom: 5px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.document-item .doc-info,
-.download-item .doc-info {
-    font-size: 12px;
-    color: var(--text-secondary, #6b7280);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin: 8px 0;
-}
-
-.document-item .doc-actions,
-.download-item .doc-actions {
-    margin-top: 8px;
-}
-
-/* Dark mode support for mobile */
-body.dark-mode .stat-card,
-body.dark-mode .document-item,
-body.dark-mode .download-item,
 body.dark-mode .table-wrapper tbody tr,
-body.dark-mode .documents-table tbody tr {
-    background: #1e293b !important;
-}
-
-body.dark-mode .stat-card p,
-body.dark-mode .stat-card h2 {
-    color: #e5e7eb !important;
-}
-
-body.dark-mode .stat-card h3,
-body.dark-mode .stat-card h4 {
-    color: #94a3b8 !important;
-}
-
-body.dark-mode .document-item .doc-info,
-body.dark-mode .download-item .doc-info {
-    color: #94a3b8 !important;
-}
-
-/* Tablet landscape (769px - 1024px) */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .stats-grid,
-    .pro-stats,
-    .stats {
-        display: grid !important;
-        grid-template-columns: repeat(2, 1fr) !important;
-        gap: 15px !important;
-    }
-    
-    .stat-card {
-        padding: 15px !important;
-    }
-    
-    .dashboard-header h1,
-    .page-header h1 {
-        font-size: 26px !important;
-    }
-}
-
-/* ===== FIX BLACK SPACE ON LEFT SIDE (MOBILE) ===== */
-
-/* Force main content to take full width on mobile */
-@media (max-width: 768px) {
-    
-    /* Fix the layout container */
-    .layout {
-        display: block !important;
-        width: 100% !important;
-        overflow-x: hidden !important;
-    }
-    
-    /* Fix sidebar positioning */
-    .sidebar {
-        position: fixed !important;
-        left: -280px !important;
-        top: 0 !important;
-        width: 280px !important;
-        height: 100vh !important;
-        z-index: 1000 !important;
-        background: #1e293b !important;
-        transition: left 0.3s ease !important;
-    }
-    
-    /* When sidebar is active/open */
-    .sidebar.active {
-        left: 0 !important;
-    }
-    
-    /* Main content - take FULL width, no margin */
-    .main {
-        margin-left: 0 !important;
-        width: 100% !important;
-        padding: 0 !important;
-        min-height: 100vh !important;
-        background: var(--body-bg, #f4f6f9) !important;
-    }
-    
-    /* Content inside main */
-    .main > * {
-        width: 100% !important;
-        max-width: 100% !important;
-        padding: 15px !important;
-    }
-    
-    /* Remove any leftover margin from body or html */
-    body, html {
-        margin: 0 !important;
-        padding: 0 !important;
-        overflow-x: hidden !important;
-        width: 100% !important;
-    }
-    
-    /* Fix any white/black space on right */
-    .layout,
-    .main,
-    .sidebar {
-        overflow-x: hidden !important;
-    }
-}
-
-/* Also fix for profile page specifically */
-@media (max-width: 768px) {
-    .profile-container {
-        width: 100% !important;
-        padding: 0 !important;
-    }
-    
-    .profile-card {
-        width: 100% !important;
-        max-width: 100% !important;
-        margin: 0 !important;
-        box-sizing: border-box !important;
-    }
-    
-    /* Fix any extra spacing */
-    .main .profile-container,
-    .main .profile-card {
-        margin-left: 0 !important;
-        margin-right: 0 !important;
-    }
+body.dark-mode .documents-table tbody tr,
+body.dark-mode .doc-table tbody tr {
+    background: var(--card-bg) !important;
+    border-color: var(--border) !important;
 }
