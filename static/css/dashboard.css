@@ -923,3 +923,511 @@ body {
 .mt-20 { margin-top: 20px; }
 .mb-20 { margin-bottom: 20px; }
 .hidden { display: none; }
+
+/* ===== UNIVERSAL MOBILE DASHBOARD FIXES ===== */
+/* Works for Admin, Staff, and Student dashboards */
+
+/* Tablet & Mobile Responsive (up to 1024px) */
+@media (max-width: 1024px) {
+    
+    /* Fix main content spacing */
+    .main {
+        padding: 0 !important;
+    }
+    
+    .main > * {
+        padding: 15px;
+    }
+    
+    /* Dashboard headers */
+    .dashboard-header,
+    .page-header {
+        margin-bottom: 15px;
+    }
+    
+    .dashboard-header h1,
+    .page-header h1 {
+        font-size: 24px;
+        margin-bottom: 5px;
+    }
+    
+    .welcome-text,
+    .subtitle {
+        font-size: 13px;
+    }
+}
+
+/* Mobile Styles (up to 768px) */
+@media (max-width: 768px) {
+    
+    /* ===== STATS CARDS - Stack vertically for all dashboards ===== */
+    .stats-grid,
+    .pro-stats,
+    .stats,
+    .modern-stats {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    /* Universal stat card style */
+    .stat-card {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+        padding: 15px !important;
+        background: var(--card-bg, #ffffff) !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        width: 100% !important;
+        transition: transform 0.2s ease !important;
+    }
+    
+    .stat-card:active {
+        transform: scale(0.98) !important;
+    }
+    
+    /* Icon styling for all stat cards */
+    .stat-card .icon,
+    .stat-card i,
+    .stat-icon {
+        width: 50px !important;
+        height: 50px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        font-size: 24px !important;
+        background: rgba(59, 130, 246, 0.1) !important;
+        border-radius: 12px !important;
+    }
+    
+    /* Text styling */
+    .stat-card h3,
+    .stat-card h4 {
+        font-size: 14px !important;
+        font-weight: 500 !important;
+        margin: 0 !important;
+        color: var(--text-secondary, #6b7280) !important;
+    }
+    
+    .stat-card p,
+    .stat-card h2 {
+        font-size: 24px !important;
+        font-weight: bold !important;
+        margin: 0 !important;
+        color: var(--text-primary, #1f2937) !important;
+    }
+    
+    .stat-card .stat-info {
+        flex: 1;
+    }
+    
+    /* ===== CARDS - Universal styling ===== */
+    .documents-card,
+    .card,
+    .chart-card,
+    .profile-card {
+        padding: 15px !important;
+        margin-bottom: 15px !important;
+        border-radius: 12px !important;
+    }
+    
+    .documents-card h3,
+    .card h3,
+    .card-header h3 {
+        font-size: 16px !important;
+        margin-bottom: 12px !important;
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+    }
+    
+    .card-header {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+    
+    /* ===== TABLES - Convert to cards on mobile (Universal) ===== */
+    .table-wrapper {
+        overflow-x: visible !important;
+    }
+    
+    .table-wrapper table,
+    .documents-table,
+    .doc-table,
+    .modern-table {
+        display: block !important;
+    }
+    
+    .table-wrapper thead,
+    .documents-table thead,
+    .doc-table thead,
+    .modern-table thead {
+        display: none !important;
+    }
+    
+    .table-wrapper tbody tr,
+    .documents-table tbody tr,
+    .doc-table tbody tr,
+    .modern-table tbody tr {
+        display: block !important;
+        margin-bottom: 15px !important;
+        background: var(--card-bg, #ffffff) !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+        border: none !important;
+    }
+    
+    .table-wrapper td,
+    .documents-table td,
+    .doc-table td,
+    .modern-table td {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 8px 0 !important;
+        border: none !important;
+        text-align: left !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    
+    /* Add labels for each cell */
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before,
+    .modern-table td:before {
+        content: attr(data-label) !important;
+        font-weight: 600 !important;
+        font-size: 12px !important;
+        color: var(--text-secondary, #6b7280) !important;
+        min-width: 100px !important;
+    }
+    
+    /* ===== ACTION BUTTONS - Touch friendly ===== */
+    .action-buttons,
+    .action-btn-group,
+    .btn-group {
+        display: flex !important;
+        gap: 8px !important;
+        flex-wrap: wrap !important;
+        justify-content: flex-start !important;
+    }
+    
+    .action-btn,
+    .btn,
+    button[type="submit"] {
+        padding: 8px 14px !important;
+        font-size: 13px !important;
+        min-height: 40px !important;
+        min-width: 80px !important;
+    }
+    
+    /* ===== SEARCH BOX - Full width ===== */
+    .search-box,
+    .search-card {
+        flex-direction: column !important;
+        gap: 10px !important;
+    }
+    
+    .search-box input,
+    .search-box select,
+    .search-box button,
+    .search-card input,
+    .search-card select,
+    .search-card button {
+        width: 100% !important;
+        padding: 10px !important;
+        font-size: 14px !important;
+    }
+    
+    /* ===== PAGINATION - Touch friendly ===== */
+    .pagination {
+        flex-wrap: wrap !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        margin-top: 20px !important;
+    }
+    
+    .pagination a,
+    .pagination span {
+        padding: 8px 14px !important;
+        font-size: 13px !important;
+        min-width: 40px !important;
+        text-align: center !important;
+    }
+    
+    /* ===== FILE BADGES ===== */
+    .file-badge {
+        padding: 4px 10px !important;
+        font-size: 11px !important;
+    }
+    
+    .file-icon {
+        font-size: 20px !important;
+    }
+    
+    /* ===== CHART - Responsive ===== */
+    .chart-wrapper {
+        height: 250px !important;
+    }
+    
+    canvas {
+        max-height: 250px !important;
+    }
+    
+    /* ===== PROFILE PAGE ===== */
+    .profile-container {
+        margin-top: 15px !important;
+    }
+    
+    .profile-card {
+        max-width: 100% !important;
+    }
+    
+    .profile-header {
+        flex-direction: column !important;
+        text-align: center !important;
+        gap: 10px !important;
+    }
+    
+    .avatar {
+        width: 70px !important;
+        height: 70px !important;
+        font-size: 28px !important;
+        margin: 0 auto !important;
+    }
+    
+    .info-row {
+        margin-bottom: 12px !important;
+    }
+    
+    /* ===== NOTIFICATIONS ===== */
+    .notif-dropdown {
+        width: 280px !important;
+        right: -100px !important;
+        position: fixed !important;
+    }
+    
+    /* ===== WELCOME MESSAGE ===== */
+    .welcome-message {
+        padding: 15px !important;
+        margin-bottom: 20px !important;
+    }
+    
+    .welcome-message h2 {
+        font-size: 18px !important;
+    }
+    
+    .welcome-message p {
+        font-size: 13px !important;
+    }
+}
+
+/* Small Mobile (480px and below) */
+@media (max-width: 480px) {
+    
+    .main > * {
+        padding: 12px !important;
+    }
+    
+    /* Smaller stat cards */
+    .stat-card {
+        padding: 12px !important;
+        gap: 12px !important;
+    }
+    
+    .stat-card .icon,
+    .stat-card i,
+    .stat-icon {
+        width: 45px !important;
+        height: 45px !important;
+        font-size: 20px !important;
+    }
+    
+    .stat-card p,
+    .stat-card h2 {
+        font-size: 20px !important;
+    }
+    
+    .stat-card h3,
+    .stat-card h4 {
+        font-size: 12px !important;
+    }
+    
+    /* Smaller headers */
+    .dashboard-header h1,
+    .page-header h1 {
+        font-size: 20px !important;
+    }
+    
+    /* Smaller cards */
+    .documents-card,
+    .card {
+        padding: 12px !important;
+    }
+    
+    /* Table labels smaller */
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before,
+    .modern-table td:before {
+        min-width: 80px !important;
+        font-size: 11px !important;
+    }
+    
+    .table-wrapper td,
+    .documents-table td,
+    .doc-table td,
+    .modern-table td {
+        font-size: 12px !important;
+        padding: 6px 0 !important;
+    }
+    
+    /* Smaller buttons */
+    .action-btn,
+    .btn {
+        padding: 6px 10px !important;
+        font-size: 11px !important;
+        min-height: 36px !important;
+        min-width: 70px !important;
+    }
+    
+    /* Smaller chart */
+    .chart-wrapper {
+        height: 200px !important;
+    }
+    
+    /* Notification dropdown */
+    .notif-dropdown {
+        width: 260px !important;
+        right: -80px !important;
+    }
+}
+
+/* Extra Small Mobile (380px and below) */
+@media (max-width: 380px) {
+    
+    .stat-card {
+        flex-direction: column !important;
+        text-align: center !important;
+    }
+    
+    .stat-card .icon,
+    .stat-card i,
+    .stat-icon {
+        margin: 0 auto !important;
+    }
+    
+    .table-wrapper td:before,
+    .documents-table td:before,
+    .doc-table td:before,
+    .modern-table td:before {
+        min-width: 70px !important;
+    }
+    
+    .action-buttons {
+        flex-wrap: wrap !important;
+    }
+    
+    .profile-header h2 {
+        font-size: 18px !important;
+    }
+}
+
+/* ===== HELPER CLASSES FOR MOBILE ===== */
+.mobile-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.mobile-full-width {
+    width: 100% !important;
+}
+
+.mobile-text-center {
+    text-align: center !important;
+}
+
+/* Document list items for better mobile display */
+.document-item,
+.download-item {
+    background: var(--card-bg, #ffffff);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.document-item .doc-name,
+.download-item .doc-name {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.document-item .doc-info,
+.download-item .doc-info {
+    font-size: 12px;
+    color: var(--text-secondary, #6b7280);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 8px 0;
+}
+
+.document-item .doc-actions,
+.download-item .doc-actions {
+    margin-top: 8px;
+}
+
+/* Dark mode support for mobile */
+body.dark-mode .stat-card,
+body.dark-mode .document-item,
+body.dark-mode .download-item,
+body.dark-mode .table-wrapper tbody tr,
+body.dark-mode .documents-table tbody tr {
+    background: #1e293b !important;
+}
+
+body.dark-mode .stat-card p,
+body.dark-mode .stat-card h2 {
+    color: #e5e7eb !important;
+}
+
+body.dark-mode .stat-card h3,
+body.dark-mode .stat-card h4 {
+    color: #94a3b8 !important;
+}
+
+body.dark-mode .document-item .doc-info,
+body.dark-mode .download-item .doc-info {
+    color: #94a3b8 !important;
+}
+
+/* Tablet landscape (769px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .stats-grid,
+    .pro-stats,
+    .stats {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 15px !important;
+    }
+    
+    .stat-card {
+        padding: 15px !important;
+    }
+    
+    .dashboard-header h1,
+    .page-header h1 {
+        font-size: 26px !important;
+    }
+}
