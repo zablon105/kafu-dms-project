@@ -1091,3 +1091,36 @@ body.dark-mode .doc-table tbody tr {
     background: var(--card-bg) !important;
     border-color: var(--border) !important;
 }
+/* ===== SIMPLE MOBILE FIX - ADD THIS AT THE END ===== */
+
+/* Fix for mobile - no black space */
+@media (max-width: 768px) {
+    body, html {
+        margin: 0;
+        padding: 0;
+        overflow-x: hidden;
+        width: 100%;
+    }
+    
+    .layout {
+        display: block;
+        width: 100%;
+    }
+    
+    .sidebar {
+        position: fixed;
+        left: -280px;
+        width: 280px;
+        z-index: 1000;
+    }
+    
+    .sidebar.active {
+        left: 0;
+    }
+    
+    .main {
+        margin-left: 0 !important;
+        width: 100%;
+        padding: 15px;
+    }
+}
