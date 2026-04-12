@@ -1166,12 +1166,27 @@ body.dark-mode .doc-table tbody tr {
         overflow-x: auto !important;
     }
 }
-/* ===== EMERGENCY MOBILE FIX - FORCES SIDEBAR HIDDEN ===== */
+/* ===== CORRECT MOBILE FIX - SIDEBAR HIDDEN UNTIL MENU CLICKED ===== */
 @media (max-width: 768px) {
     
-    /* Force hide sidebar completely */
+    /* Sidebar hidden off-screen by default */
     .sidebar {
-        display: none !important;
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 9999 !important;
+        background: #1e293b !important;
+        transition: left 0.3s ease !important;
+        display: block !important;
+        visibility: visible !important;
+        opacity: 1 !important;
+    }
+    
+    /* When active, show sidebar */
+    .sidebar.active {
+        left: 0 !important;
     }
     
     /* Main content takes full width */
@@ -1181,7 +1196,7 @@ body.dark-mode .doc-table tbody tr {
         padding: 15px !important;
     }
     
-    /* Remove any fixed positioning issues */
+    /* Fix body and html */
     body, html {
         overflow-x: hidden !important;
         width: 100% !important;
@@ -1191,4 +1206,41 @@ body.dark-mode .doc-table tbody tr {
         display: block !important;
         width: 100% !important;
     }
+    
+    /* Make stats stack vertically */
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* Make profile card full width */
+    .profile-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+}
+
+/* Make sure hamburger button exists and works */
+.mobile-menu-btn {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+    border-radius: 50% !important;
+    background: #3b82f6 !important;
+    border: none !important;
+    color: white !important;
+    font-size: 24px !important;
+    cursor: pointer !important;
+    z-index: 10000 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+}
+
+.mobile-menu-btn:active {
+    transform: scale(0.95) !important;
 }

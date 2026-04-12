@@ -354,6 +354,41 @@ body.dark-mode .mobile-logo h3 {
         });
     });
 </script>
+<script>
+// Simple hamburger menu toggle
+document.addEventListener('DOMContentLoaded', function() {
+    // Create hamburger button if it doesn't exist
+    let menuBtn = document.querySelector('.mobile-menu-btn');
+    
+    if (!menuBtn) {
+        menuBtn = document.createElement('button');
+        menuBtn.className = 'mobile-menu-btn';
+        menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        document.body.appendChild(menuBtn);
+    }
+    
+    // Toggle sidebar when button clicked
+    menuBtn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const sidebar = document.querySelector('.sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    });
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(e) {
+        const sidebar = document.querySelector('.sidebar');
+        const btn = document.querySelector('.mobile-menu-btn');
+        
+        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+});
+</script>
 
 </body>
 </html>
