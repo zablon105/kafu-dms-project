@@ -58,7 +58,7 @@ function deleteDocument(button) {
         if (response.ok) {
 
             let row = button.closest("tr");
-            if (row) row.remove();   // ✅ FIXED
+            if (row) row.remove();
 
             showToast("Document deleted successfully");
             addNotification("Document deleted");
@@ -264,7 +264,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn("Fallback data used");
     }
 
-    // ✅ HANDLE SINGLE DATA POINT
+    // HANDLE SINGLE DATA POINT
     if (months.length === 1) {
         months = ["", months[0], ""];
         counts = [counts[0], counts[0], counts[0]];
@@ -313,7 +313,6 @@ function toggleSidebar() {
 }
 
 // ================= DRAG & DROP UPLOAD =================
-// ================= DRAG & DROP UPLOAD =================
 document.addEventListener("DOMContentLoaded", function () {
 
     const dropZone = document.getElementById("dropZone");
@@ -334,12 +333,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             fileName.textContent = "Selected: " + name;
 
-            // ✅ ADD NOTIFICATION (SAFE)
             if (typeof addNotification === "function") {
                 addNotification("File selected: " + name);
             }
 
-            // ✅ OPTIONAL TOAST (if you want)
             if (typeof showToast === "function") {
                 showToast("File ready: " + name);
             }
@@ -373,12 +370,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
             fileName.textContent = "Selected: " + name;
 
-            // ✅ ADD NOTIFICATION (SAFE)
             if (typeof addNotification === "function") {
                 addNotification("File dropped: " + name);
             }
 
-            // ✅ OPTIONAL TOAST
             if (typeof showToast === "function") {
                 showToast("File ready: " + name);
             }
@@ -386,6 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+
 // ================= PASSWORD TOGGLE =================
 function togglePassword() {
 
@@ -459,10 +455,13 @@ window.addEventListener("load", function () {
 
 // ================= NOTIFICATION SYSTEM =================
 let notifications = [];
+
 function toggleNotifications() {
 
     const dropdown = document.getElementById("notifDropdown");
 
+    if (!dropdown) return;
+    
     dropdown.classList.toggle("active");
 
     // mark as read
@@ -498,35 +497,31 @@ document.addEventListener("DOMContentLoaded", function () {
     const bell = document.getElementById("notificationBell");
     const dropdown = document.getElementById("notificationDropdown");
 
-    bell.addEventListener("click", function (e) {
-        e.preventDefault();
+    if (bell && dropdown) {
+        bell.addEventListener("click", function (e) {
+            e.preventDefault();
 
-        // Toggle dropdown
-        if (dropdown.style.display === "none") {
-            dropdown.style.display = "block";
+            // Toggle dropdown
+            if (dropdown.style.display === "none") {
+                dropdown.style.display = "block";
 
-            // Mark notifications as read
-            fetch("/notifications/read/", {
-                method: "POST",
-                headers: {
-                    "X-CSRFToken": getCSRFToken(),
-                },
-            }).then(() => {
-                const count = document.getElementById("notifCount");
-                if (count) count.style.display = "none";
-            });
+                // Mark notifications as read
+                fetch("/notifications/read/", {
+                    method: "POST",
+                    headers: {
+                        "X-CSRFToken": getCSRFToken(),
+                    },
+                }).then(() => {
+                    const count = document.getElementById("notifCount");
+                    if (count) count.style.display = "none";
+                });
 
-        } else {
-            dropdown.style.display = "none";
-        }
-    });
-
+            } else {
+                dropdown.style.display = "none";
+            }
+        });
+    }
 });
-
-// CSRF TOKEN HELPER
-function getCSRFToken() {
-    return document.querySelector('[name=csrfmiddlewaretoken]').value;
-}
 
 
 // 🔄 AUTO FETCH EVERY 5 SECONDS
@@ -545,7 +540,7 @@ function fetchNotifications() {
 
         dropdown.innerHTML = "";
 
-        if (data.notifications.length > 0) {
+        if (data.notifications && data.notifications.length > 0) {
 
             data.notifications.forEach(n => {
                 const div = document.createElement("div");
@@ -566,3 +561,147 @@ function fetchNotifications() {
 
     });
 }
+
+// ================= MOBILE MENU SYSTEM =================
+// This handles the mobile sidebar toggle without breaking anything
+
+document.addEventListener("DOMContentLoaded", function() {
+    
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+    
+    // Check if we're on mobile
+    function isMobile() {
+        return window.innerWidth <= 768;
+    }
+    
+    // Create mobile menu button if it doesn't exist
+    let mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+    
+    if (!mobileMenuBtn && isMobile()) {
+        // Create the button
+        mobileMenuBtn = document.createElement("button");
+        mobileMenuBtn.className = "mobile-menu-btn";
+        mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+        mobileMenuBtn.setAttribute("aria-label", "Menu");
+        document.body.appendChild(mobileMenuBtn);
+    }
+    
+    // Function to open sidebar
+    function openSidebar() {
+        if (sidebar) {
+            sidebar.classList.add("active");
+            document.body.style.overflow = "hidden";
+        }
+    }
+    
+    // Function to close sidebar
+    function closeSidebar() {
+        if (sidebar) {
+            sidebar.classList.remove("active");
+            document.body.style.overflow = "";
+        }
+    }
+    
+    // Toggle sidebar function
+    function toggleMobileSidebar() {
+        if (sidebar.classList.contains("active")) {
+            closeSidebar();
+        } else {
+            openSidebar();
+        }
+    }
+    
+    // Add click event to mobile menu button
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener("click", function(e) {
+            e.stopPropagation();
+            toggleMobileSidebar();
+        });
+    }
+    
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener("click", function(e) {
+        if (isMobile() && sidebar && sidebar.classList.contains("active")) {
+            // If click is outside sidebar and not on menu button
+            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                closeSidebar();
+            }
+        }
+    });
+    
+    // Close sidebar on escape key
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Escape" && sidebar && sidebar.classList.contains("active")) {
+            closeSidebar();
+        }
+    });
+    
+    // Handle window resize
+    window.addEventListener("resize", function() {
+        if (!isMobile() && sidebar) {
+            // On desktop, remove mobile-specific classes
+            sidebar.classList.remove("active");
+            document.body.style.overflow = "";
+        } else if (isMobile()) {
+            // On mobile, make sure button exists
+            if (!document.querySelector(".mobile-menu-btn")) {
+                const newBtn = document.createElement("button");
+                newBtn.className = "mobile-menu-btn";
+                newBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
+                newBtn.setAttribute("aria-label", "Menu");
+                document.body.appendChild(newBtn);
+                
+                newBtn.addEventListener("click", function(e) {
+                    e.stopPropagation();
+                    toggleMobileSidebar();
+                });
+            }
+        }
+    });
+    
+    // Handle touch events for better mobile experience
+    if (sidebar) {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        sidebar.addEventListener("touchstart", function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+        
+        sidebar.addEventListener("touchend", function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+        
+        function handleSwipe() {
+            const swipeDistance = touchEndX - touchStartX;
+            // Swipe left to close (if distance is negative and large enough)
+            if (swipeDistance < -50 && sidebar.classList.contains("active")) {
+                closeSidebar();
+            }
+            // Swipe right to open (from left edge)
+            if (swipeDistance > 50 && !sidebar.classList.contains("active") && touchStartX < 30) {
+                openSidebar();
+            }
+        }
+    }
+});
+
+// Also update the existing toggleSidebar function to work with mobile
+const originalToggleSidebar = toggleSidebar;
+window.toggleSidebar = function() {
+    if (window.innerWidth <= 768) {
+        const sidebar = document.querySelector(".sidebar");
+        if (sidebar) {
+            sidebar.classList.toggle("active");
+            if (sidebar.classList.contains("active")) {
+                document.body.style.overflow = "hidden";
+            } else {
+                document.body.style.overflow = "";
+            }
+        }
+    } else {
+        originalToggleSidebar();
+    }
+};
