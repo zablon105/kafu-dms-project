@@ -1244,3 +1244,80 @@ body.dark-mode .doc-table tbody tr {
 .mobile-menu-btn:active {
     transform: scale(0.95) !important;
 }
+
+/* ===== MOBILE STYLES ===== */
+@media (max-width: 768px) {
+    
+    /* Sidebar hidden by default */
+    .sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        background: #1e293b !important;
+        z-index: 1000 !important;
+        transition: left 0.3s ease !important;
+        overflow-y: auto !important;
+    }
+    
+    /* Sidebar when open */
+    .sidebar.open {
+        left: 0 !important;
+    }
+    
+    /* Main content full width */
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+    }
+    
+    /* Hamburger button */
+    .hamburger-btn {
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 50% !important;
+        background: #3b82f6 !important;
+        border: none !important;
+        color: white !important;
+        font-size: 24px !important;
+        cursor: pointer !important;
+        z-index: 1001 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    }
+    
+    .hamburger-btn:active {
+        transform: scale(0.95);
+    }
+    
+    /* Fix body overflow */
+    body {
+        overflow-x: hidden !important;
+    }
+    
+    /* Stats stack on mobile */
+    .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* Profile card full width */
+    .profile-card {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+}
+
+/* Hide hamburger on desktop */
+@media (min-width: 769px) {
+    .hamburger-btn {
+        display: none !important;
+    }
+}

@@ -705,3 +705,42 @@ window.toggleSidebar = function() {
         originalToggleSidebar();
     }
 };
+
+// ================= HAMBURGER MENU FOR MOBILE =================
+document.addEventListener('DOMContentLoaded', function() {
+    
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (hamburgerBtn && sidebar) {
+        
+        // Toggle sidebar when hamburger clicked
+        hamburgerBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle('open');
+        });
+        
+        // Close sidebar when clicking outside
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 768) {
+                if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                    sidebar.classList.remove('open');
+                }
+            }
+        });
+        
+        // Close sidebar on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                sidebar.classList.remove('open');
+            }
+        });
+        
+        // Close sidebar when window resizes to desktop
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('open');
+            }
+        });
+    }
+});

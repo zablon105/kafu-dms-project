@@ -8,149 +8,12 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=5">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=6">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="laptop.css" media="(min-width: 768px)">
-<link rel="stylesheet" href="phone.css" media="(max-width: 767px)">
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-/* ===== SIMPLE MOBILE MENU STYLES - CLEAN VERSION ===== */
-
-/* Mobile top bar - visible only on mobile */
-.mobile-topbar {
-    display: none;
-    background: white;
-    padding: 12px 16px;
-    position: sticky;
-    top: 0;
-    z-index: 99;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.mobile-menu-btn {
-    background: #3b82f6;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    color: white;
-    cursor: pointer;
-    font-size: 18px;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.mobile-logo h3 {
-    margin: 0;
-    font-size: 18px;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-.mobile-user i {
-    font-size: 28px;
-    color: #3b82f6;
-}
-
-/* Mobile overlay */
-.mobile-overlay {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 998;
-}
-
-.mobile-overlay.active {
-    display: block;
-}
-
-/* Sidebar header with close button */
-.sidebar-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 30px;
-}
-
-.sidebar-header h2 {
-    margin: 0;
-    font-size: 18px;
-}
-
-.mobile-close-btn {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 5px;
-}
-
-/* Mobile responsive overrides */
-@media (max-width: 768px) {
-    .mobile-topbar {
-        display: flex;
-    }
-    
-    .sidebar {
-        position: fixed !important;
-        left: -280px !important;
-        top: 0 !important;
-        width: 280px !important;
-        height: 100vh !important;
-        z-index: 999 !important;
-        transition: left 0.3s ease !important;
-        overflow-y: auto !important;
-    }
-    
-    .sidebar.active {
-        left: 0 !important;
-    }
-    
-    .mobile-close-btn {
-        display: block;
-    }
-    
-    .main {
-        margin-left: 0 !important;
-        padding: 0 !important;
-        width: 100% !important;
-    }
-    
-    .main > * {
-        padding: 15px;
-    }
-    
-    /* Hide desktop topbar */
-    .topbar {
-        display: none !important;
-    }
-}
-
-/* Dark mode support for mobile menu */
-body.dark-mode .mobile-topbar {
-    background: #1e293b;
-    border-bottom-color: #334155;
-}
-
-body.dark-mode .mobile-logo h3 {
-    color: #e5e7eb;
-}
-</style>
 
 </head>
 
@@ -172,36 +35,18 @@ body.dark-mode .mobile-logo h3 {
 
 <div class="layout">
 
-<!-- Mobile Overlay -->
-<div id="mobileOverlay" class="mobile-overlay"></div>
-
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <!-- Sidebar Header with Close Button for Mobile -->
-    <div class="sidebar-header">
-        <h2>
-            <i class="fa-solid fa-folder-open"></i>
-            <span>KAFU DMS</span>
-        </h2>
-        <button class="mobile-close-btn" id="closeSidebarBtn">
-            <i class="fa-solid fa-times"></i>
-        </button>
-    </div>
-
     <!-- 🔔 NOTIFICATION -->
     <div class="notification" style="position: relative;">
-
         <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
-
         {% if notifications %}
         <span id="notifCount" class="notif-count">
             {{ notifications|length }}
         </span>
         {% endif %}
-
         <div id="notifDropdown" class="notif-dropdown" style="display:none;">
-
             {% if notifications %}
                 {% for notif in notifications %}
                     <div class="notif-item">
@@ -211,11 +56,10 @@ body.dark-mode .mobile-logo h3 {
             {% else %}
                 <p class="empty">No notifications</p>
             {% endif %}
-
         </div>
     </div>
 
-    <h2 style="display: none;">
+    <h2>
         <i class="fa-solid fa-folder-open"></i>
         <span>KAFU DMS</span>
     </h2>
@@ -225,13 +69,11 @@ body.dark-mode .mobile-logo h3 {
         <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
     </a>
-
     {% elif is_staff %}
     <a href="{% url 'staff_dashboard' %}">
         <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
     </a>
-
     {% elif is_student %}
     <a href="{% url 'student_dashboard' %}">
         <i class="fa-solid fa-chart-line"></i>
@@ -254,7 +96,6 @@ body.dark-mode .mobile-logo h3 {
         <span>Logout</span>
     </a>
 
-    <!-- DARK MODE BUTTON -->
     <button onclick="toggleDarkMode()" class="btn" style="width:100%; margin-top:15px;">
         🌙 <span>Dark Mode</span>
     </button>
@@ -263,132 +104,21 @@ body.dark-mode .mobile-logo h3 {
 
 <!-- MAIN CONTENT -->
 <div class="main" id="mainContent">
-
-    <!-- Mobile Top Bar -->
-    <div class="mobile-topbar">
-        <button id="mobileMenuBtn" class="mobile-menu-btn">
-            <i class="fa-solid fa-bars"></i>
-        </button>
-        <div class="mobile-logo">
-            <h3>KAFU DMS</h3>
-        </div>
-        <div class="mobile-user">
-            <i class="fa-solid fa-user-circle"></i>
-        </div>
-    </div>
-
     {% block content %}{% endblock %}
 </div>
 
 </div>
 
-<!-- CSRF TOKEN (needed for fetch) -->
+<!-- Hamburger Menu Button -->
+<button class="hamburger-btn" id="hamburgerBtn">
+    <i class="fa-solid fa-bars"></i>
+</button>
+
 <form style="display:none;">
     {% csrf_token %}
 </form>
 
-<!-- JS -->
 <script src="{% static 'js/main.js' %}"></script>
-
-<!-- Simple Mobile Menu JavaScript -->
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        
-        const sidebar = document.getElementById('sidebar');
-        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-        const closeSidebarBtn = document.getElementById('closeSidebarBtn');
-        const mobileOverlay = document.getElementById('mobileOverlay');
-        
-        // Function to open sidebar
-        function openSidebar() {
-            if (sidebar) {
-                sidebar.classList.add('active');
-            }
-            if (mobileOverlay) {
-                mobileOverlay.classList.add('active');
-            }
-            document.body.style.overflow = 'hidden';
-        }
-        
-        // Function to close sidebar
-        function closeSidebar() {
-            if (sidebar) {
-                sidebar.classList.remove('active');
-            }
-            if (mobileOverlay) {
-                mobileOverlay.classList.remove('active');
-            }
-            document.body.style.overflow = '';
-        }
-        
-        // Open sidebar on mobile menu button click
-        if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                openSidebar();
-            });
-        }
-        
-        // Close sidebar on close button click
-        if (closeSidebarBtn) {
-            closeSidebarBtn.addEventListener('click', closeSidebar);
-        }
-        
-        // Close sidebar on overlay click
-        if (mobileOverlay) {
-            mobileOverlay.addEventListener('click', closeSidebar);
-        }
-        
-        // Close sidebar on window resize
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                closeSidebar();
-            }
-        });
-        
-        // Handle escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
-                closeSidebar();
-            }
-        });
-    });
-</script>
-<script>
-// Simple hamburger menu toggle
-document.addEventListener('DOMContentLoaded', function() {
-    // Create hamburger button if it doesn't exist
-    let menuBtn = document.querySelector('.mobile-menu-btn');
-    
-    if (!menuBtn) {
-        menuBtn = document.createElement('button');
-        menuBtn.className = 'mobile-menu-btn';
-        menuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-        document.body.appendChild(menuBtn);
-    }
-    
-    // Toggle sidebar when button clicked
-    menuBtn.addEventListener('click', function(e) {
-        e.stopPropagation();
-        const sidebar = document.querySelector('.sidebar');
-        if (sidebar) {
-            sidebar.classList.toggle('active');
-        }
-    });
-    
-    // Close sidebar when clicking outside
-    document.addEventListener('click', function(e) {
-        const sidebar = document.querySelector('.sidebar');
-        const btn = document.querySelector('.mobile-menu-btn');
-        
-        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
-            if (!sidebar.contains(e.target) && !btn.contains(e.target)) {
-                sidebar.classList.remove('active');
-            }
-        }
-    });
-});
-</script>
 
 </body>
 </html>
