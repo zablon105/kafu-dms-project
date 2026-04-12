@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=3">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=5">
 
 <link rel="stylesheet"
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -18,12 +18,12 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-/* ===== MOBILE MENU STYLES (Added without breaking existing) ===== */
+/* ===== SIMPLE MOBILE MENU STYLES - CLEAN VERSION ===== */
 
 /* Mobile top bar - visible only on mobile */
 .mobile-topbar {
     display: none;
-    background: var(--card-bg, #ffffff);
+    background: white;
     padding: 12px 16px;
     position: sticky;
     top: 0;
@@ -31,7 +31,7 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     align-items: center;
     justify-content: space-between;
-    border-bottom: 1px solid var(--border, #e5e7eb);
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .mobile-menu-btn {
@@ -47,23 +47,13 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s ease;
-}
-
-.mobile-menu-btn:hover {
-    background: #2563eb;
-    transform: scale(1.05);
-}
-
-.mobile-menu-btn:active {
-    transform: scale(0.95);
 }
 
 .mobile-logo h3 {
     margin: 0;
     font-size: 18px;
     font-weight: 600;
-    color: var(--text-primary, #1f2937);
+    color: #1f2937;
 }
 
 .mobile-user i {
@@ -81,7 +71,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     bottom: 0;
     background: rgba(0, 0, 0, 0.5);
     z-index: 998;
-    backdrop-filter: blur(2px);
 }
 
 .mobile-overlay.active {
@@ -109,41 +98,27 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     font-size: 24px;
     cursor: pointer;
     padding: 5px;
-    transition: all 0.2s ease;
-}
-
-.mobile-close-btn:hover {
-    transform: scale(1.1);
-}
-
-/* Desktop only class */
-.desktop-only {
-    display: block;
 }
 
 /* Mobile responsive overrides */
 @media (max-width: 768px) {
-    .desktop-only {
-        display: none !important;
-    }
-    
     .mobile-topbar {
         display: flex;
     }
     
     .sidebar {
-        position: fixed;
-        left: -280px;
-        top: 0;
-        width: 280px;
-        height: 100%;
-        z-index: 999;
-        transition: left 0.3s ease;
-        overflow-y: auto;
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 999 !important;
+        transition: left 0.3s ease !important;
+        overflow-y: auto !important;
     }
     
     .sidebar.active {
-        left: 0;
+        left: 0 !important;
     }
     
     .mobile-close-btn {
@@ -153,10 +128,16 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     .main {
         margin-left: 0 !important;
         padding: 0 !important;
+        width: 100% !important;
     }
     
     .main > * {
         padding: 15px;
+    }
+    
+    /* Hide desktop topbar */
+    .topbar {
+        display: none !important;
     }
 }
 
@@ -234,49 +215,49 @@ body.dark-mode .mobile-logo h3 {
         </div>
     </div>
 
-<h2 style="display: none;">
-    <i class="fa-solid fa-folder-open"></i>
-    <span>KAFU DMS</span>
-</h2>
+    <h2 style="display: none;">
+        <i class="fa-solid fa-folder-open"></i>
+        <span>KAFU DMS</span>
+    </h2>
 
-{% if is_admin %}
-<a href="{% url 'admin_dashboard' %}">
-    <i class="fa-solid fa-chart-line"></i>
-    <span>Dashboard</span>
-</a>
+    {% if is_admin %}
+    <a href="{% url 'admin_dashboard' %}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+    </a>
 
-{% elif is_staff %}
-<a href="{% url 'staff_dashboard' %}">
-    <i class="fa-solid fa-chart-line"></i>
-    <span>Dashboard</span>
-</a>
+    {% elif is_staff %}
+    <a href="{% url 'staff_dashboard' %}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+    </a>
 
-{% elif is_student %}
-<a href="{% url 'student_dashboard' %}">
-    <i class="fa-solid fa-chart-line"></i>
-    <span>Dashboard</span>
-</a>
-{% endif %}
+    {% elif is_student %}
+    <a href="{% url 'student_dashboard' %}">
+        <i class="fa-solid fa-chart-line"></i>
+        <span>Dashboard</span>
+    </a>
+    {% endif %}
 
-<a href="{% url 'home' %}">
-    <i class="fa-solid fa-house"></i>
-    <span>Home</span>
-</a>
+    <a href="{% url 'home' %}">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+    </a>
 
-<a href="{% url 'profile' %}">
-    <i class="fa-solid fa-user"></i>
-    <span>Profile</span>
-</a>
+    <a href="{% url 'profile' %}">
+        <i class="fa-solid fa-user"></i>
+        <span>Profile</span>
+    </a>
 
-<a href="{% url 'logout' %}">
-    <i class="fa-solid fa-right-from-bracket"></i>
-    <span>Logout</span>
-</a>
+    <a href="{% url 'logout' %}">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Logout</span>
+    </a>
 
-<!-- DARK MODE BUTTON -->
-<button onclick="toggleDarkMode()" class="btn" style="width:100%; margin-top:15px;">
-    🌙 <span>Dark Mode</span>
-</button>
+    <!-- DARK MODE BUTTON -->
+    <button onclick="toggleDarkMode()" class="btn" style="width:100%; margin-top:15px;">
+        🌙 <span>Dark Mode</span>
+    </button>
 
 </div>
 
@@ -309,12 +290,10 @@ body.dark-mode .mobile-logo h3 {
 <!-- JS -->
 <script src="{% static 'js/main.js' %}"></script>
 
-<!-- Mobile Menu JavaScript -->
+<!-- Simple Mobile Menu JavaScript -->
 <script>
-    // Wait for DOM to be fully loaded
     document.addEventListener('DOMContentLoaded', function() {
         
-        // Get elements
         const sidebar = document.getElementById('sidebar');
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const closeSidebarBtn = document.getElementById('closeSidebarBtn');
@@ -344,7 +323,10 @@ body.dark-mode .mobile-logo h3 {
         
         // Open sidebar on mobile menu button click
         if (mobileMenuBtn) {
-            mobileMenuBtn.addEventListener('click', openSidebar);
+            mobileMenuBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                openSidebar();
+            });
         }
         
         // Close sidebar on close button click
@@ -357,41 +339,19 @@ body.dark-mode .mobile-logo h3 {
             mobileOverlay.addEventListener('click', closeSidebar);
         }
         
-        // Close sidebar on window resize (if screen becomes larger than 768px)
+        // Close sidebar on window resize
         window.addEventListener('resize', function() {
             if (window.innerWidth > 768) {
                 closeSidebar();
-                document.body.style.overflow = '';
             }
         });
         
-        // Prevent body scroll when sidebar is open on mobile
-        document.addEventListener('touchmove', function(e) {
-            if (sidebar && sidebar.classList.contains('active') && window.innerWidth <= 768) {
-                // Allow scrolling only within sidebar
-                if (!sidebar.contains(e.target)) {
-                    e.preventDefault();
-                }
-            }
-        }, { passive: false });
-        
-        // Handle escape key to close sidebar
+        // Handle escape key
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape' && sidebar && sidebar.classList.contains('active')) {
                 closeSidebar();
             }
         });
-        
-        // If existing sidebar toggle exists (for desktop), preserve it
-        const sidebarToggle = document.querySelector('.menu-toggle');
-        if (sidebarToggle) {
-            sidebarToggle.addEventListener('click', function() {
-                if (window.innerWidth > 768) {
-                    sidebar.classList.toggle('collapsed');
-                    document.querySelector('.main').classList.toggle('collapsed');
-                }
-            });
-        }
     });
 </script>
 
