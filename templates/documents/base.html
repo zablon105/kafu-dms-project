@@ -8,9 +8,59 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=7">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=8">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+    /* Force hamburger button to show on mobile */
+    @media (max-width: 768px) {
+        .hamburger-btn {
+            display: flex !important;
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            width: 56px !important;
+            height: 56px !important;
+            border-radius: 50% !important;
+            background: #3b82f6 !important;
+            border: none !important;
+            color: white !important;
+            font-size: 24px !important;
+            cursor: pointer !important;
+            z-index: 9999 !important;
+            align-items: center !important;
+            justify-content: center !important;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+        }
+        
+        .sidebar {
+            position: fixed !important;
+            left: -280px !important;
+            top: 0 !important;
+            width: 280px !important;
+            height: 100% !important;
+            z-index: 9998 !important;
+            transition: left 0.3s ease !important;
+        }
+        
+        .sidebar.active {
+            left: 0 !important;
+        }
+        
+        .main {
+            margin-left: 0 !important;
+            width: 100% !important;
+            padding: 15px !important;
+        }
+    }
+    
+    @media (min-width: 769px) {
+        .hamburger-btn {
+            display: none !important;
+        }
+    }
+</style>
 
 </head>
 
@@ -19,7 +69,7 @@
 <div id="loader-screen">
     <div class="loader-box">
         <h2>KAFU DMS</h2>
-        <p id="loadingText">0%</p>
+        <p id="loadingText">Loading...</p>
         <div class="progress-bar">
             <div id="progressFill"></div>
         </div>
@@ -35,7 +85,7 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <div class="notification" style="position: relative;">
+    <div class="notification" style="position: relative; margin-bottom: 20px;">
         <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
         {% if notifications %}
         <span id="notifCount" class="notif-count">
@@ -106,7 +156,7 @@
 </div>
 
 <!-- Hamburger Menu Button -->
-<button class="hamburger-btn" id="hamburgerBtn">
+<button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()">
     <i class="fa-solid fa-bars"></i>
 </button>
 
@@ -115,6 +165,38 @@
 </form>
 
 <script src="{% static 'js/main.js' %}"></script>
+
+<script>
+    // Simple mobile sidebar toggle
+    function toggleMobileSidebar() {
+        var sidebar = document.getElementById('sidebar');
+        if (sidebar) {
+            sidebar.classList.toggle('active');
+        }
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(e) {
+        var sidebar = document.getElementById('sidebar');
+        var hamburger = document.getElementById('hamburgerBtn');
+        
+        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+    
+    // Fix loader - remove 100% text
+    window.addEventListener('load', function() {
+        var loaderScreen = document.getElementById('loader-screen');
+        if (loaderScreen) {
+            setTimeout(function() {
+                loaderScreen.style.display = 'none';
+            }, 500);
+        }
+    });
+</script>
 
 </body>
 </html>

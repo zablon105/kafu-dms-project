@@ -770,3 +770,39 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+// ================= MOBILE HAMBURGER MENU =================
+function toggleMobileSidebar() {
+    var sidebar = document.getElementById('sidebar');
+    if (sidebar) {
+        sidebar.classList.toggle('active');
+    }
+}
+
+// Close sidebar when clicking outside
+document.addEventListener('click', function(e) {
+    var sidebar = document.getElementById('sidebar');
+    var hamburger = document.getElementById('hamburgerBtn');
+    
+    if (window.innerWidth <= 768 && sidebar && hamburger) {
+        if (sidebar.classList && sidebar.classList.contains('active')) {
+            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    }
+});
+
+// Fix loader - remove the 100% text
+window.addEventListener('load', function() {
+    var loaderScreen = document.getElementById('loader-screen');
+    if (loaderScreen) {
+        setTimeout(function() {
+            loaderScreen.style.display = 'none';
+        }, 800);
+    }
+    
+    var loadingText = document.getElementById('loadingText');
+    if (loadingText) {
+        loadingText.innerText = 'Complete!';
+    }
+});
