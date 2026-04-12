@@ -1166,3 +1166,29 @@ body.dark-mode .doc-table tbody tr {
         overflow-x: auto !important;
     }
 }
+/* ===== EMERGENCY MOBILE FIX - FORCES SIDEBAR HIDDEN ===== */
+@media (max-width: 768px) {
+    
+    /* Force hide sidebar completely */
+    .sidebar {
+        display: none !important;
+    }
+    
+    /* Main content takes full width */
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
+    }
+    
+    /* Remove any fixed positioning issues */
+    body, html {
+        overflow-x: hidden !important;
+        width: 100% !important;
+    }
+    
+    .layout {
+        display: block !important;
+        width: 100% !important;
+    }
+}
