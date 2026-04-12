@@ -1321,3 +1321,9 @@ body.dark-mode .doc-table tbody tr {
         display: none !important;
     }
 }
+/* FIX - Remove black space on mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        left: -280px !important;
+    }
+}
