@@ -1124,3 +1124,45 @@ body.dark-mode .doc-table tbody tr {
         padding: 15px;
     }
 }
+/* ===== MOBILE FIX - ADD THIS AT THE END ===== */
+
+/* Make sure sidebar works on mobile */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100vh !important;
+        z-index: 999 !important;
+        transition: left 0.3s ease !important;
+    }
+    
+    .sidebar.active {
+        left: 0 !important;
+    }
+    
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    /* Make stat cards look good on mobile */
+    .stats-grid, .pro-stats {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+    }
+    
+    /* Make profile card full width */
+    .profile-card {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+    }
+    
+    /* Fix table on mobile */
+    .table-wrapper {
+        overflow-x: auto !important;
+    }
+}
