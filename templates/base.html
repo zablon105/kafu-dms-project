@@ -8,11 +8,8 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=6">
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=7">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 </head>
@@ -38,7 +35,6 @@ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <!-- 🔔 NOTIFICATION -->
     <div class="notification" style="position: relative;">
         <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
         {% if notifications %}
