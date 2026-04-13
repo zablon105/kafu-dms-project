@@ -46,42 +46,56 @@
             <h3>📄 My Documents</h3>
         </div>
 
-        <table class="documents-table">
-            <thead>
-                <tr>
-                    <th>Document</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for doc in documents %}
-                <tr>
-                    <td>{{ doc.title }}</td>
-                    <td>{{ doc.file.name|slice:"-3:"|upper }}</td>
-                    <td>{{ doc.created_at|date:"M d, Y" }}</td>
-                    <td class="actions">
-                        <button onclick="previewFile('{{ doc.file.url }}')" class="action-btn view">
-                            <i class="fa-solid fa-eye"></i> View
-                        </button>
-                        <a href="{{ doc.file.url }}" download class="action-btn download">
-                            <i class="fa-solid fa-download"></i> Download
-                        </a>
-                        {% if doc.user == request.user or request.user.is_staff %}
-                        <button onclick="deleteDocument(this)" data-id="{{ doc.id }}" class="action-btn delete">
-                            <i class="fa-solid fa-trash"></i> Delete
-                        </button>
-                        {% endif %}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="4" class="empty">📂 No documents available</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table class="documents-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        <td data-label="Type">
+                            {% with doc.file.name|lower as filename %}
+                                {% if filename|slice:"-4:" == ".pdf" %}
+                                    <span class="file-badge pdf">PDF</span>
+                                {% elif filename|slice:"-4:" == ".doc" or filename|slice:"-5:" == ".docx" %}
+                                    <span class="file-badge word">DOC</span>
+                                {% elif filename|slice:"-4:" == ".xls" or filename|slice:"-5:" == ".xlsx" %}
+                                    <span class="file-badge excel">XLS</span>
+                                {% else %}
+                                    <span class="file-badge other">FILE</span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td data-label="Title">{{ doc.title }}</td>
+                        <td data-label="Date">{{ doc.created_at|date:"M d, Y" }}</td>
+                        <td data-label="Actions" class="actions">
+                            <button onclick="previewFile('{{ doc.file.url }}')" class="action-btn view">
+                                <i class="fa-solid fa-eye"></i> View
+                            </button>
+                            <a href="{{ doc.file.url }}" download class="action-btn download">
+                                <i class="fa-solid fa-download"></i> Download
+                            </a>
+                            {% if doc.user == request.user or request.user.is_staff %}
+                            <button onclick="deleteDocument(this)" data-id="{{ doc.id }}" class="action-btn delete">
+                                <i class="fa-solid fa-trash"></i> Delete
+                            </button>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="empty">📂 No documents available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>

@@ -56,6 +56,7 @@
         <table class="doc-table modern-table">
             <thead>
                 <tr>
+                    <th>Type</th>
                     <th>Title</th>
                     <th>Uploaded By</th>
                     <th>Date</th>
@@ -65,31 +66,30 @@
             <tbody>
                 {% for doc in documents %}
                 <tr>
-                    <td class="file-cell">
+                    <td data-label="Type">
                         {% with doc.file.name|lower as filename %}
                             {% if filename|slice:"-4:" == ".pdf" %}
                                 <span class="file-badge pdf">PDF</span>
-                                <i class="fa-solid fa-file-pdf file-icon pdf"></i>
                             {% elif filename|slice:"-4:" == ".doc" or filename|slice:"-5:" == ".docx" %}
                                 <span class="file-badge word">DOC</span>
-                                <i class="fa-solid fa-file-word file-icon word"></i>
                             {% elif filename|slice:"-4:" == ".xls" or filename|slice:"-5:" == ".xlsx" %}
                                 <span class="file-badge excel">XLS</span>
-                                <i class="fa-solid fa-file-excel file-icon excel"></i>
                             {% elif filename|slice:"-4:" == ".png" or filename|slice:"-4:" == ".jpg" or filename|slice:"-5:" == ".jpeg" %}
                                 <span class="file-badge image">IMG</span>
-                                <i class="fa-solid fa-file-image file-icon image"></i>
                             {% else %}
                                 <span class="file-badge other">FILE</span>
-                                <i class="fa-solid fa-file file-icon"></i>
                             {% endif %}
                         {% endwith %}
                     </td>
-                    <td>{{ doc.uploaded_by.username }}</td>
-                    <td>{{ doc.created_at|date:"Y-m-d" }}</td>
-                    <td class="action-buttons">
-                        <a href="{% url 'share_document' doc.id %}" class="btn share-btn">
-                            <i class="fa-solid fa-share"></i>
+                    <td data-label="Title">{{ doc.title }}</td>
+                    <td data-label="Uploaded By">{{ doc.uploaded_by.username }}</td>
+                    <td data-label="Date">{{ doc.created_at|date:"Y-m-d" }}</td>
+                    <td data-label="Action" class="action-buttons">
+                        <button class="btn preview-btn" onclick="previewFile('{{ doc.file.url }}')">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                        <a href="{{ doc.file.url }}" download class="btn download-btn">
+                            <i class="fa-solid fa-download"></i>
                         </a>
                         <button class="btn delete-btn" data-id="{{ doc.id }}" onclick="deleteDocument(this)">
                             <i class="fa-solid fa-trash"></i>
@@ -98,7 +98,7 @@
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="4" class="empty-row">No documents found</td>
+                    <td colspan="5" class="empty-row">No documents found</td>
                 </tr>
                 {% endfor %}
             </tbody>

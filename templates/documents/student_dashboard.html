@@ -52,37 +52,44 @@
             <h3>📂 Available Documents</h3>
         </div>
 
-        <table class="documents-table">
-            <thead>
-                <tr>
-                    <th>Document</th>
-                    <th>Uploaded By</th>
-                    <th>Date Uploaded</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for doc in documents %}
-                <tr>
-                    <td class="doc-name">
-                        <i class="fa-solid fa-file-lines file-icon"></i>
-                        {{ doc.title }}
-                    </td>
-                    <td>
-                        <span class="user-pill">
-                            {{ doc.uploaded_by.username }}
-                        </span>
-                    </td>
-                    <td class="doc-date">
-                        {{ doc.created_at|date:"M d, Y, g:i a" }}
-                    </td>
-                </tr>
-                {% empty %}
-                <tr>
-                    <td colspan="3" class="empty-row">No documents available</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="table-wrapper">
+            <table class="documents-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Title</th>
+                        <th>Uploaded By</th>
+                        <th>Date Uploaded</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doc in documents %}
+                    <tr>
+                        <td data-label="Type">
+                            {% with doc.file.name|lower as filename %}
+                                {% if filename|slice:"-4:" == ".pdf" %}
+                                    <span class="file-badge pdf">PDF</span>
+                                {% elif filename|slice:"-4:" == ".doc" or filename|slice:"-5:" == ".docx" %}
+                                    <span class="file-badge word">DOC</span>
+                                {% elif filename|slice:"-4:" == ".xls" or filename|slice:"-5:" == ".xlsx" %}
+                                    <span class="file-badge excel">XLS</span>
+                                {% else %}
+                                    <span class="file-badge other">FILE</span>
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                        <td data-label="Title">{{ doc.title }}</td>
+                        <td data-label="Uploaded By">{{ doc.uploaded_by.username }}</td>
+                        <td data-label="Date Uploaded">{{ doc.created_at|date:"M d, Y, g:i a" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="empty-row">No documents available</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
 
 </div>
