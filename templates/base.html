@@ -8,12 +8,57 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=8">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=9">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
-    /* Force hamburger button to show on mobile */
+    /* Top Bar with Dark Mode Icon - NEW */
+    .top-bar {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 10px 20px;
+        margin-bottom: 20px;
+    }
+    
+    .dark-mode-icon {
+        background: var(--card-bg, #ffffff);
+        border: 1px solid var(--border, #e5e7eb);
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text-primary, #1f2937);
+        font-size: 18px;
+        box-shadow: var(--shadow, 0 2px 8px rgba(0,0,0,0.05));
+    }
+    
+    .dark-mode-icon:hover {
+        transform: rotate(15deg);
+        background: var(--primary, #3b82f6);
+        color: white;
+    }
+    
+    /* Role badge in sidebar - NEW */
+    .role-badge-sidebar {
+        margin-left: auto;
+        font-size: 10px;
+        padding: 2px 8px;
+        border-radius: 20px;
+        background: rgba(255,255,255,0.15);
+        color: white;
+    }
+    
+    .role-badge-sidebar.admin { background: #dc2626; }
+    .role-badge-sidebar.staff { background: #16a34a; }
+    .role-badge-sidebar.student { background: #3b82f6; }
+    
+    /* Force hamburger button to show on mobile - YOUR EXISTING CODE */
     @media (max-width: 768px) {
         .hamburger-btn {
             display: flex !important;
@@ -52,6 +97,12 @@
             margin-left: 0 !important;
             width: 100% !important;
             padding: 15px !important;
+        }
+        
+        .top-bar {
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding: 8px 15px;
         }
     }
     
@@ -114,16 +165,19 @@
     <a href="{% url 'admin_dashboard' %}">
         <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
+        <span class="role-badge-sidebar admin">Admin</span>
     </a>
     {% elif is_staff %}
     <a href="{% url 'staff_dashboard' %}">
         <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
+        <span class="role-badge-sidebar staff">Staff</span>
     </a>
     {% elif is_student %}
     <a href="{% url 'student_dashboard' %}">
         <i class="fa-solid fa-chart-line"></i>
         <span>Dashboard</span>
+        <span class="role-badge-sidebar student">Student</span>
     </a>
     {% endif %}
 
@@ -142,14 +196,20 @@
         <span>Logout</span>
     </a>
 
-    <button onclick="toggleDarkMode()" class="btn" style="width:100%; margin-top:15px;">
-        🌙 <span>Dark Mode</span>
-    </button>
+    <!-- DARK MODE BUTTON REMOVED FROM HERE - MOVED TO TOP BAR -->
 
 </div>
 
 <!-- MAIN CONTENT -->
 <div class="main" id="mainContent">
+
+    <!-- NEW TOP BAR WITH DARK MODE ICON -->
+    <div class="top-bar">
+        <div class="dark-mode-icon" onclick="toggleDarkMode()" id="darkModeToggle">
+            <i class="fa-solid fa-moon"></i>
+        </div>
+    </div>
+
     {% block content %}{% endblock %}
 </div>
 
@@ -167,7 +227,39 @@
 <script src="{% static 'js/main.js' %}"></script>
 
 <script>
-    // Simple mobile sidebar toggle
+    // Update dark mode icon based on current mode
+    function updateDarkModeIcon() {
+        var toggleBtn = document.getElementById('darkModeToggle');
+        if (toggleBtn) {
+            var isDark = document.body.classList.contains('dark-mode');
+            var icon = toggleBtn.querySelector('i');
+            if (icon) {
+                if (isDark) {
+                    icon.className = 'fa-solid fa-sun';
+                } else {
+                    icon.className = 'fa-solid fa-moon';
+                }
+            }
+        }
+    }
+    
+    // Enhanced toggleDarkMode that also updates icon
+    var originalToggleDarkMode = window.toggleDarkMode;
+    window.toggleDarkMode = function() {
+        if (originalToggleDarkMode) {
+            originalToggleDarkMode();
+        } else {
+            document.body.classList.toggle('dark-mode');
+            if (document.body.classList.contains('dark-mode')) {
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        }
+        updateDarkModeIcon();
+    };
+    
+    // Simple mobile sidebar toggle - YOUR EXISTING CODE
     function toggleMobileSidebar() {
         var sidebar = document.getElementById('sidebar');
         if (sidebar) {
@@ -175,7 +267,7 @@
         }
     }
     
-    // Close sidebar when clicking outside
+    // Close sidebar when clicking outside - YOUR EXISTING CODE
     document.addEventListener('click', function(e) {
         var sidebar = document.getElementById('sidebar');
         var hamburger = document.getElementById('hamburgerBtn');
@@ -187,7 +279,7 @@
         }
     });
     
-    // Fix loader - remove 100% text
+    // Fix loader - remove 100% text - YOUR EXISTING CODE
     window.addEventListener('load', function() {
         var loaderScreen = document.getElementById('loader-screen');
         if (loaderScreen) {
@@ -195,6 +287,12 @@
                 loaderScreen.style.display = 'none';
             }, 500);
         }
+        updateDarkModeIcon();
+    });
+    
+    // Initialize dark mode icon on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        updateDarkModeIcon();
     });
 </script>
 
