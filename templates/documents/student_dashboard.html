@@ -1,111 +1,89 @@
-{% extends "documents/base.html" %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 
 <div class="student-dashboard">
 
-<!-- HEADER -->
-<div class="dashboard-header">
+    <!-- HEADER -->
+    <div class="dashboard-header">
+        <div>
+            <h1>🎓 Student Dashboard</h1>
+            <p class="welcome-text">Welcome back, {{ request.user.username }}</p>
+        </div>
+    </div>
 
-<div>
-<h1>🎓 Student Dashboard</h1>
-<p class="welcome-text">Welcome back, {{ request.user.username }}</p>
-</div>
+    <!-- STATISTICS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon blue">
+                <i class="fa-solid fa-file"></i>
+            </div>
+            <div>
+                <h2>{{ documents|length }}</h2>
+                <p>Total Documents</p>
+            </div>
+        </div>
 
-</div>
+        <div class="stat-card">
+            <div class="stat-icon green">
+                <i class="fa-solid fa-book"></i>
+            </div>
+            <div>
+                <h2>{{ documents|length }}</h2>
+                <p>Study Materials</p>
+            </div>
+        </div>
 
+        <div class="stat-card">
+            <div class="stat-icon purple">
+                <i class="fa-solid fa-cloud-arrow-down"></i>
+            </div>
+            <div>
+                <h2>{{ documents|length }}</h2>
+                <p>Available Downloads</p>
+            </div>
+        </div>
+    </div>
 
-<!-- STATISTICS -->
-<div class="stats-grid">
+    <!-- DOCUMENT LIST -->
+    <div class="documents-card">
+        <div class="documents-header">
+            <h3>📂 Available Documents</h3>
+        </div>
 
-<div class="stat-card">
-<div class="stat-icon blue">
-<i class="fa-solid fa-file"></i>
-</div>
-<div>
-<h2>{{ documents|length }}</h2>
-<p>Total Documents</p>
-</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-icon green">
-<i class="fa-solid fa-book"></i>
-</div>
-<div>
-<h2>{{ documents|length }}</h2>
-<p>Study Materials</p>
-</div>
-</div>
-
-<div class="stat-card">
-<div class="stat-icon purple">
-<i class="fa-solid fa-cloud-arrow-down"></i>
-</div>
-<div>
-<h2>{{ documents|length }}</h2>
-<p>Available Downloads</p>
-</div>
-</div>
-
-</div>
-
-
-<!-- DOCUMENT LIST -->
-<div class="documents-card">
-
-<div class="documents-header">
-<h3>📂 Available Documents</h3>
-</div>
-
-<table class="documents-table">
-
-<thead>
-<tr>
-<th>Document</th>
-<th>Uploaded By</th>
-<th>Date Uploaded</th>
-</tr>
-</thead>
-
-<tbody>
-
-{% for doc in documents %}
-
-<tr>
-
-<td class="doc-name">
-<i class="fa-solid fa-file-lines file-icon"></i>
-{{ doc.title }}
-</td>
-
-<td>
-<span class="user-pill">
-{{ doc.uploaded_by.username }}
-</span>
-</td>
-
-<td class="doc-date">
-{{ doc.created_at }}
-</td>
-
-</tr>
-
-{% empty %}
-
-<tr>
-<td colspan="3" class="empty-row">
-No documents available
-</td>
-</tr>
-
-{% endfor %}
-
-</tbody>
-
-</table>
-
-</div>
+        <table class="documents-table">
+            <thead>
+                <tr>
+                    <th>Document</th>
+                    <th>Uploaded By</th>
+                    <th>Date Uploaded</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for doc in documents %}
+                <tr>
+                    <td class="doc-name">
+                        <i class="fa-solid fa-file-lines file-icon"></i>
+                        {{ doc.title }}
+                    </td>
+                    <td>
+                        <span class="user-pill">
+                            {{ doc.uploaded_by.username }}
+                        </span>
+                    </td>
+                    <td class="doc-date">
+                        {{ doc.created_at|date:"M d, Y, g:i a" }}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="3" class="empty-row">No documents available</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
 </div>
 
