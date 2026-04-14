@@ -1,5 +1,5 @@
 /* =====================================
-   KAFU DMS DASHBOARD STYLES
+   KAFU DMS DASHBOARD STYLES - CLEAN VERSION
 ===================================== */
 
 :root {
@@ -16,6 +16,7 @@
     --text-primary: #1f2937;
     --text-secondary: #6b7280;
     --border: #e5e7eb;
+    --table-header: #f1f5f9;
     --shadow: 0 4px 12px rgba(0,0,0,0.05);
     --transition: all 0.3s ease;
 }
@@ -26,6 +27,7 @@ body.dark-mode {
     --text-primary: #e5e7eb;
     --text-secondary: #94a3b8;
     --border: #334155;
+    --table-header: #334155;
 }
 
 * {
@@ -41,13 +43,13 @@ body {
     transition: var(--transition);
 }
 
-/* Layout */
+/* ===== LAYOUT ===== */
 .layout {
     display: flex;
     min-height: 100vh;
 }
 
-/* Sidebar */
+/* ===== SIDEBAR ===== */
 .sidebar {
     width: 260px;
     background: var(--sidebar-bg);
@@ -93,7 +95,21 @@ body {
     color: white;
 }
 
-/* Main Content */
+/* Role badge in sidebar */
+.role-badge-sidebar {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+}
+
+.role-badge-sidebar.admin { background: #dc2626; }
+.role-badge-sidebar.staff { background: #16a34a; }
+.role-badge-sidebar.student { background: #3b82f6; }
+
+/* ===== MAIN CONTENT ===== */
 .main {
     margin-left: 260px;
     flex: 1;
@@ -103,7 +119,43 @@ body {
     min-height: 100vh;
 }
 
-/* Stats Cards */
+/* ===== TOP BAR WITH DARK MODE ICON ===== */
+.top-bar {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+}
+
+.dark-mode-icon {
+    background: transparent;
+    border: none;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-primary);
+    font-size: 18px;
+}
+
+.dark-mode-icon:hover {
+    background: var(--border);
+    transform: rotate(15deg);
+}
+
+.dark-mode-icon:active {
+    transform: scale(0.95);
+}
+
+/* ===== STATS CARDS ===== */
 .stats, .stats-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -142,7 +194,7 @@ body {
     color: var(--text-primary);
 }
 
-/* Cards */
+/* ===== CARDS ===== */
 .card {
     background: var(--card-bg);
     padding: 20px;
@@ -156,29 +208,46 @@ body {
     font-size: 18px;
 }
 
-/* Tables */
+/* ===== TABLES - DESKTOP VIEW ===== */
 .table-wrapper {
     overflow-x: auto;
+    border-radius: 12px;
 }
 
-table {
+.doc-table, .documents-table, .modern-table {
     width: 100%;
     border-collapse: collapse;
+    background: var(--card-bg);
 }
 
-th {
+.doc-table th, .documents-table th, .modern-table th {
     text-align: left;
-    padding: 12px;
-    background: #f1f5f9;
+    padding: 14px;
+    background: var(--table-header);
     font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border);
 }
 
-td {
-    padding: 12px;
+.doc-table td, .documents-table td, .modern-table td {
+    padding: 14px;
     border-bottom: 1px solid var(--border);
+    color: var(--text-primary);
+    background: var(--card-bg);
 }
 
-/* Buttons */
+.doc-table tr:hover, .documents-table tr:hover, .modern-table tr:hover {
+    background: rgba(0,0,0,0.02);
+}
+
+/* Hide pseudo-elements on desktop */
+.doc-table td::before,
+.documents-table td::before,
+.modern-table td::before {
+    display: none;
+}
+
+/* ===== BUTTONS ===== */
 .btn, button {
     background: var(--primary);
     color: white;
@@ -215,7 +284,13 @@ td {
 .delete-btn { background: var(--danger); color: white; }
 .share-btn { background: var(--warning); color: white; }
 
-/* Search Box */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+/* ===== SEARCH BOX ===== */
 .search-box {
     display: flex;
     gap: 10px;
@@ -240,7 +315,11 @@ td {
     color: var(--text-primary);
 }
 
-/* Pagination */
+.search-box button {
+    padding: 10px 20px;
+}
+
+/* ===== PAGINATION ===== */
 .pagination {
     display: flex;
     gap: 10px;
@@ -257,7 +336,11 @@ td {
     border-radius: 8px;
 }
 
-/* Profile Page */
+.pagination a:hover {
+    background: var(--primary-dark);
+}
+
+/* ===== PROFILE PAGE ===== */
 .profile-container {
     max-width: 500px;
     margin: 0 auto;
@@ -314,7 +397,7 @@ td {
     font-weight: 500;
 }
 
-/* Notifications */
+/* ===== NOTIFICATIONS ===== */
 .notification {
     position: relative;
     cursor: pointer;
@@ -354,7 +437,13 @@ td {
     font-size: 13px;
 }
 
-/* File Badges */
+.empty {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 20px;
+}
+
+/* ===== FILE BADGES ===== */
 .file-badge {
     padding: 4px 10px;
     border-radius: 20px;
@@ -368,8 +457,11 @@ td {
 .file-badge.word { background: #2563eb; }
 .file-badge.excel { background: #16a34a; }
 .file-badge.txt { background: #6b7280; }
+.file-badge.default { background: #6b7280; }
+.file-badge.image { background: #9333ea; }
+.file-badge.other { background: #6b7280; }
 
-/* Drop Zone */
+/* ===== DRAG & DROP ZONE ===== */
 .drop-zone {
     border: 2px dashed var(--primary);
     padding: 30px;
@@ -377,13 +469,19 @@ td {
     border-radius: 10px;
     cursor: pointer;
     margin-bottom: 15px;
+    transition: var(--transition);
+}
+
+.drop-zone:hover {
+    background: rgba(59, 130, 246, 0.05);
 }
 
 .drop-zone.dragover {
     background: rgba(59, 130, 246, 0.1);
+    border-color: var(--primary-dark);
 }
 
-/* Loader */
+/* ===== LOADER ===== */
 #loader-screen {
     position: fixed;
     top: 0;
@@ -415,109 +513,27 @@ td {
     width: 0%;
     height: 100%;
     background: #3b82f6;
+    transition: width 0.3s ease;
 }
 
-/* ===== MOBILE RESPONSIVE ===== */
-@media (max-width: 768px) {
-    .sidebar {
-        position: fixed !important;
-        left: -280px !important;
-        top: 0 !important;
-        width: 280px !important;
-        height: 100% !important;
-        z-index: 9998 !important;
-    }
-    
-    .sidebar.active {
-        left: 0 !important;
-    }
-    
-    .main {
-        margin-left: 0 !important;
-        width: 100% !important;
-        padding: 15px !important;
-    }
-    
-    .stats, .stats-grid {
-        grid-template-columns: 1fr !important;
-        gap: 12px !important;
-    }
-    
-    .stat-card {
-        display: flex !important;
-        align-items: center !important;
-        gap: 15px !important;
-        text-align: left !important;
-    }
-    
-    .stat-card i {
-        margin-bottom: 0 !important;
-    }
-    
-    .search-box {
-        flex-direction: column !important;
-    }
-    
-    .search-box input,
-    .search-box select,
-    .search-box button {
-        width: 100% !important;
-    }
-    
-    table, thead, tbody, tr, td, th {
-        display: block;
-    }
-    
-    thead {
-        display: none;
-    }
-    
-    tr {
-        margin-bottom: 15px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 10px;
-        background: var(--card-bg);
-    }
-    
-    td {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px;
-        border: none;
-        border-bottom: 1px solid var(--border);
-    }
-    
-    td:last-child {
-        border-bottom: none;
-    }
-    
-    td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        margin-right: 10px;
-    }
-    
-    .profile-card {
-        max-width: 100% !important;
-    }
+#pageLoader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background: transparent;
+    z-index: 9999;
 }
 
-@media (max-width: 480px) {
-    .main {
-        padding: 10px !important;
-    }
-    
-    .stat-card p {
-        font-size: 20px !important;
-    }
-    
-    .card {
-        padding: 12px !important;
-    }
+.loader-bar {
+    width: 0%;
+    height: 100%;
+    background: var(--primary);
+    transition: width 0.3s ease;
 }
 
-/* Toast Notifications */
+/* ===== TOAST NOTIFICATIONS ===== */
 .toast-container {
     position: fixed;
     top: 20px;
@@ -542,283 +558,109 @@ td {
     to { opacity: 1; transform: translateX(0); }
 }
 
-/* ===== TOP BAR DARK MODE ICON STYLES ===== */
-.top-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 20px;
-    margin-bottom: 20px;
+/* ===== HAMBURGER BUTTON (Mobile only) ===== */
+.hamburger-btn {
+    display: none;
 }
 
-.dark-mode-icon {
-    background: var(--card-bg);
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--text-primary);
-    font-size: 18px;
-    box-shadow: var(--shadow);
-}
-
-.dark-mode-icon:hover {
-    transform: rotate(15deg);
-    background: var(--primary);
-    color: white;
-    border-color: var(--primary);
-}
-
-.dark-mode-icon:active {
-    transform: scale(0.95);
-}
-
-/* Role badge in sidebar */
-.role-badge-sidebar {
-    margin-left: auto;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.15);
-    color: white;
-}
-
-.role-badge-sidebar.admin {
-    background: #dc2626;
-}
-
-.role-badge-sidebar.staff {
-    background: #16a34a;
-}
-
-.role-badge-sidebar.student {
-    background: #3b82f6;
-}
-
-/* Mobile adjustment for top bar */
-@media (max-width: 768px) {
-    .top-bar {
-        padding: 8px 15px;
-        margin-bottom: 15px;
-    }
-    
-    .dark-mode-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
-    }
-}
-
-/* ===== TOP BAR STYLES ===== */
-.top-bar {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    padding: 10px 20px;
-    margin-bottom: 20px;
-    background: var(--card-bg);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
-}
-
-.dark-mode-icon {
-    background: transparent;
-    border: none;
-    border-radius: 50%;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: var(--text-primary);
-    font-size: 18px;
-}
-
-.dark-mode-icon:hover {
-    background: var(--border);
-    transform: rotate(15deg);
-}
-
-.dark-mode-icon:active {
-    transform: scale(0.95);
-}
-
-/* Role badge in sidebar */
-.role-badge-sidebar {
-    margin-left: auto;
-    font-size: 10px;
-    padding: 2px 8px;
-    border-radius: 20px;
-    background: rgba(255,255,255,0.15);
-    color: white;
-}
-
-.role-badge-sidebar.admin { background: #dc2626; }
-.role-badge-sidebar.staff { background: #16a34a; }
-.role-badge-sidebar.student { background: #3b82f6; }
-
-@media (max-width: 768px) {
-    .top-bar {
-        padding: 8px 15px;
-        margin-bottom: 15px;
-    }
-    
-    .dark-mode-icon {
-        width: 38px;
-        height: 38px;
-        font-size: 16px;
-    }
-}
-/* ===== FIX FOR MOBILE TABLE DISPLAY ===== */
+/* ===== MOBILE RESPONSIVE (SCREENS 768px AND BELOW) ===== */
 @media (max-width: 768px) {
     
-    /* Make table wrapper scrollable if needed */
-    .table-wrapper {
-        overflow-x: auto !important;
-        -webkit-overflow-scrolling: touch !important;
+    /* Sidebar - hidden by default */
+    .sidebar {
+        position: fixed !important;
+        left: -280px !important;
+        top: 0 !important;
+        width: 280px !important;
+        height: 100% !important;
+        z-index: 9998 !important;
+        transition: left 0.3s ease !important;
     }
     
-    /* Alternative: Keep table as table on mobile (horizontal scroll) */
-    .doc-table,
-    .documents-table,
-    .modern-table {
-        display: table !important;
-        min-width: 600px !important;
+    .sidebar.active {
+        left: 0 !important;
     }
     
-    .doc-table thead,
-    .documents-table thead,
-    .modern-table thead {
-        display: table-header-group !important;
+    /* Main content - full width */
+    .main {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 15px !important;
     }
     
-    .doc-table tbody tr,
-    .documents-table tbody tr,
-    .modern-table tbody tr {
-        display: table-row !important;
-        margin: 0 !important;
-        padding: 0 !important;
-        border: none !important;
-        background: transparent !important;
+    /* Stats - stack vertically */
+    .stats, .stats-grid {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
     }
     
-    .doc-table td,
-    .documents-table td,
-    .modern-table td {
-        display: table-cell !important;
-        padding: 10px !important;
-        border-bottom: 1px solid var(--border) !important;
+    .stat-card {
+        display: flex !important;
+        align-items: center !important;
+        gap: 15px !important;
+        text-align: left !important;
     }
     
-    /* Hide data-label pseudo-elements that were causing blank space */
-    .doc-table td::before,
-    .documents-table td::before,
-    .modern-table td::before {
-        display: none !important;
-        content: none !important;
+    .stat-card i {
+        margin-bottom: 0 !important;
     }
     
-    /* Make table horizontally scrollable */
-    .table-wrapper {
-        overflow-x: auto !important;
+    /* Search box - full width */
+    .search-box {
+        flex-direction: column !important;
     }
     
-    /* Keep header visible */
-    .doc-table th,
-    .documents-table th,
-    .modern-table th {
-        display: table-cell !important;
-        background: var(--table-header, #f1f5f9) !important;
-        padding: 12px !important;
-        white-space: nowrap !important;
-    }
-    
-    .doc-table td,
-    .documents-table td,
-    .modern-table td {
-        white-space: nowrap !important;
-    }
-}
-/* ===== FIX TABLE DATA VISIBILITY - DESKTOP & MOBILE ===== */
-
-/* Make sure table cells are visible */
-.doc-table td,
-.documents-table td,
-.modern-table td {
-    color: var(--text-primary, #1f2937) !important;
-    font-size: 14px !important;
-    padding: 12px !important;
-}
-
-/* Make sure text inside cells is visible */
-.doc-table td *,
-.documents-table td *,
-.modern-table td * {
-    color: inherit !important;
-}
-
-/* File badge styles - keep them visible */
-.file-badge {
-    display: inline-block !important;
-    padding: 4px 10px !important;
-    border-radius: 20px !important;
-    font-size: 11px !important;
-    font-weight: 600 !important;
-    color: white !important;
-}
-
-/* Action buttons visible */
-.action-buttons .btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    gap: 5px !important;
-    padding: 6px 12px !important;
-    font-size: 12px !important;
-}
-
-/* Desktop view - normal table */
-@media (min-width: 769px) {
-    .doc-table,
-    .documents-table,
-    .modern-table {
-        display: table !important;
+    .search-box input,
+    .search-box select,
+    .search-box button {
         width: 100% !important;
     }
     
-    .doc-table thead,
-    .documents-table thead,
-    .modern-table thead {
-        display: table-header-group !important;
+    /* Top bar adjustments */
+    .top-bar {
+        padding: 8px 15px !important;
+        margin-bottom: 15px !important;
     }
     
-    .doc-table tbody tr,
-    .documents-table tbody tr,
-    .modern-table tbody tr {
-        display: table-row !important;
+    .dark-mode-icon {
+        width: 38px !important;
+        height: 38px !important;
+        font-size: 16px !important;
     }
     
-    .doc-table td,
-    .documents-table td,
-    .modern-table td {
-        display: table-cell !important;
+    /* Profile card full width */
+    .profile-card {
+        max-width: 100% !important;
     }
     
-    .doc-table td::before,
-    .documents-table td::before,
-    .modern-table td::before {
-        display: none !important;
+    /* Hamburger button - show on mobile */
+    .hamburger-btn {
+        display: flex !important;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        width: 56px !important;
+        height: 56px !important;
+        border-radius: 50% !important;
+        background: #3b82f6 !important;
+        border: none !important;
+        color: white !important;
+        font-size: 24px !important;
+        cursor: pointer !important;
+        z-index: 9999 !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+    }
+    
+    .hamburger-btn:active {
+        transform: scale(0.95);
     }
 }
 
-/* Mobile view - card style with visible labels */
+/* ===== TABLES - MOBILE CARD VIEW (ONLY FOR SMALL SCREENS) ===== */
 @media (max-width: 768px) {
+    
     .table-wrapper {
         overflow-x: visible !important;
     }
@@ -841,11 +683,11 @@ td {
     .modern-table tbody tr {
         display: block !important;
         margin-bottom: 15px !important;
-        background: var(--card-bg, #ffffff) !important;
+        background: var(--card-bg) !important;
         border-radius: 12px !important;
         padding: 12px !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
-        border: 1px solid var(--border, #e5e7eb) !important;
+        border: 1px solid var(--border) !important;
     }
     
     .doc-table td,
@@ -856,7 +698,7 @@ td {
         justify-content: space-between !important;
         padding: 10px 0 !important;
         border: none !important;
-        border-bottom: 1px solid var(--border, #e5e7eb) !important;
+        border-bottom: 1px solid var(--border) !important;
         text-align: left !important;
         width: 100% !important;
     }
@@ -875,15 +717,9 @@ td {
         display: block !important;
         font-weight: 700 !important;
         font-size: 12px !important;
-        color: var(--primary, #3b82f6) !important;
+        color: var(--primary) !important;
         margin-right: 15px !important;
         min-width: 100px !important;
-    }
-    
-    /* File badge on mobile */
-    .file-badge {
-        font-size: 10px !important;
-        padding: 3px 8px !important;
     }
     
     /* Action buttons on mobile */
@@ -897,9 +733,36 @@ td {
         padding: 5px 10px !important;
         font-size: 11px !important;
     }
+    
+    .file-badge {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+    }
 }
 
-/* Dark mode support */
+/* ===== SMALL MOBILE (480px AND BELOW) ===== */
+@media (max-width: 480px) {
+    .main {
+        padding: 10px !important;
+    }
+    
+    .stat-card p {
+        font-size: 20px !important;
+    }
+    
+    .card {
+        padding: 12px !important;
+    }
+    
+    .doc-table td::before,
+    .documents-table td::before,
+    .modern-table td::before {
+        min-width: 80px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* ===== DARK MODE MOBILE SUPPORT ===== */
 body.dark-mode .doc-table td,
 body.dark-mode .documents-table td,
 body.dark-mode .modern-table td {
@@ -911,4 +774,14 @@ body.dark-mode .documents-table tbody tr,
 body.dark-mode .modern-table tbody tr {
     background: #1e293b !important;
     border-color: #334155 !important;
+}
+
+body.dark-mode .top-bar {
+    background: #1e293b !important;
+}
+
+body.dark-mode .stat-card,
+body.dark-mode .card,
+body.dark-mode .profile-card {
+    background: #1e293b !important;
 }
