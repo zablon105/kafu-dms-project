@@ -746,3 +746,169 @@ td {
         white-space: nowrap !important;
     }
 }
+/* ===== FIX TABLE DATA VISIBILITY - DESKTOP & MOBILE ===== */
+
+/* Make sure table cells are visible */
+.doc-table td,
+.documents-table td,
+.modern-table td {
+    color: var(--text-primary, #1f2937) !important;
+    font-size: 14px !important;
+    padding: 12px !important;
+}
+
+/* Make sure text inside cells is visible */
+.doc-table td *,
+.documents-table td *,
+.modern-table td * {
+    color: inherit !important;
+}
+
+/* File badge styles - keep them visible */
+.file-badge {
+    display: inline-block !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    font-size: 11px !important;
+    font-weight: 600 !important;
+    color: white !important;
+}
+
+/* Action buttons visible */
+.action-buttons .btn {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 5px !important;
+    padding: 6px 12px !important;
+    font-size: 12px !important;
+}
+
+/* Desktop view - normal table */
+@media (min-width: 769px) {
+    .doc-table,
+    .documents-table,
+    .modern-table {
+        display: table !important;
+        width: 100% !important;
+    }
+    
+    .doc-table thead,
+    .documents-table thead,
+    .modern-table thead {
+        display: table-header-group !important;
+    }
+    
+    .doc-table tbody tr,
+    .documents-table tbody tr,
+    .modern-table tbody tr {
+        display: table-row !important;
+    }
+    
+    .doc-table td,
+    .documents-table td,
+    .modern-table td {
+        display: table-cell !important;
+    }
+    
+    .doc-table td::before,
+    .documents-table td::before,
+    .modern-table td::before {
+        display: none !important;
+    }
+}
+
+/* Mobile view - card style with visible labels */
+@media (max-width: 768px) {
+    .table-wrapper {
+        overflow-x: visible !important;
+    }
+    
+    .doc-table,
+    .documents-table,
+    .modern-table {
+        display: block !important;
+        width: 100% !important;
+    }
+    
+    .doc-table thead,
+    .documents-table thead,
+    .modern-table thead {
+        display: none !important;
+    }
+    
+    .doc-table tbody tr,
+    .documents-table tbody tr,
+    .modern-table tbody tr {
+        display: block !important;
+        margin-bottom: 15px !important;
+        background: var(--card-bg, #ffffff) !important;
+        border-radius: 12px !important;
+        padding: 12px !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+        border: 1px solid var(--border, #e5e7eb) !important;
+    }
+    
+    .doc-table td,
+    .documents-table td,
+    .modern-table td {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        padding: 10px 0 !important;
+        border: none !important;
+        border-bottom: 1px solid var(--border, #e5e7eb) !important;
+        text-align: left !important;
+        width: 100% !important;
+    }
+    
+    .doc-table td:last-child,
+    .documents-table td:last-child,
+    .modern-table td:last-child {
+        border-bottom: none !important;
+    }
+    
+    /* Show labels on mobile */
+    .doc-table td::before,
+    .documents-table td::before,
+    .modern-table td::before {
+        content: attr(data-label) !important;
+        display: block !important;
+        font-weight: 700 !important;
+        font-size: 12px !important;
+        color: var(--primary, #3b82f6) !important;
+        margin-right: 15px !important;
+        min-width: 100px !important;
+    }
+    
+    /* File badge on mobile */
+    .file-badge {
+        font-size: 10px !important;
+        padding: 3px 8px !important;
+    }
+    
+    /* Action buttons on mobile */
+    .action-buttons {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        gap: 8px !important;
+    }
+    
+    .action-buttons .btn {
+        padding: 5px 10px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Dark mode support */
+body.dark-mode .doc-table td,
+body.dark-mode .documents-table td,
+body.dark-mode .modern-table td {
+    color: #e5e7eb !important;
+}
+
+body.dark-mode .doc-table tbody tr,
+body.dark-mode .documents-table tbody tr,
+body.dark-mode .modern-table tbody tr {
+    background: #1e293b !important;
+    border-color: #334155 !important;
+}
