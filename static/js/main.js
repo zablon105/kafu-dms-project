@@ -244,9 +244,7 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 
-
 // ================= CHART =================
-/// ================= SMART CHART =================
 document.addEventListener("DOMContentLoaded", function () {
 
     const canvas = document.getElementById("uploadChart");
@@ -264,7 +262,6 @@ document.addEventListener("DOMContentLoaded", function () {
         console.warn("Fallback data used");
     }
 
-    // HANDLE SINGLE DATA POINT
     if (months.length === 1) {
         months = ["", months[0], ""];
         counts = [counts[0], counts[0], counts[0]];
@@ -296,21 +293,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// ================= SIDEBAR =================
-function toggleSidebar() {
-
-    const sidebar = document.querySelector(".sidebar");
-    const main = document.querySelector(".main");
-
-    if (!sidebar || !main) return;
-
-    // Desktop collapse
-    sidebar.classList.toggle("collapsed");
-    main.classList.toggle("collapsed");
-
-    // Mobile slide
-    sidebar.classList.toggle("active");
-}
 
 // ================= DRAG & DROP UPLOAD =================
 document.addEventListener("DOMContentLoaded", function () {
@@ -321,10 +303,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (!dropZone || !fileInput) return;
 
-    // Click to open file picker
     dropZone.addEventListener("click", () => fileInput.click());
 
-    // Show selected file
     fileInput.addEventListener("change", () => {
 
         if (fileInput.files.length > 0) {
@@ -343,18 +323,15 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // Drag over
     dropZone.addEventListener("dragover", (e) => {
         e.preventDefault();
         dropZone.classList.add("dragover");
     });
 
-    // Drag leave
     dropZone.addEventListener("dragleave", () => {
         dropZone.classList.remove("dragover");
     });
 
-    // Drop file
     dropZone.addEventListener("drop", (e) => {
 
         e.preventDefault();
@@ -382,6 +359,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
+
 // ================= PASSWORD TOGGLE =================
 function togglePassword() {
 
@@ -399,59 +377,38 @@ function togglePassword() {
     }
 }
 
-// ================= PAGE LOADER =================
+
+// ================= PAGE LOADERS =================
 window.addEventListener("load", function () {
 
     const loader = document.querySelector(".loader-bar");
+    if (loader) {
+        let width = 0;
+        let interval = setInterval(() => {
+            width += 10;
+            loader.style.width = width + "%";
+            if (width >= 100) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    document.getElementById("pageLoader").style.display = "none";
+                }, 300);
+            }
+        }, 50);
+    }
 
-    if (!loader) return;
-
-    let width = 0;
-
-    let interval = setInterval(() => {
-        width += 10;
-        loader.style.width = width + "%";
-
-        if (width >= 100) {
-            clearInterval(interval);
-            setTimeout(() => {
-                document.getElementById("pageLoader").style.display = "none";
-            }, 300);
-        }
-    }, 50);
+    const loaderScreen = document.getElementById("loader-screen");
+    if (loaderScreen) {
+        setTimeout(function() {
+            loaderScreen.style.display = "none";
+        }, 800);
+    }
+    
+    const loadingText = document.getElementById("loadingText");
+    if (loadingText) {
+        loadingText.innerText = "Complete!";
+    }
 });
 
-// ================= REAL PAGE LOADER =================
-window.addEventListener("load", function () {
-
-    const loader = document.getElementById("loader-screen");
-    const text = document.getElementById("loadingText");
-    const bar = document.getElementById("progressFill");
-
-    if (!loader || !text || !bar) return;
-
-    let progress = 0;
-
-    let interval = setInterval(() => {
-
-        progress += Math.floor(Math.random() * 10) + 5;
-
-        if (progress > 100) progress = 100;
-
-        text.innerText = progress + "%";
-        bar.style.width = progress + "%";
-
-        if (progress === 100) {
-            clearInterval(interval);
-
-            setTimeout(() => {
-                loader.style.display = "none";
-            }, 400);
-        }
-
-    }, 100);
-
-});
 
 // ================= NOTIFICATION SYSTEM =================
 let notifications = [];
@@ -459,16 +416,13 @@ let notifications = [];
 function toggleNotifications() {
 
     const dropdown = document.getElementById("notifDropdown");
-
     if (!dropdown) return;
     
     dropdown.classList.toggle("active");
 
-    // mark as read
     fetch("/notifications/read/");
 }
 
-// ADD NOTIFICATION
 function addNotification(message) {
 
     const dropdown = document.getElementById("notifDropdown");
@@ -476,18 +430,15 @@ function addNotification(message) {
 
     if (!dropdown || !count) return;
 
-    // Remove empty text
     const empty = dropdown.querySelector(".empty");
     if (empty) empty.remove();
 
-    // Create item
     const item = document.createElement("div");
     item.className = "notif-item";
     item.innerText = message;
 
     dropdown.prepend(item);
 
-    // Update count
     notifications.push(message);
     count.innerText = notifications.length;
 }
@@ -501,11 +452,9 @@ document.addEventListener("DOMContentLoaded", function () {
         bell.addEventListener("click", function (e) {
             e.preventDefault();
 
-            // Toggle dropdown
             if (dropdown.style.display === "none") {
                 dropdown.style.display = "block";
 
-                // Mark notifications as read
                 fetch("/notifications/read/", {
                     method: "POST",
                     headers: {
@@ -524,7 +473,6 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// 🔄 AUTO FETCH EVERY 5 SECONDS
 setInterval(fetchNotifications, 5000);
 
 function fetchNotifications() {
@@ -562,215 +510,10 @@ function fetchNotifications() {
     });
 }
 
-// ================= MOBILE MENU SYSTEM =================
-// This handles the mobile sidebar toggle without breaking anything
 
-document.addEventListener("DOMContentLoaded", function() {
-    
-    const sidebar = document.querySelector(".sidebar");
-    const main = document.querySelector(".main");
-    
-    // Check if we're on mobile
-    function isMobile() {
-        return window.innerWidth <= 768;
-    }
-    
-    // Create mobile menu button if it doesn't exist
-    let mobileMenuBtn = document.querySelector(".mobile-menu-btn");
-    
-    if (!mobileMenuBtn && isMobile()) {
-        // Create the button
-        mobileMenuBtn = document.createElement("button");
-        mobileMenuBtn.className = "mobile-menu-btn";
-        mobileMenuBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-        mobileMenuBtn.setAttribute("aria-label", "Menu");
-        document.body.appendChild(mobileMenuBtn);
-    }
-    
-    // Function to open sidebar
-    function openSidebar() {
-        if (sidebar) {
-            sidebar.classList.add("active");
-            document.body.style.overflow = "hidden";
-        }
-    }
-    
-    // Function to close sidebar
-    function closeSidebar() {
-        if (sidebar) {
-            sidebar.classList.remove("active");
-            document.body.style.overflow = "";
-        }
-    }
-    
-    // Toggle sidebar function
-    function toggleMobileSidebar() {
-        if (sidebar.classList.contains("active")) {
-            closeSidebar();
-        } else {
-            openSidebar();
-        }
-    }
-    
-    // Add click event to mobile menu button
-    if (mobileMenuBtn) {
-        mobileMenuBtn.addEventListener("click", function(e) {
-            e.stopPropagation();
-            toggleMobileSidebar();
-        });
-    }
-    
-    // Close sidebar when clicking outside on mobile
-    document.addEventListener("click", function(e) {
-        if (isMobile() && sidebar && sidebar.classList.contains("active")) {
-            // If click is outside sidebar and not on menu button
-            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                closeSidebar();
-            }
-        }
-    });
-    
-    // Close sidebar on escape key
-    document.addEventListener("keydown", function(e) {
-        if (e.key === "Escape" && sidebar && sidebar.classList.contains("active")) {
-            closeSidebar();
-        }
-    });
-    
-    // Handle window resize
-    window.addEventListener("resize", function() {
-        if (!isMobile() && sidebar) {
-            // On desktop, remove mobile-specific classes
-            sidebar.classList.remove("active");
-            document.body.style.overflow = "";
-        } else if (isMobile()) {
-            // On mobile, make sure button exists
-            if (!document.querySelector(".mobile-menu-btn")) {
-                const newBtn = document.createElement("button");
-                newBtn.className = "mobile-menu-btn";
-                newBtn.innerHTML = '<i class="fa-solid fa-bars"></i>';
-                newBtn.setAttribute("aria-label", "Menu");
-                document.body.appendChild(newBtn);
-                
-                newBtn.addEventListener("click", function(e) {
-                    e.stopPropagation();
-                    toggleMobileSidebar();
-                });
-            }
-        }
-    });
-    
-    // Handle touch events for better mobile experience
-    if (sidebar) {
-        let touchStartX = 0;
-        let touchEndX = 0;
-        
-        sidebar.addEventListener("touchstart", function(e) {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-        
-        sidebar.addEventListener("touchend", function(e) {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
-        });
-        
-        function handleSwipe() {
-            const swipeDistance = touchEndX - touchStartX;
-            // Swipe left to close (if distance is negative and large enough)
-            if (swipeDistance < -50 && sidebar.classList.contains("active")) {
-                closeSidebar();
-            }
-            // Swipe right to open (from left edge)
-            if (swipeDistance > 50 && !sidebar.classList.contains("active") && touchStartX < 30) {
-                openSidebar();
-            }
-        }
-    }
-});
+// ================= SINGLE HAMBURGER MENU (TOP LEFT - WORKING) =================
+// This is the ONLY hamburger menu function - no duplicates
 
-// Also update the existing toggleSidebar function to work with mobile
-const originalToggleSidebar = toggleSidebar;
-window.toggleSidebar = function() {
-    if (window.innerWidth <= 768) {
-        const sidebar = document.querySelector(".sidebar");
-        if (sidebar) {
-            sidebar.classList.toggle("active");
-            if (sidebar.classList.contains("active")) {
-                document.body.style.overflow = "hidden";
-            } else {
-                document.body.style.overflow = "";
-            }
-        }
-    } else {
-        originalToggleSidebar();
-    }
-};
-
-// ================= HAMBURGER MENU FOR MOBILE =================
-document.addEventListener('DOMContentLoaded', function() {
-    
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (hamburgerBtn && sidebar) {
-        
-        // Toggle sidebar when hamburger clicked
-        hamburgerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            sidebar.classList.toggle('open');
-        });
-        
-        // Close sidebar when clicking outside
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                    sidebar.classList.remove('open');
-                }
-            }
-        });
-        
-        // Close sidebar on escape key
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                sidebar.classList.remove('open');
-            }
-        });
-        
-        // Close sidebar when window resizes to desktop
-        window.addEventListener('resize', function() {
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('open');
-            }
-        });
-    }
-});
-// ================= HAMBURGER MENU (ADD THIS AT THE END) =================
-document.addEventListener('DOMContentLoaded', function() {
-    const hamburgerBtn = document.getElementById('hamburgerBtn');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (hamburgerBtn && sidebar) {
-        hamburgerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            sidebar.classList.toggle('active');
-        });
-        
-        document.addEventListener('click', function(e) {
-            if (window.innerWidth <= 768) {
-                if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                    sidebar.classList.remove('active');
-                }
-            }
-        });
-        
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                sidebar.classList.remove('active');
-            }
-        });
-    }
-});
-// ================= MOBILE HAMBURGER MENU =================
 function toggleMobileSidebar() {
     var sidebar = document.getElementById('sidebar');
     if (sidebar) {
@@ -778,31 +521,46 @@ function toggleMobileSidebar() {
     }
 }
 
-// Close sidebar when clicking outside
-document.addEventListener('click', function(e) {
-    var sidebar = document.getElementById('sidebar');
-    var hamburger = document.getElementById('hamburgerBtn');
+// Set up event listeners when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sidebar = document.getElementById('sidebar');
     
-    if (window.innerWidth <= 768 && sidebar && hamburger) {
-        if (sidebar.classList && sidebar.classList.contains('active')) {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
-                sidebar.classList.remove('active');
+    if (hamburgerBtn && sidebar) {
+        // Remove any existing listeners by replacing with new one
+        hamburgerBtn.onclick = function(e) {
+            e.stopPropagation();
+            sidebar.classList.toggle('active');
+        };
+    }
+    
+    // Close sidebar when clicking outside
+    document.addEventListener('click', function(e) {
+        const sidebarEl = document.getElementById('sidebar');
+        const hamburgerEl = document.getElementById('hamburgerBtn');
+        
+        if (window.innerWidth <= 768 && sidebarEl && sidebarEl.classList.contains('active')) {
+            if (hamburgerEl && !hamburgerEl.contains(e.target) && !sidebarEl.contains(e.target)) {
+                sidebarEl.classList.remove('active');
             }
         }
-    }
+    });
+    
+    // Close sidebar on escape key
+    document.addEventListener('keydown', function(e) {
+        const sidebarEl = document.getElementById('sidebar');
+        if (e.key === 'Escape' && sidebarEl && sidebarEl.classList.contains('active')) {
+            sidebarEl.classList.remove('active');
+        }
+    });
 });
 
-// Fix loader - remove the 100% text
-window.addEventListener('load', function() {
-    var loaderScreen = document.getElementById('loader-screen');
-    if (loaderScreen) {
-        setTimeout(function() {
-            loaderScreen.style.display = 'none';
-        }, 800);
+// Desktop sidebar collapse (keep existing functionality)
+function toggleSidebar() {
+    const sidebar = document.querySelector(".sidebar");
+    const main = document.querySelector(".main");
+    if (sidebar && main && window.innerWidth > 768) {
+        sidebar.classList.toggle("collapsed");
+        main.classList.toggle("collapsed");
     }
-    
-    var loadingText = document.getElementById('loadingText');
-    if (loadingText) {
-        loadingText.innerText = 'Complete!';
-    }
-});
+}
