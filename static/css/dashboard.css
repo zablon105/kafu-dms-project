@@ -676,3 +676,73 @@ td {
         font-size: 16px;
     }
 }
+/* ===== FIX FOR MOBILE TABLE DISPLAY ===== */
+@media (max-width: 768px) {
+    
+    /* Make table wrapper scrollable if needed */
+    .table-wrapper {
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+    }
+    
+    /* Alternative: Keep table as table on mobile (horizontal scroll) */
+    .doc-table,
+    .documents-table,
+    .modern-table {
+        display: table !important;
+        min-width: 600px !important;
+    }
+    
+    .doc-table thead,
+    .documents-table thead,
+    .modern-table thead {
+        display: table-header-group !important;
+    }
+    
+    .doc-table tbody tr,
+    .documents-table tbody tr,
+    .modern-table tbody tr {
+        display: table-row !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        background: transparent !important;
+    }
+    
+    .doc-table td,
+    .documents-table td,
+    .modern-table td {
+        display: table-cell !important;
+        padding: 10px !important;
+        border-bottom: 1px solid var(--border) !important;
+    }
+    
+    /* Hide data-label pseudo-elements that were causing blank space */
+    .doc-table td::before,
+    .documents-table td::before,
+    .modern-table td::before {
+        display: none !important;
+        content: none !important;
+    }
+    
+    /* Make table horizontally scrollable */
+    .table-wrapper {
+        overflow-x: auto !important;
+    }
+    
+    /* Keep header visible */
+    .doc-table th,
+    .documents-table th,
+    .modern-table th {
+        display: table-cell !important;
+        background: var(--table-header, #f1f5f9) !important;
+        padding: 12px !important;
+        white-space: nowrap !important;
+    }
+    
+    .doc-table td,
+    .documents-table td,
+    .modern-table td {
+        white-space: nowrap !important;
+    }
+}
