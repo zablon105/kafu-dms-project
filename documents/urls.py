@@ -3,12 +3,19 @@ from django.urls import path
 from documents import views as doc_views
 from django.contrib.auth import views as auth_views
 from . import views 
+from django.views.generic import TemplateView
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
 
-    # Home
-    path('', doc_views.home, name='home'),
+    # LANDING PAGE (Public - No Login Required)
+    # Visitors see this first before logging in
+    path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
+    
+    # DASHBOARD HOME (Redirect after login - requires authentication)
+    # Note: Your existing home view will check if user is logged in
+    # If not logged in, it should redirect to landing page
+    path('home/', doc_views.home, name='home'),
 
     # Profile
     path('profile/', doc_views.profile, name='profile'),
@@ -18,7 +25,7 @@ urlpatterns = [
     path('staff-dashboard/', doc_views.staff_dashboard, name='staff_dashboard'),
     path('student-dashboard/', doc_views.student_dashboard, name='student_dashboard'),
 
-    # Upload Document  ✅ ADDED
+    # Upload Document
     path('upload/', doc_views.upload_document, name='upload_document'),
 
     # Share document
@@ -29,7 +36,8 @@ urlpatterns = [
 
     # Register
     path('register/', doc_views.register, name='register'),
-    #notification
+    
+    # Notification
     path('notifications/read/', views.mark_notifications_read, name='mark_read'),
 
     # Login
@@ -37,7 +45,8 @@ urlpatterns = [
 
     # Logout
     path('logout/', doc_views.logout_view, name='logout'),
-    #fetch view
+    
+    # Fetch notifications
     path('notifications/fetch/', views.fetch_notifications, name='fetch_notifications'),
 
     # Password reset

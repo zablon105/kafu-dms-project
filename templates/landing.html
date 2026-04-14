@@ -1,0 +1,196 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kaimosi Friends University - Document Management System</title>
+    <link rel="stylesheet" href="{% static 'css/landing.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="content">
+            <h1>Document Management System</h1>
+            <p class="subtitle">Kaimosi Friends University</p>
+            <p>
+                Streamline document management, enable targeted communication, and automate accountability tracking.
+            </p>
+            <div class="hero-buttons">
+                <a class="cta-button" href="{% url 'login' %}">Access System</a>
+                <a class="secondary-link" href="#features">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Overview Section -->
+    <section class="overview-section">
+        <div class="container">
+            <h2>What is KDMS?</h2>
+            <p class="intro-text">
+                The Kaimosi Friends University Document Management System (KDMS) is a comprehensive web-based platform designed to revolutionize how the university stores, manages, and shares documents while maintaining seamless communication between administration and departments.
+            </p>
+            <div class="overview-grid">
+                <div class="overview-card">
+                    <h3>📄 Document Management</h3>
+                    <p>Securely store, organize, and retrieve documents with digital-first accessibility across the university.</p>
+                </div>
+                <div class="overview-card">
+                    <h3>🎯 Targeted Messaging</h3>
+                    <p>Send specific communication requests to departments or user groups with precision and clarity.</p>
+                </div>
+                <div class="overview-card">
+                    <h3>⏰ Deadline Tracking</h3>
+                    <p>Set clear deadlines and automatically monitor submission status in real-time.</p>
+                </div>
+                <div class="overview-card">
+                    <h3>🔔 Smart Reminders</h3>
+                    <p>Automated reminders alert departments as deadlines approach, reducing missed submissions.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <h2>Core Features</h2>
+            <div class="features-grid">
+                <div class="feature">
+                    <div class="feature-icon">🏢</div>
+                    <h3>Department Access Control</h3>
+                    <p>Role-based permissions ensure administrators can send targeted requests to specific departments while maintaining system security and confidentiality.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📋</div>
+                    <h3>Submission Tracking</h3>
+                    <p>Real-time monitoring dashboard shows which departments submitted early, on time, late, or have not yet submitted documents.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📅</div>
+                    <h3>Deadline Management</h3>
+                    <p>Set flexible deadlines for document submissions with automatic status updates and countdown visibility.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔐</div>
+                    <h3>Secure Document Storage</h3>
+                    <p>All documents are stored securely with access control, ensuring only authorized personnel can view sensitive information.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Automated Reminders</h3>
+                    <p>System automatically sends reminders to departments that haven't submitted as deadlines approach, reducing follow-ups.</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics & Reports</h3>
+                    <p>Generate detailed submission reports to understand departmental compliance and communication effectiveness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works-section">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <h3>Administrator Creates Request</h3>
+                    <p>Administrators log in and create a targeted document request, specifying which departments need to submit documents.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <h3>Set Deadline & Details</h3>
+                    <p>Define the submission deadline, add specific instructions, and attach any reference files or templates.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <h3>Departments Receive Notification</h3>
+                    <p>Department heads receive automated notifications about the document request with all essential details and urgency information.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">4</div>
+                    <h3>Upload Documents</h3>
+                    <p>Departments submit their documents through the secure upload system with timestamps and verification.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">5</div>
+                    <h3>Track & Remind</h3>
+                    <p>System monitors submissions in real-time and sends automatic reminders to non-compliant departments as deadlines approach.</p>
+                </div>
+                <div class="step">
+                    <div class="step-number">6</div>
+                    <h3>Review & Report</h3>
+                    <p>Administrators access comprehensive submission reports to ensure accountability and compliance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits Section -->
+    <section class="benefits-section">
+        <div class="container">
+            <h2>Benefits</h2>
+            <div class="benefits-grid">
+                <div class="benefit-item">
+                    <h3>✓ Improved Accountability</h3>
+                    <p>Clear tracking of who submitted what and when ensures departmental accountability and transparency.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>✓ Reduced Administrative Burden</h3>
+                    <p>Automated reminders and notifications eliminate repetitive follow-ups, saving staff time.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>✓ Enhanced Communication</h3>
+                    <p>Targeted messaging ensures departments receive specific, relevant information without noise.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>✓ Faster Submission Compliance</h3>
+                    <p>Automated reminders and clear deadlines motivate timely submissions, reducing late document arrivals.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>✓ Centralized Document Repository</h3>
+                    <p>All university documents in one secure location, accessible to authorized personnel anytime.</p>
+                </div>
+                <div class="benefit-item">
+                    <h3>✓ Data-Driven Insights</h3>
+                    <p>Analytics provide visibility into departmental compliance trends and communication effectiveness.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Users Section -->
+    <section class="users-section">
+        <div class="container">
+            <h2>Who Uses KDMS?</h2>
+            <div class="users-grid">
+                <div class="user-card">
+                    <h3>🎓 Administrators</h3>
+                    <p>Create document requests, set deadlines, send targeted messages to departments, monitor submissions, and generate compliance reports.</p>
+                </div>
+                <div class="user-card">
+                    <h3>🏢 Department Heads</h3>
+                    <p>Receive document requests, manage submissions from their departments, and track their submission status in real-time.</p>
+                </div>
+                <div class="user-card">
+                    <h3>👥 Staff Members</h3>
+                    <p>Upload documents on behalf of their departments and monitor submission deadlines through the dashboard.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="container cta-content">
+            <h2>Ready to Streamline Document Management?</h2>
+            <p>Join Kaimosi Friends University in transforming how departments manage and submit documents.</p>
+            <a class="cta-button" href="{% url 'login' %}">Get Started Now</a>
+        </div>
+    </section>
+</body>
+</html>

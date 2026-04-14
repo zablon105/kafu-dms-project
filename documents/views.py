@@ -503,12 +503,12 @@ def logout_view(request):
 
     messages.success(request, "You have successfully logged out.")
 
-    return redirect('login')
+    # ✅ CHANGED: Redirect to landing page instead of login page
+    return redirect('landing')
 
 
+# ================= FETCH NOTIFICATIONS =================
 
-
-#=======fetch view===========
 from django.http import JsonResponse
 
 @login_required
