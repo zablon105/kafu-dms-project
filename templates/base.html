@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=10">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=11">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -59,25 +59,31 @@
     .role-badge-sidebar.staff { background: #16a34a; }
     .role-badge-sidebar.student { background: #3b82f6; }
     
-    /* Force hamburger button to show on mobile */
+    /* Hamburger Button - TOP LEFT CORNER (MOVED FROM BOTTOM-RIGHT) */
     @media (max-width: 768px) {
         .hamburger-btn {
             display: flex !important;
             position: fixed !important;
-            bottom: 20px !important;
-            right: 20px !important;
-            width: 56px !important;
-            height: 56px !important;
-            border-radius: 50% !important;
+            top: 15px !important;
+            left: 15px !important;
+            bottom: auto !important;
+            right: auto !important;
+            width: 45px !important;
+            height: 45px !important;
+            border-radius: 10px !important;
             background: #3b82f6 !important;
             border: none !important;
             color: white !important;
-            font-size: 24px !important;
+            font-size: 20px !important;
             cursor: pointer !important;
             z-index: 9999 !important;
             align-items: center !important;
             justify-content: center !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3) !important;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+        }
+        
+        .hamburger-btn:active {
+            transform: scale(0.95);
         }
         
         .sidebar {
@@ -97,7 +103,7 @@
         .main {
             margin-left: 0 !important;
             width: 100% !important;
-            padding: 15px !important;
+            padding: 60px 15px 15px 15px !important;
         }
         
         .top-bar {
@@ -215,7 +221,7 @@
 
 </div>
 
-<!-- Hamburger Menu Button -->
+<!-- Hamburger Menu Button - NOW AT TOP LEFT CORNER -->
 <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()">
     <i class="fa-solid fa-bars"></i>
 </button>
