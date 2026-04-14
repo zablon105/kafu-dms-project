@@ -201,12 +201,12 @@
 <!-- MAIN CONTENT -->
 <div class="main" id="mainContent">
 
-    <!-- TOP BAR WITH DARK MODE ICON -->
-    <div class="top-bar">
-        <div class="dark-mode-icon" onclick="toggleDarkMode()" id="darkModeToggle">
-            <i class="fa-solid fa-moon"></i>
-        </div>
-    </div>
+   <!-- TOP BAR - Professional Dark Mode Toggle -->
+<div class="top-bar">
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
+        <i class="fa-solid fa-moon"></i>
+    </button>
+</div>
 
     {% block content %}
     <!-- Child templates will insert content here -->
