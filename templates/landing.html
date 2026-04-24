@@ -14,7 +14,6 @@
     <nav class="navbar">
         <div class="logo">
             <img src="{% static 'images/kafu_logo.png' %}" alt="KAFU Logo" class="logo-img">
-            <span>KAFU DMS</span>
         </div>
         
         <button class="mobile-menu-btn" id="mobileMenuBtn">
@@ -225,7 +224,6 @@
             });
         }
         
-        // Close mobile menu when clicking a link
         const navItems = document.querySelectorAll('.nav-link');
         navItems.forEach(item => {
             item.addEventListener('click', function() {

@@ -541,34 +541,26 @@ body {
 .logo {
     display: flex;
     align-items: center;
-    gap: 10px;
 }
 
 .logo-img {
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
 }
 
-.logo i {
-    font-size: 24px;
-    color: #FFC107;
-}
-
-.logo span {
-    font-size: 20px;
-    font-weight: 700;
-    color: white;
-}
-
-/* Mobile responsive for logo */
+/* Mobile responsive */
 @media (max-width: 768px) {
     .logo-img {
-        width: 32px;
-        height: 32px;
+        width: 40px;
+        height: 40px;
     }
-    
-    .logo span {
-        font-size: 16px;
+}
+
+/* Desktop */
+@media (min-width: 769px) {
+    .logo-img {
+        width: 55px;
+        height: 55px;
     }
 }
