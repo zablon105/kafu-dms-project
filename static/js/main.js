@@ -360,28 +360,20 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 
-// ================= PASSWORD TOGGLE (Eye Icon for Login & Register) =================
-function togglePassword(fieldId) {
-    const input = document.getElementById(fieldId);
-    
-    if (!input) return;
-    
-    // Find the icon span inside the same password-wrapper
-    const wrapper = input.closest('.password-wrapper');
-    const iconSpan = wrapper ? wrapper.querySelector('.toggle-password i') : null;
-    
+// ================= PASSWORD TOGGLE =================
+function togglePassword() {
+
+    const input = document.getElementById("passwordField");
+    const icon = document.querySelector(".toggle-password");
+
+    if (!input || !icon) return;
+
     if (input.type === "password") {
         input.type = "text";
-        if (iconSpan) {
-            iconSpan.classList.remove('fa-eye');
-            iconSpan.classList.add('fa-eye-slash');
-        }
+        icon.classList.replace("fa-eye", "fa-eye-slash");
     } else {
         input.type = "password";
-        if (iconSpan) {
-            iconSpan.classList.remove('fa-eye-slash');
-            iconSpan.classList.add('fa-eye');
-        }
+        icon.classList.replace("fa-eye-slash", "fa-eye");
     }
 }
 
