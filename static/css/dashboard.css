@@ -845,3 +845,21 @@ body.dark-mode .stat-card h3 {
 .main.expanded {
     margin-left: 0;
 }
+
+/* Sidebar collapse transitions */
+.sidebar {
+    transition: left 0.3s ease;
+}
+
+.main {
+    transition: margin-left 0.3s ease;
+}
+
+/* Desktop collapsed state */
+.sidebar.collapsed {
+    left: -260px;
+}
+
+.main.expanded {
+    margin-left: 0;
+}

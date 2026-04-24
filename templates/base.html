@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=13">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=15">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -59,34 +59,33 @@
     .role-badge-sidebar.staff { background: #16a34a; }
     .role-badge-sidebar.student { background: #3b82f6; }
     
-    /* Logo in sidebar - Centered like screenshot */
+    /* Logo in sidebar - Centered */
     .sidebar-logo {
         text-align: center;
         margin-bottom: 30px;
-        padding: 15px 0;
+        padding: 10px 0;
         border-bottom: 1px solid rgba(255,255,255,0.1);
     }
     
     .sidebar-logo-img {
-        width: 70px;
-        height: 70px;
+        width: 65px;
+        height: 65px;
         object-fit: contain;
         border-radius: 50%;
         background: white;
         padding: 5px;
     }
     
-    /* Sidebar header text */
     .sidebar-header-text {
         text-align: center;
-        margin-top: 10px;
-        font-size: 14px;
+        margin-top: 8px;
+        font-size: 12px;
         font-weight: 600;
         color: white;
         opacity: 0.9;
     }
     
-    /* HAMBURGER BUTTON - Visible on ALL devices (PC + Mobile) */
+    /* HAMBURGER BUTTON - Works on ALL devices (Desktop + Mobile) */
     .hamburger-btn {
         display: flex !important;
         position: fixed !important;
@@ -95,7 +94,7 @@
         width: 45px !important;
         height: 45px !important;
         border-radius: 10px !important;
-        background: var(--primary, #1B5E20) !important;
+        background: #1B5E20 !important;
         border: none !important;
         color: white !important;
         font-size: 20px !important;
@@ -108,7 +107,7 @@
     }
     
     .hamburger-btn:hover {
-        background: var(--primary-dark, #0f3d14) !important;
+        background: #0f3d14 !important;
         transform: scale(1.02);
     }
     
@@ -116,7 +115,7 @@
         transform: scale(0.95);
     }
     
-    /* Sidebar - Collapsible for desktop */
+    /* Sidebar - Desktop default (visible) */
     .sidebar {
         position: fixed !important;
         left: 0 !important;
@@ -127,17 +126,18 @@
         transition: left 0.3s ease !important;
     }
     
-    /* When sidebar is collapsed/hidden */
+    /* When sidebar is collapsed on desktop */
     .sidebar.collapsed {
         left: -260px !important;
     }
     
-    /* Main content - adjusts when sidebar is collapsed */
+    /* Main content */
     .main {
         margin-left: 260px !important;
         transition: margin-left 0.3s ease !important;
     }
     
+    /* When sidebar is collapsed, main content expands */
     .main.expanded {
         margin-left: 0 !important;
     }
@@ -151,6 +151,10 @@
         
         .sidebar.active {
             left: 0 !important;
+        }
+        
+        .sidebar.collapsed {
+            left: -280px !important;
         }
         
         .main {
@@ -189,7 +193,7 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <!-- School Logo - Centered like screenshot -->
+    <!-- School Logo - Centered -->
     <div class="sidebar-logo">
         <img src="{% static 'images/kafu_logo.png' %}" alt="KAFU Logo" class="sidebar-logo-img">
         <div class="sidebar-header-text">KAIMOSI FRIENDS UNIVERSITY</div>
@@ -221,7 +225,7 @@
     </a>
 
     <a href="{% url 'profile' %}">
-        <i class="fa-solid fa-user"></i>
+        <i class="fa-solidfa-solid fa-user"></i>
         <span>Profile</span>
     </a>
 
@@ -249,7 +253,7 @@
 
 </div>
 
-<!-- HAMBURGER MENU BUTTON - Visible on ALL devices -->
+<!-- HAMBURGER MENU BUTTON - Works on ALL devices -->
 <button class="hamburger-btn" id="hamburgerBtn">
     <i class="fa-solid fa-bars"></i>
 </button>
@@ -293,8 +297,8 @@
         updateDarkModeIcon();
     };
     
-    // Toggle sidebar function - works for both desktop and mobile
-    function toggleSidebarCollapse() {
+    // Toggle sidebar - works for both desktop and mobile
+    function toggleSidebar() {
         var sidebar = document.getElementById('sidebar');
         var main = document.getElementById('mainContent');
         
@@ -313,7 +317,7 @@
     if (hamburgerBtn) {
         hamburgerBtn.onclick = function(e) {
             e.stopPropagation();
-            toggleSidebarCollapse();
+            toggleSidebar();
         };
     }
     
@@ -335,7 +339,7 @@
         if (e.key === 'Escape') {
             if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
                 sidebar.classList.remove('active');
-            } else if (window.innerWidth > 768 && sidebar.classList.contains('collapsed') === false) {
+            } else if (window.innerWidth > 768 && !sidebar.classList.contains('collapsed')) {
                 sidebar.classList.add('collapsed');
                 document.getElementById('mainContent').classList.add('expanded');
             }
