@@ -1,5 +1,6 @@
 /* =====================================
-   LANDING PAGE STYLES - KAFU SCHOOL COLORS
+   LANDING PAGE STYLES - SCHOOL GREEN COLORS
+   Complete File - Copy and Replace Entirely
 ===================================== */
 
 * {
@@ -27,7 +28,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(10,36,114, 0.95);
+    background: rgba(27,94,32, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 15px 40px;
@@ -45,7 +46,7 @@ body {
 
 .logo i {
     font-size: 24px;
-    color: #D4AF37;
+    color: #FFC107;
 }
 
 .logo span {
@@ -70,32 +71,32 @@ body {
 }
 
 .nav-link:hover {
-    background: rgba(212,175,55, 0.2);
-    color: #D4AF37;
+    background: rgba(255,193,7, 0.2);
+    color: #FFC107;
 }
 
 .btn-signup {
-    background: #D4AF37;
-    color: #0A2472;
+    background: #FFC107;
+    color: #1B5E20;
     padding: 8px 20px;
     border-radius: 8px;
     font-weight: 600;
 }
 
 .btn-signup:hover {
-    background: #c49b2a;
-    color: #0A2472;
+    background: #e6a800;
+    color: #1B5E20;
     transform: translateY(-2px);
 }
 
 .btn-signin {
-    border: 1px solid #D4AF37;
-    color: #D4AF37;
+    border: 1px solid #FFC107;
+    color: #FFC107;
 }
 
 .btn-signin:hover {
-    background: #D4AF37;
-    color: #0A2472;
+    background: #FFC107;
+    color: #1B5E20;
 }
 
 /* Mobile menu button */
@@ -110,7 +111,7 @@ body {
 
 /* ===== HERO SECTION ===== */
 .hero {
-    background: linear-gradient(135deg, #0A2472 0%, #071a56 100%);
+    background: linear-gradient(135deg, #1B5E20 0%, #0f3d14 100%);
     color: white;
     padding: 140px 20px 80px;
     text-align: center;
@@ -132,13 +133,55 @@ body {
     font-size: 20px;
     opacity: 0.9;
     margin-bottom: 20px;
-    color: #D4AF37;
+    color: #FFC107;
 }
 
 .hero p {
     font-size: 18px;
     opacity: 0.85;
     margin-bottom: 30px;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.cta-button {
+    display: inline-block;
+    background: #FFC107;
+    color: #1B5E20;
+    padding: 12px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #e6a800;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
+.secondary-link {
+    display: inline-block;
+    background: transparent;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid #FFC107;
+    transition: all 0.3s ease;
+}
+
+.secondary-link:hover {
+    background: #FFC107;
+    color: #1B5E20;
+    transform: translateY(-2px);
 }
 
 /* ===== OVERVIEW SECTION ===== */
@@ -151,7 +194,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 20px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .intro-text {
@@ -175,18 +218,18 @@ body {
     text-align: center;
     box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: all 0.3s ease;
-    border-bottom: 3px solid #D4AF37;
+    border-bottom: 3px solid #FFC107;
 }
 
 .overview-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(10,36,114,0.1);
+    box-shadow: 0 8px 24px rgba(27,94,32,0.1);
 }
 
 .overview-card h3 {
     font-size: 20px;
     margin-bottom: 15px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .overview-card p {
@@ -203,7 +246,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .features-grid {
@@ -232,7 +275,7 @@ body {
 .feature h3 {
     font-size: 20px;
     margin-bottom: 12px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .feature p {
@@ -249,7 +292,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .steps {
@@ -269,7 +312,7 @@ body {
 .step-number {
     width: 50px;
     height: 50px;
-    background: #0A2472;
+    background: #1B5E20;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -283,7 +326,7 @@ body {
 .step h3 {
     font-size: 18px;
     margin-bottom: 12px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .step p {
@@ -300,7 +343,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .benefits-grid {
@@ -311,7 +354,7 @@ body {
 
 .benefit-item {
     padding: 20px;
-    border-left: 4px solid #D4AF37;
+    border-left: 4px solid #FFC107;
     background: #f8fafd;
     border-radius: 8px;
 }
@@ -319,7 +362,7 @@ body {
 .benefit-item h3 {
     font-size: 18px;
     margin-bottom: 8px;
-    color: #0A2472;
+    color: #1B5E20;
 }
 
 .benefit-item p {
@@ -329,7 +372,7 @@ body {
 /* ===== USERS SECTION ===== */
 .users-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, #0A2472 0%, #071a56 100%);
+    background: linear-gradient(135deg, #1B5E20 0%, #0f3d14 100%);
     color: white;
 }
 
@@ -355,7 +398,7 @@ body {
 }
 
 .user-card:hover {
-    background: rgba(212,175,55, 0.2);
+    background: rgba(255,193,7, 0.2);
     transform: translateY(-3px);
 }
 
@@ -371,8 +414,8 @@ body {
 /* ===== CTA SECTION ===== */
 .cta-section {
     padding: 80px 0;
-    background: #D4AF37;
-    color: #0A2472;
+    background: #FFC107;
+    color: #1B5E20;
     text-align: center;
 }
 
@@ -388,30 +431,13 @@ body {
 }
 
 .cta-section .cta-button {
-    background: #0A2472;
-    color: #D4AF37;
+    background: #1B5E20;
+    color: #FFC107;
 }
 
 .cta-section .cta-button:hover {
-    background: #071a56;
+    background: #0f3d14;
     transform: translateY(-2px);
-}
-
-.cta-button {
-    display: inline-block;
-    background: #0A2472;
-    color: white;
-    padding: 12px 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.cta-button:hover {
-    background: #071a56;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(10,36,114,0.3);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -430,7 +456,7 @@ body {
         top: 60px;
         left: 0;
         right: 0;
-        background: #0A2472;
+        background: #1B5E20;
         flex-direction: column;
         padding: 20px;
         gap: 15px;
@@ -461,6 +487,16 @@ body {
         font-size: 16px;
     }
     
+    .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cta-button, .secondary-link {
+        width: 200px;
+        text-align: center;
+    }
+    
     .overview-section h2,
     .features-section h2,
     .how-it-works-section h2,
@@ -488,3 +524,15 @@ body {
         padding: 20px;
     }
 }
+
+/* ===== MOBILE MENU TOGGLE JAVASCRIPT SUPPORT ===== */
+<script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+            navLinks.classList.toggle('active');
+        });
+    }
+</script>

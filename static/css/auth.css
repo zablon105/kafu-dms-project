@@ -1,12 +1,15 @@
-/* ===== AUTH.CSS - KAFU SCHOOL COLORS ===== */
+/* =====================================
+   AUTH.CSS - KAFU SCHOOL GREEN COLORS
+   Complete File - Copy and Replace Entirely
+===================================== */
 
-/* ===== ROOT VARIABLES (KAFU Colors) ===== */
+/* ===== ROOT VARIABLES (School Green Colors) ===== */
 :root {
-    --primary-color: #0A2472;
-    --primary-hover: #0e2d8a;
-    --primary-light: #162b5e;
-    --accent-color: #D4AF37;
-    --accent-hover: #c49b2a;
+    --primary-color: #1B5E20;
+    --primary-hover: #2E7D32;
+    --primary-light: #4CAF50;
+    --accent-color: #FFC107;
+    --accent-hover: #FFB300;
     --bg-color: #f0f4f8;
     --card-bg: white;
     --text-primary: #1a2a3a;
@@ -17,8 +20,8 @@
     --error-bg: #f8d7da;
     --error-text: #721c24;
     --toggle-color: #6b7280;
-    --shadow: 0 8px 24px rgba(10,36,114,0.12);
-    --shadow-hover: 0 12px 32px rgba(10,36,114,0.2);
+    --shadow: 0 8px 24px rgba(27,94,32,0.12);
+    --shadow-hover: 0 12px 32px rgba(27,94,32,0.2);
 }
 
 /* ===== DARK MODE SUPPORT ===== */
@@ -127,7 +130,7 @@ body {
 .auth-container input:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(10,36,114,0.15);
+    box-shadow: 0 0 0 3px rgba(27,94,32,0.15);
     transform: translateY(-1px);
 }
 
@@ -164,12 +167,16 @@ body {
 }
 
 .toggle-btn:hover {
-    background: rgba(10,36,114,0.08);
+    background: rgba(27,94,32,0.08);
     color: var(--primary-hover);
 }
 
 .toggle-btn:active {
     transform: translateY(-50%) scale(0.95);
+}
+
+.toggle-btn:focus {
+    outline: none;
 }
 
 /* ===== SUBMIT BUTTON ===== */
@@ -191,7 +198,7 @@ body {
 .auth-container button[type="submit"]:hover {
     background: var(--primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(10,36,114,0.3);
+    box-shadow: 0 6px 16px rgba(27,94,32,0.3);
 }
 
 .auth-container button[type="submit"]:active {
@@ -296,7 +303,11 @@ body {
     transform: translateY(-50%) scale(1.1);
 }
 
-/* ===== RESPONSIVE ===== */
+.toggle-password:active {
+    transform: translateY(-50%) scale(0.95);
+}
+
+/* ===== RESPONSIVE DESIGN ===== */
 @media (max-width: 768px) {
     .auth-container {
         padding: 30px 25px;
@@ -305,6 +316,13 @@ body {
     
     .logo {
         width: 65px;
+    }
+    
+    .auth-container input[type="text"],
+    .auth-container input[type="email"],
+    .auth-container input[type="password"] {
+        padding: 12px;
+        font-size: 16px;
     }
 }
 
@@ -320,8 +338,17 @@ body {
         border-radius: 14px;
     }
     
+    .logo {
+        width: 55px;
+        margin-bottom: 10px;
+    }
+    
     .auth-container h2 {
         font-size: 22px;
+    }
+    
+    .auth-container h3 {
+        font-size: 13px;
     }
     
     .auth-links {
@@ -399,5 +426,16 @@ body {
 @keyframes spin {
     to {
         transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+    .auth-container {
+        border: 2px solid currentColor;
+    }
+    
+    input {
+        border: 2px solid currentColor;
     }
 }

@@ -1,19 +1,20 @@
 /* =====================================
-   GLOBAL SYSTEM STYLES - KAFU SCHOOL COLORS
+   GLOBAL SYSTEM STYLES - SCHOOL GREEN COLORS
+   Complete File - Copy and Replace Entirely
 ===================================== */
 
 :root {
-    --primary: #0A2472;
-    --primary-dark: #071a56;
-    --primary-hover: #0e2d8a;
-    --accent: #D4AF37;
-    --accent-dark: #c49b2a;
-    --success: #2ecc71;
-    --success-dark: #27ae60;
-    --danger: #e74c3c;
-    --danger-dark: #c0392b;
-    --warning: #f39c12;
-    --warning-dark: #e67e22;
+    --primary: #1B5E20;
+    --primary-dark: #0f3d14;
+    --primary-hover: #2E7D32;
+    --accent: #FFC107;
+    --accent-dark: #e6a800;
+    --success: #28a745;
+    --success-dark: #1e7e34;
+    --danger: #dc3545;
+    --danger-dark: #c82333;
+    --warning: #ffc107;
+    --warning-dark: #e0a800;
     --gray-100: #f8fafd;
     --gray-200: #e0e6ed;
     --gray-300: #cbd5e1;
@@ -64,7 +65,7 @@ body {
 .card:hover {
     transform: translateY(-2px);
     box-shadow: var(--shadow-lg);
-    border-color: rgba(10,36,114,0.08);
+    border-color: rgba(27,94,32,0.08);
 }
 
 .card h3 {
@@ -93,7 +94,7 @@ input, select, textarea {
 input:focus, select:focus, textarea:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(10,36,114,0.1);
+    box-shadow: 0 0 0 3px rgba(27,94,32,0.1);
     transform: translateY(-1px);
 }
 
@@ -208,7 +209,7 @@ table tbody tr {
 }
 
 table tbody tr:hover {
-    background: rgba(10,36,114,0.02);
+    background: rgba(27,94,32,0.02);
 }
 
 /* ===== FILE ICON COLORS ===== */
@@ -434,13 +435,13 @@ table tbody tr:hover {
 }
 
 .drop-zone:hover {
-    background: rgba(10,36,114,0.03);
+    background: rgba(27,94,32,0.03);
     border-color: var(--primary-dark);
     transform: scale(1.01);
 }
 
 .drop-zone.dragover {
-    background: rgba(10,36,114,0.05);
+    background: rgba(27,94,32,0.05);
     border-color: var(--accent);
     transform: scale(1.02);
 }
@@ -510,7 +511,7 @@ body.dark-mode textarea {
 body.dark-mode input:focus,
 body.dark-mode select:focus {
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(212,175,55,0.2);
+    box-shadow: 0 0 0 3px rgba(255,193,7,0.2);
 }
 
 body.dark-mode .sidebar {
@@ -568,11 +569,6 @@ body.dark-mode .preview-content {
         opacity: 1;
         transform: translateX(0);
     }
-}
-
-@keyframes pulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.05); }
 }
 
 /* ===== RESPONSIVE DESIGN ===== */

@@ -1,19 +1,20 @@
 /* =====================================
-   KAFU DMS DASHBOARD STYLES - KAFU SCHOOL COLORS
+   KAFU DMS DASHBOARD STYLES - SCHOOL GREEN COLORS
+   Complete File - Copy and Replace Entirely
 ===================================== */
 
 :root {
-    --primary: #0A2472;
-    --primary-dark: #071a56;
-    --primary-light: #162b5e;
-    --accent: #D4AF37;
-    --accent-dark: #c49b2a;
-    --success: #2ecc71;
-    --danger: #e74c3c;
-    --warning: #f39c12;
-    --sidebar-bg: #0A2472;
+    --primary: #1B5E20;
+    --primary-dark: #0f3d14;
+    --primary-light: #4CAF50;
+    --accent: #FFC107;
+    --accent-dark: #e6a800;
+    --success: #28a745;
+    --danger: #dc3545;
+    --warning: #ffc107;
+    --sidebar-bg: #1B5E20;
     --sidebar-text: #cbd5e6;
-    --sidebar-hover: #162b5e;
+    --sidebar-hover: #2E7D32;
     --body-bg: #f0f4f8;
     --card-bg: #ffffff;
     --text-primary: #1a2a3a;
@@ -265,7 +266,7 @@ body {
     padding-left: 12px;
 }
 
-/* ===== TABLES ===== */
+/* ===== TABLES - DESKTOP VIEW ===== */
 .table-wrapper {
     overflow-x: auto;
     border-radius: 12px;
@@ -294,7 +295,7 @@ body {
 }
 
 .doc-table tr:hover, .documents-table tr:hover, .modern-table tr:hover {
-    background: rgba(10,36,114,0.02);
+    background: rgba(27,94,32,0.02);
 }
 
 /* Hide pseudo-elements on desktop */
@@ -377,7 +378,7 @@ body {
 .search-box select:focus {
     outline: none;
     border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(10,36,114,0.1);
+    box-shadow: 0 0 0 3px rgba(27,94,32,0.1);
 }
 
 .search-box button {
@@ -541,12 +542,12 @@ body {
 }
 
 .drop-zone:hover {
-    background: rgba(10,36,114,0.05);
+    background: rgba(27,94,32,0.03);
     border-color: var(--primary-dark);
 }
 
 .drop-zone.dragover {
-    background: rgba(10,36,114,0.1);
+    background: rgba(27,94,32,0.05);
     border-color: var(--accent);
 }
 
