@@ -526,7 +526,7 @@ body {
 }
 
 /* ===== MOBILE MENU TOGGLE JAVASCRIPT SUPPORT ===== */
-<script>
+/* =====<script>
     const mobileMenuBtn = document.getElementById('mobileMenuBtn');
     const navLinks = document.getElementById('navLinks');
     
@@ -535,4 +535,4 @@ body {
             navLinks.classList.toggle('active');
         });
     }
-</script>
+</script>====*/

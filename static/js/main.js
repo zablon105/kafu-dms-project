@@ -511,9 +511,31 @@ function fetchNotifications() {
 }
 
 
-// ================= SINGLE HAMBURGER MENU (TOP LEFT - WORKING) =================
-// This is the ONLY hamburger menu function - no duplicates
+// ================= LANDING PAGE MOBILE MENU TOGGLE =================
+// This handles the mobile menu toggle on the landing page
+document.addEventListener("DOMContentLoaded", function() {
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const navLinks = document.getElementById('navLinks');
+    
+    if (mobileMenuBtn && navLinks) {
+        mobileMenuBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            navLinks.classList.toggle('active');
+        });
+        
+        // Close mobile menu when clicking a link
+        const navItems = navLinks.querySelectorAll('.nav-link');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        });
+    }
+});
 
+
+// ================= DASHBOARD HAMBURGER MENU (TOP LEFT) =================
+// This handles the sidebar toggle on dashboard pages
 function toggleMobileSidebar() {
     var sidebar = document.getElementById('sidebar');
     if (sidebar) {
@@ -527,7 +549,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebar = document.getElementById('sidebar');
     
     if (hamburgerBtn && sidebar) {
-        // Remove any existing listeners by replacing with new one
         hamburgerBtn.onclick = function(e) {
             e.stopPropagation();
             sidebar.classList.toggle('active');
