@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=16">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=18">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -85,7 +85,7 @@
         opacity: 0.9;
     }
     
-    /* HAMBURGER BUTTON - Visible on ALL devices */
+    /* HAMBURGER BUTTON - Desktop & Mobile */
     .hamburger-btn {
         display: flex !important;
         position: fixed !important;
@@ -103,19 +103,13 @@
         align-items: center !important;
         justify-content: center !important;
         box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-        transition: all 0.3s ease !important;
     }
     
     .hamburger-btn:hover {
         background: #0f3d14 !important;
-        transform: scale(1.02);
     }
     
-    .hamburger-btn:active {
-        transform: scale(0.95);
-    }
-    
-    /* DESKTOP SIDEBAR - Always visible by default */
+    /* DESKTOP SIDEBAR */
     @media (min-width: 769px) {
         .sidebar {
             position: fixed !important;
@@ -127,24 +121,21 @@
             transition: left 0.3s ease !important;
         }
         
-        /* When sidebar is hidden/collapsed on desktop */
-        .sidebar.desktop-hidden {
+        .sidebar.desktop-collapsed {
             left: -260px !important;
         }
         
-        /* Main content - adjusts based on sidebar */
         .main {
             margin-left: 260px !important;
             transition: margin-left 0.3s ease !important;
         }
         
-        /* When sidebar is hidden, main content expands */
         .main.desktop-expanded {
             margin-left: 0 !important;
         }
     }
     
-    /* MOBILE SIDEBAR - Hidden by default, slides in */
+    /* MOBILE SIDEBAR */
     @media (max-width: 768px) {
         .sidebar {
             position: fixed !important;
@@ -156,7 +147,7 @@
             transition: left 0.3s ease !important;
         }
         
-        .sidebar.mobile-active {
+        .sidebar.mobile-visible {
             left: 0 !important;
         }
         
@@ -196,7 +187,6 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <!-- School Logo - Centered -->
     <div class="sidebar-logo">
         <img src="{% static 'images/kafu_logo.png' %}" alt="KAFU Logo" class="sidebar-logo-img">
         <div class="sidebar-header-text">KAIMOSI FRIENDS UNIVERSITY</div>
@@ -242,7 +232,6 @@
 <!-- MAIN CONTENT -->
 <div class="main" id="mainContent">
 
-   <!-- TOP BAR - Professional Dark Mode Toggle -->
 <div class="top-bar">
     <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
         <i class="fa-solid fa-moon"></i>
@@ -250,13 +239,12 @@
 </div>
 
     {% block content %}
-    <!-- Child templates will insert content here -->
     {% endblock %}
 </div>
 
 </div>
 
-<!-- HAMBURGER MENU BUTTON - Works on ALL devices -->
+<!-- HAMBURGER MENU BUTTON -->
 <button class="hamburger-btn" id="hamburgerBtn">
     <i class="fa-solid fa-bars"></i>
 </button>
@@ -268,7 +256,7 @@
 <script src="{% static 'js/main.js' %}"></script>
 
 <script>
-    // Update dark mode icon based on current mode
+    // Update dark mode icon
     function updateDarkModeIcon() {
         var toggleBtn = document.getElementById('darkModeToggle');
         if (toggleBtn) {
@@ -284,7 +272,7 @@
         }
     }
     
-    // Enhanced toggleDarkMode that also updates icon
+    // Keep original toggleDarkMode if exists
     var originalToggleDarkMode = window.toggleDarkMode;
     window.toggleDarkMode = function() {
         if (originalToggleDarkMode) {
@@ -300,56 +288,35 @@
         updateDarkModeIcon();
     };
     
-    // Toggle sidebar - works for both desktop and mobile
-    function toggleSidebar() {
-        var sidebar = document.getElementById('sidebar');
-        var main = document.getElementById('mainContent');
-        
-        if (window.innerWidth > 768) {
-            // DESKTOP: toggle collapse/expand
-            sidebar.classList.toggle('desktop-hidden');
-            main.classList.toggle('desktop-expanded');
-        } else {
-            // MOBILE: toggle slide in/out
-            sidebar.classList.toggle('mobile-active');
-        }
-    }
-    
-    // Hamburger button click event
+    // Desktop Hamburger - This does NOT conflict with your main.js
     var hamburgerBtn = document.getElementById('hamburgerBtn');
+    var sidebar = document.getElementById('sidebar');
+    var mainContent = document.getElementById('mainContent');
+    
     if (hamburgerBtn) {
-        hamburgerBtn.onclick = function(e) {
+        hamburgerBtn.addEventListener('click', function(e) {
             e.stopPropagation();
-            toggleSidebar();
-        };
+            if (window.innerWidth > 768) {
+                // Desktop - collapse sidebar
+                sidebar.classList.toggle('desktop-collapsed');
+                mainContent.classList.toggle('desktop-expanded');
+            } else {
+                // Mobile - slide sidebar (keeps your existing main.js functionality)
+                sidebar.classList.toggle('mobile-visible');
+            }
+        });
     }
     
-    // Close sidebar when clicking outside on mobile
+    // Close mobile sidebar when clicking outside
     document.addEventListener('click', function(e) {
-        var sidebar = document.getElementById('sidebar');
-        var hamburger = document.getElementById('hamburgerBtn');
-        
-        if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('mobile-active')) {
-            if (hamburger && !hamburger.contains(e.target) && !sidebar.contains(e.target)) {
-                sidebar.classList.remove('mobile-active');
+        if (window.innerWidth <= 768 && sidebar.classList.contains('mobile-visible')) {
+            if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
+                sidebar.classList.remove('mobile-visible');
             }
         }
     });
     
-    // Close sidebar on escape key
-    document.addEventListener('keydown', function(e) {
-        var sidebar = document.getElementById('sidebar');
-        if (e.key === 'Escape') {
-            if (window.innerWidth <= 768 && sidebar.classList.contains('mobile-active')) {
-                sidebar.classList.remove('mobile-active');
-            } else if (window.innerWidth > 768 && !sidebar.classList.contains('desktop-hidden')) {
-                sidebar.classList.add('desktop-hidden');
-                document.getElementById('mainContent').classList.add('desktop-expanded');
-            }
-        }
-    });
-    
-    // Fix loader
+    // Loader
     window.addEventListener('load', function() {
         var loaderScreen = document.getElementById('loader-screen');
         if (loaderScreen) {
@@ -360,7 +327,6 @@
         updateDarkModeIcon();
     });
     
-    // Initialize dark mode icon on page load
     document.addEventListener('DOMContentLoaded', function() {
         updateDarkModeIcon();
     });
