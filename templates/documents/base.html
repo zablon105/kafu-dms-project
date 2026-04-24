@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=18">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=20">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -85,7 +85,7 @@
         opacity: 0.9;
     }
     
-    /* HAMBURGER BUTTON - Desktop & Mobile */
+    /* HAMBURGER BUTTON */
     .hamburger-btn {
         display: flex !important;
         position: fixed !important;
@@ -121,7 +121,8 @@
             transition: left 0.3s ease !important;
         }
         
-        .sidebar.desktop-collapsed {
+        /* When collapsed */
+        .sidebar.collapsed {
             left: -260px !important;
         }
         
@@ -130,7 +131,8 @@
             transition: margin-left 0.3s ease !important;
         }
         
-        .main.desktop-expanded {
+        /* When sidebar collapsed, main expands */
+        .main.expanded {
             margin-left: 0 !important;
         }
     }
@@ -147,7 +149,7 @@
             transition: left 0.3s ease !important;
         }
         
-        .sidebar.mobile-visible {
+        .sidebar.active {
             left: 0 !important;
         }
         
@@ -272,7 +274,6 @@
         }
     }
     
-    // Keep original toggleDarkMode if exists
     var originalToggleDarkMode = window.toggleDarkMode;
     window.toggleDarkMode = function() {
         if (originalToggleDarkMode) {
@@ -288,30 +289,41 @@
         updateDarkModeIcon();
     };
     
-    // Desktop Hamburger - This does NOT conflict with your main.js
+    // SIMPLE HAMBURGER TOGGLE - WORKS ON BOTH
     var hamburgerBtn = document.getElementById('hamburgerBtn');
     var sidebar = document.getElementById('sidebar');
     var mainContent = document.getElementById('mainContent');
     
-    if (hamburgerBtn) {
-        hamburgerBtn.addEventListener('click', function(e) {
-            e.stopPropagation();
-            if (window.innerWidth > 768) {
-                // Desktop - collapse sidebar
-                sidebar.classList.toggle('desktop-collapsed');
-                mainContent.classList.toggle('desktop-expanded');
-            } else {
-                // Mobile - slide sidebar (keeps your existing main.js functionality)
-                sidebar.classList.toggle('mobile-visible');
-            }
-        });
-    }
+    hamburgerBtn.onclick = function(e) {
+        e.stopPropagation();
+        
+        if (window.innerWidth > 768) {
+            // DESKTOP: collapse sidebar, expand main
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        } else {
+            // MOBILE: slide sidebar
+            sidebar.classList.toggle('active');
+        }
+    };
     
     // Close mobile sidebar when clicking outside
     document.addEventListener('click', function(e) {
-        if (window.innerWidth <= 768 && sidebar.classList.contains('mobile-visible')) {
+        if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
             if (!sidebar.contains(e.target) && !hamburgerBtn.contains(e.target)) {
-                sidebar.classList.remove('mobile-visible');
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+    
+    // Close on escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            } else if (window.innerWidth > 768 && !sidebar.classList.contains('collapsed')) {
+                sidebar.classList.add('collapsed');
+                mainContent.classList.add('expanded');
             }
         }
     });
