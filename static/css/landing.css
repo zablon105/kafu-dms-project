@@ -1,5 +1,5 @@
 /* =====================================
-   LANDING PAGE STYLES - KAFU DMS
+   LANDING PAGE STYLES - KAFU SCHOOL COLORS
 ===================================== */
 
 * {
@@ -11,7 +11,7 @@
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
-    color: #333;
+    color: #1a2a3a;
     background: #fff;
 }
 
@@ -27,7 +27,7 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background: rgba(15, 23, 42, 0.95);
+    background: rgba(10,36,114, 0.95);
     backdrop-filter: blur(10px);
     z-index: 1000;
     padding: 15px 40px;
@@ -45,7 +45,7 @@ body {
 
 .logo i {
     font-size: 24px;
-    color: #3b82f6;
+    color: #D4AF37;
 }
 
 .logo span {
@@ -70,32 +70,32 @@ body {
 }
 
 .nav-link:hover {
-    background: rgba(59, 130, 246, 0.2);
-    color: #3b82f6;
+    background: rgba(212,175,55, 0.2);
+    color: #D4AF37;
 }
 
 .btn-signup {
-    background: #3b82f6;
-    color: white;
+    background: #D4AF37;
+    color: #0A2472;
     padding: 8px 20px;
     border-radius: 8px;
     font-weight: 600;
 }
 
 .btn-signup:hover {
-    background: #2563eb;
-    color: white;
+    background: #c49b2a;
+    color: #0A2472;
     transform: translateY(-2px);
 }
 
 .btn-signin {
-    border: 1px solid #3b82f6;
-    color: #3b82f6;
+    border: 1px solid #D4AF37;
+    color: #D4AF37;
 }
 
 .btn-signin:hover {
-    background: #3b82f6;
-    color: white;
+    background: #D4AF37;
+    color: #0A2472;
 }
 
 /* Mobile menu button */
@@ -110,9 +110,9 @@ body {
 
 /* ===== HERO SECTION ===== */
 .hero {
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #0A2472 0%, #071a56 100%);
     color: white;
-    padding: 120px 20px 80px;
+    padding: 140px 20px 80px;
     text-align: center;
     margin-top: 0;
 }
@@ -132,6 +132,7 @@ body {
     font-size: 20px;
     opacity: 0.9;
     margin-bottom: 20px;
+    color: #D4AF37;
 }
 
 .hero p {
@@ -140,60 +141,17 @@ body {
     margin-bottom: 30px;
 }
 
-/* Remove old hero-buttons since we have nav bar now */
-.hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.cta-button {
-    display: inline-block;
-    background: #3b82f6;
-    color: white;
-    padding: 12px 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    transition: all 0.3s ease;
-}
-
-.cta-button:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(59,130,246,0.3);
-}
-
-.secondary-link {
-    display: inline-block;
-    background: transparent;
-    color: white;
-    padding: 12px 32px;
-    border-radius: 8px;
-    text-decoration: none;
-    font-weight: 600;
-    border: 2px solid white;
-    transition: all 0.3s ease;
-}
-
-.secondary-link:hover {
-    background: white;
-    color: #1e293b;
-    transform: translateY(-2px);
-}
-
 /* ===== OVERVIEW SECTION ===== */
 .overview-section {
     padding: 80px 0;
-    background: #f8fafc;
+    background: #f8fafd;
 }
 
 .overview-section h2 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 20px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .intro-text {
@@ -201,7 +159,7 @@ body {
     max-width: 800px;
     margin: 0 auto 50px;
     font-size: 18px;
-    color: #475569;
+    color: #4a5b6e;
 }
 
 .overview-grid {
@@ -215,23 +173,24 @@ body {
     padding: 30px;
     border-radius: 12px;
     text-align: center;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     transition: all 0.3s ease;
+    border-bottom: 3px solid #D4AF37;
 }
 
 .overview-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+    box-shadow: 0 8px 24px rgba(10,36,114,0.1);
 }
 
 .overview-card h3 {
     font-size: 20px;
     margin-bottom: 15px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .overview-card p {
-    color: #475569;
+    color: #4a5b6e;
 }
 
 /* ===== FEATURES SECTION ===== */
@@ -244,7 +203,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .features-grid {
@@ -254,7 +213,7 @@ body {
 }
 
 .feature {
-    background: #f8fafc;
+    background: #f8fafd;
     padding: 30px;
     border-radius: 12px;
     transition: all 0.3s ease;
@@ -262,7 +221,7 @@ body {
 
 .feature:hover {
     transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
 }
 
 .feature-icon {
@@ -273,24 +232,24 @@ body {
 .feature h3 {
     font-size: 20px;
     margin-bottom: 12px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .feature p {
-    color: #475569;
+    color: #4a5b6e;
 }
 
 /* ===== HOW IT WORKS SECTION ===== */
 .how-it-works-section {
     padding: 80px 0;
-    background: #f8fafc;
+    background: #f8fafd;
 }
 
 .how-it-works-section h2 {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .steps {
@@ -310,7 +269,7 @@ body {
 .step-number {
     width: 50px;
     height: 50px;
-    background: #3b82f6;
+    background: #0A2472;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -324,11 +283,11 @@ body {
 .step h3 {
     font-size: 18px;
     margin-bottom: 12px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .step p {
-    color: #475569;
+    color: #4a5b6e;
 }
 
 /* ===== BENEFITS SECTION ===== */
@@ -341,7 +300,7 @@ body {
     text-align: center;
     font-size: 36px;
     margin-bottom: 50px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .benefits-grid {
@@ -352,25 +311,25 @@ body {
 
 .benefit-item {
     padding: 20px;
-    border-left: 4px solid #3b82f6;
-    background: #f8fafc;
+    border-left: 4px solid #D4AF37;
+    background: #f8fafd;
     border-radius: 8px;
 }
 
 .benefit-item h3 {
     font-size: 18px;
     margin-bottom: 8px;
-    color: #1e293b;
+    color: #0A2472;
 }
 
 .benefit-item p {
-    color: #475569;
+    color: #4a5b6e;
 }
 
 /* ===== USERS SECTION ===== */
 .users-section {
     padding: 80px 0;
-    background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(135deg, #0A2472 0%, #071a56 100%);
     color: white;
 }
 
@@ -396,7 +355,7 @@ body {
 }
 
 .user-card:hover {
-    background: rgba(255,255,255,0.15);
+    background: rgba(212,175,55, 0.2);
     transform: translateY(-3px);
 }
 
@@ -412,8 +371,8 @@ body {
 /* ===== CTA SECTION ===== */
 .cta-section {
     padding: 80px 0;
-    background: #3b82f6;
-    color: white;
+    background: #D4AF37;
+    color: #0A2472;
     text-align: center;
 }
 
@@ -429,13 +388,30 @@ body {
 }
 
 .cta-section .cta-button {
-    background: white;
-    color: #3b82f6;
+    background: #0A2472;
+    color: #D4AF37;
 }
 
 .cta-section .cta-button:hover {
-    background: #f8fafc;
+    background: #071a56;
     transform: translateY(-2px);
+}
+
+.cta-button {
+    display: inline-block;
+    background: #0A2472;
+    color: white;
+    padding: 12px 32px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+    background: #071a56;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(10,36,114,0.3);
 }
 
 /* ===== RESPONSIVE ===== */
@@ -454,7 +430,7 @@ body {
         top: 60px;
         left: 0;
         right: 0;
-        background: #1e293b;
+        background: #0A2472;
         flex-direction: column;
         padding: 20px;
         gap: 15px;
@@ -470,7 +446,7 @@ body {
     }
     
     .hero {
-        padding: 100px 20px 60px;
+        padding: 110px 20px 60px;
     }
     
     .hero h1 {
@@ -485,16 +461,6 @@ body {
         font-size: 16px;
     }
     
-    .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-    }
-    
-    .cta-button, .secondary-link {
-        width: 200px;
-        text-align: center;
-    }
-    
     .overview-section h2,
     .features-section h2,
     .how-it-works-section h2,
@@ -506,5 +472,19 @@ body {
     .features-grid,
     .benefits-grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero h1 {
+        font-size: 28px;
+    }
+    
+    .container {
+        padding: 0 15px;
+    }
+    
+    .overview-card, .feature, .step, .user-card {
+        padding: 20px;
     }
 }
