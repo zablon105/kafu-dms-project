@@ -110,4 +110,4 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 # Fallback to console backend if no email credentials are provided
 if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    print("⚠️ Email credentials not found. Using console backend. Reset links will appear in terminal logs.")
+    print("Email credentials not found. Using console backend. Reset links will appear in terminal logs.")
