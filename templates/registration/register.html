@@ -2,15 +2,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Register - KAFU DMS</title>
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
 
 <div class="auth-container">
-    <img src="{% static 'images/kafu_logo.png' %}" class="logo">
+    <img src="{% static 'images/kafu_logo.png' %}" class="logo" alt="KAFU Logo">
 
-    <h2>KAFU Document Management System </h2>
+    <h2>KAFU DOCUMENT MANAGEMENT SYSTEM</h2>
     <h3>Create Account</h3>
 
     {% for message in messages %}
@@ -19,7 +20,7 @@
         </div>
     {% endfor %}
 
-    <form method="POST" onkeyup="checkPasswordMatch()">
+    <form method="POST">
         {% csrf_token %}
 
         <input type="text" name="first_name" placeholder="First Name" required>
@@ -27,57 +28,59 @@
         <input type="text" name="username" placeholder="Username" required>
         <input type="email" name="email" placeholder="Email Address" required>
 
-        <!-- Password -->
+        <!-- Password Field -->
         <div class="password-wrapper">
-            <input type="password" id="password1" name="password1" placeholder="Password" required>
-            <button type="button" class="toggle-btn" onclick="togglePassword('password1', this)">Show</button>
+            <input type="password" id="registerPassword1" name="password1" placeholder="Password" required>
+            <span class="toggle-password" onclick="togglePassword('registerPassword1')">
+                <i class="fa-regular fa-eye"></i>
+            </span>
         </div>
 
-        <!-- Confirm Password -->
+        <!-- Confirm Password Field -->
         <div class="password-wrapper">
-            <input type="password" id="password2" name="password2" placeholder="Confirm Password" required>
-            <button type="button" class="toggle-btn" onclick="togglePassword('password2', this)">Show</button>
+            <input type="password" id="registerPassword2" name="password2" placeholder="Confirm Password" required onkeyup="checkPasswordMatch()">
+            <span class="toggle-password" onclick="togglePassword('registerPassword2')">
+                <i class="fa-regular fa-eye"></i>
+            </span>
         </div>
 
-        <div id="match-message" style="font-size: 13px; margin-bottom:10px;"></div>
+        <div id="match-message" style="font-size: 13px; margin-bottom: 10px;"></div>
 
         <button type="submit">Register</button>
     </form>
 
-    <p>Already have an account? <a href="{% url 'login' %}">Login </a></p>
+    <div class="auth-links">
+        <a href="{% url 'login' %}">Already have an account? Login</a>
+    </div>
+    
+    <div class="auth-footer">
+        &copy; 2026 KAFU DMS - All Rights Reserved
+    </div>
 </div>
 
 <script>
-function togglePassword(fieldId, btn) {
-    let field = document.getElementById(fieldId);
+    // Password match checker for register page
+    function checkPasswordMatch() {
+        let pass1 = document.getElementById("registerPassword1");
+        let pass2 = document.getElementById("registerPassword2");
+        let message = document.getElementById("match-message");
 
-    if (field.type === "password") {
-        field.type = "text";
-        btn.textContent = "Hide";
-    } else {
-        field.type = "password";
-        btn.textContent = "Show";
+        if (!pass1 || !pass2) return;
+
+        if (pass2.value.length === 0) {
+            message.innerHTML = "";
+            message.style.color = "";
+            return;
+        }
+
+        if (pass1.value === pass2.value) {
+            message.style.color = "#28a745";
+            message.innerHTML = "✓ Passwords match";
+        } else {
+            message.style.color = "#dc3545";
+            message.innerHTML = "✗ Passwords do not match";
+        }
     }
-}
-
-function checkPasswordMatch() {
-    let pass1 = document.getElementById("password1").value;
-    let pass2 = document.getElementById("password2").value;
-    let message = document.getElementById("match-message");
-
-    if (pass2.length === 0) {
-        message.innerHTML = "";
-        return;
-    }
-
-    if (pass1 === pass2) {
-        message.style.color = "green";
-        message.innerHTML = "✓ Passwords match";
-    } else {
-        message.style.color = "red";
-        message.innerHTML = "✗ Passwords do not match";
-    }
-}
 </script>
 
 </body>
