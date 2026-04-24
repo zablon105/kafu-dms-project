@@ -9,6 +9,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-folder-open"></i>
+            <span>KAFU DMS</span>
+        </div>
+        
+        <button class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        
+        <div class="nav-links" id="navLinks">
+            <a href="{% url 'register' %}" class="nav-link btn-signup">
+                <i class="fa-solid fa-user-plus"></i> Sign Up
+            </a>
+            <a href="{% url 'login' %}" class="nav-link btn-signin">
+                <i class="fa-solid fa-sign-in-alt"></i> Sign In
+            </a>
+            <a href="#features" class="nav-link" id="aboutLink">
+                <i class="fa-solid fa-info-circle"></i> About
+            </a>
+        </div>
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
         <div class="content">
@@ -192,5 +217,25 @@
             <a class="cta-button" href="{% url 'login' %}">Get Started Now</a>
         </div>
     </section>
+
+    <!-- Mobile Menu JavaScript -->
+    <script>
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileMenuBtn) {
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+            });
+        }
+        
+        // Close mobile menu when clicking a link
+        const navItems = document.querySelectorAll('.nav-link');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                navLinks.classList.remove('active');
+            });
+        });
+    </script>
 </body>
 </html>
