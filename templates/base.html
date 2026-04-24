@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=11">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=12">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -59,7 +59,20 @@
     .role-badge-sidebar.staff { background: #16a34a; }
     .role-badge-sidebar.student { background: #3b82f6; }
     
-    /* Hamburger Button - TOP LEFT CORNER (MOVED FROM BOTTOM-RIGHT) */
+    /* Logo in sidebar */
+    .sidebar-logo {
+        text-align: center;
+        margin-bottom: 25px;
+        padding: 10px 0;
+    }
+    
+    .sidebar-logo-img {
+        width: 60px;
+        height: 60px;
+        object-fit: contain;
+    }
+    
+    /* Hamburger Button - TOP LEFT CORNER */
     @media (max-width: 768px) {
         .hamburger-btn {
             display: flex !important;
@@ -142,30 +155,10 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <div class="notification" style="position: relative; margin-bottom: 20px;">
-        <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
-        {% if notifications %}
-        <span id="notifCount" class="notif-count">
-            {{ notifications|length }}
-        </span>
-        {% endif %}
-        <div id="notifDropdown" class="notif-dropdown" style="display:none;">
-            {% if notifications %}
-                {% for notif in notifications %}
-                    <div class="notif-item">
-                        {{ notif.message }}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">No notifications</p>
-            {% endif %}
-        </div>
+    <!-- School Logo instead of Bell and Text -->
+    <div class="sidebar-logo">
+        <img src="{% static 'images/kafu_logo.png' %}" alt="KAFU Logo" class="sidebar-logo-img">
     </div>
-
-    <h2>
-        <i class="fa-solid fa-folder-open"></i>
-        <span>KAFU DMS</span>
-    </h2>
 
     {% if is_admin %}
     <a href="{% url 'admin_dashboard' %}">
@@ -221,7 +214,7 @@
 
 </div>
 
-<!-- Hamburger Menu Button - NOW AT TOP LEFT CORNER -->
+<!-- Hamburger Menu Button - TOP LEFT CORNER -->
 <button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()">
     <i class="fa-solid fa-bars"></i>
 </button>
