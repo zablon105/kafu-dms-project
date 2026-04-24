@@ -827,3 +827,21 @@ body.dark-mode .stat-card p,
 body.dark-mode .stat-card h3 {
     color: #e5e7eb !important;
 }
+
+/* Sidebar collapse transition */
+.sidebar {
+    transition: left 0.3s ease, width 0.3s ease;
+}
+
+.main {
+    transition: margin-left 0.3s ease;
+}
+
+/* When sidebar is collapsed on desktop */
+.sidebar.collapsed {
+    left: -260px;
+}
+
+.main.expanded {
+    margin-left: 0;
+}

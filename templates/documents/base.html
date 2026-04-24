@@ -8,7 +8,7 @@
 
 <title>KAFU DMS</title>
 
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=11">
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}?v=13">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
@@ -59,41 +59,94 @@
     .role-badge-sidebar.staff { background: #16a34a; }
     .role-badge-sidebar.student { background: #3b82f6; }
     
-    /* Hamburger Button - TOP LEFT CORNER (MOVED FROM BOTTOM-RIGHT) */
+    /* Logo in sidebar - Centered like screenshot */
+    .sidebar-logo {
+        text-align: center;
+        margin-bottom: 30px;
+        padding: 15px 0;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .sidebar-logo-img {
+        width: 70px;
+        height: 70px;
+        object-fit: contain;
+        border-radius: 50%;
+        background: white;
+        padding: 5px;
+    }
+    
+    /* Sidebar header text */
+    .sidebar-header-text {
+        text-align: center;
+        margin-top: 10px;
+        font-size: 14px;
+        font-weight: 600;
+        color: white;
+        opacity: 0.9;
+    }
+    
+    /* HAMBURGER BUTTON - Visible on ALL devices (PC + Mobile) */
+    .hamburger-btn {
+        display: flex !important;
+        position: fixed !important;
+        top: 15px !important;
+        left: 15px !important;
+        width: 45px !important;
+        height: 45px !important;
+        border-radius: 10px !important;
+        background: var(--primary, #1B5E20) !important;
+        border: none !important;
+        color: white !important;
+        font-size: 20px !important;
+        cursor: pointer !important;
+        z-index: 9999 !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+        transition: all 0.3s ease !important;
+    }
+    
+    .hamburger-btn:hover {
+        background: var(--primary-dark, #0f3d14) !important;
+        transform: scale(1.02);
+    }
+    
+    .hamburger-btn:active {
+        transform: scale(0.95);
+    }
+    
+    /* Sidebar - Collapsible for desktop */
+    .sidebar {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 260px !important;
+        height: 100% !important;
+        z-index: 9998 !important;
+        transition: left 0.3s ease !important;
+    }
+    
+    /* When sidebar is collapsed/hidden */
+    .sidebar.collapsed {
+        left: -260px !important;
+    }
+    
+    /* Main content - adjusts when sidebar is collapsed */
+    .main {
+        margin-left: 260px !important;
+        transition: margin-left 0.3s ease !important;
+    }
+    
+    .main.expanded {
+        margin-left: 0 !important;
+    }
+    
+    /* Mobile styles */
     @media (max-width: 768px) {
-        .hamburger-btn {
-            display: flex !important;
-            position: fixed !important;
-            top: 15px !important;
-            left: 15px !important;
-            bottom: auto !important;
-            right: auto !important;
-            width: 45px !important;
-            height: 45px !important;
-            border-radius: 10px !important;
-            background: #3b82f6 !important;
-            border: none !important;
-            color: white !important;
-            font-size: 20px !important;
-            cursor: pointer !important;
-            z-index: 9999 !important;
-            align-items: center !important;
-            justify-content: center !important;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
-        }
-        
-        .hamburger-btn:active {
-            transform: scale(0.95);
-        }
-        
         .sidebar {
-            position: fixed !important;
             left: -280px !important;
-            top: 0 !important;
             width: 280px !important;
-            height: 100% !important;
-            z-index: 9998 !important;
-            transition: left 0.3s ease !important;
         }
         
         .sidebar.active {
@@ -109,12 +162,6 @@
         .top-bar {
             margin-top: 0;
             margin-bottom: 15px;
-        }
-    }
-    
-    @media (min-width: 769px) {
-        .hamburger-btn {
-            display: none !important;
         }
     }
 </style>
@@ -142,30 +189,11 @@
 <!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
 
-    <div class="notification" style="position: relative; margin-bottom: 20px;">
-        <i class="fa-solid fa-bell" onclick="toggleNotifications()" style="cursor:pointer;"></i>
-        {% if notifications %}
-        <span id="notifCount" class="notif-count">
-            {{ notifications|length }}
-        </span>
-        {% endif %}
-        <div id="notifDropdown" class="notif-dropdown" style="display:none;">
-            {% if notifications %}
-                {% for notif in notifications %}
-                    <div class="notif-item">
-                        {{ notif.message }}
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p class="empty">No notifications</p>
-            {% endif %}
-        </div>
+    <!-- School Logo - Centered like screenshot -->
+    <div class="sidebar-logo">
+        <img src="{% static 'images/kafu_logo.png' %}" alt="KAFU Logo" class="sidebar-logo-img">
+        <div class="sidebar-header-text">KAIMOSI FRIENDS UNIVERSITY</div>
     </div>
-
-    <h2>
-        <i class="fa-solid fa-folder-open"></i>
-        <span>KAFU DMS</span>
-    </h2>
 
     {% if is_admin %}
     <a href="{% url 'admin_dashboard' %}">
@@ -221,8 +249,8 @@
 
 </div>
 
-<!-- Hamburger Menu Button - NOW AT TOP LEFT CORNER -->
-<button class="hamburger-btn" id="hamburgerBtn" onclick="toggleMobileSidebar()">
+<!-- HAMBURGER MENU BUTTON - Visible on ALL devices -->
+<button class="hamburger-btn" id="hamburgerBtn">
     <i class="fa-solid fa-bars"></i>
 </button>
 
@@ -265,22 +293,51 @@
         updateDarkModeIcon();
     };
     
-    // Simple mobile sidebar toggle
-    function toggleMobileSidebar() {
+    // Toggle sidebar function - works for both desktop and mobile
+    function toggleSidebarCollapse() {
         var sidebar = document.getElementById('sidebar');
-        if (sidebar) {
+        var main = document.getElementById('mainContent');
+        
+        if (window.innerWidth > 768) {
+            // Desktop: collapse/expand sidebar
+            sidebar.classList.toggle('collapsed');
+            main.classList.toggle('expanded');
+        } else {
+            // Mobile: slide sidebar in/out
             sidebar.classList.toggle('active');
         }
     }
     
-    // Close sidebar when clicking outside
+    // Hamburger button click event
+    var hamburgerBtn = document.getElementById('hamburgerBtn');
+    if (hamburgerBtn) {
+        hamburgerBtn.onclick = function(e) {
+            e.stopPropagation();
+            toggleSidebarCollapse();
+        };
+    }
+    
+    // Close sidebar when clicking outside on mobile
     document.addEventListener('click', function(e) {
         var sidebar = document.getElementById('sidebar');
         var hamburger = document.getElementById('hamburgerBtn');
         
         if (window.innerWidth <= 768 && sidebar && sidebar.classList.contains('active')) {
-            if (!sidebar.contains(e.target) && !hamburger.contains(e.target)) {
+            if (hamburger && !hamburger.contains(e.target) && !sidebar.contains(e.target)) {
                 sidebar.classList.remove('active');
+            }
+        }
+    });
+    
+    // Close sidebar on escape key
+    document.addEventListener('keydown', function(e) {
+        var sidebar = document.getElementById('sidebar');
+        if (e.key === 'Escape') {
+            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            } else if (window.innerWidth > 768 && sidebar.classList.contains('collapsed') === false) {
+                sidebar.classList.add('collapsed');
+                document.getElementById('mainContent').classList.add('expanded');
             }
         }
     });
