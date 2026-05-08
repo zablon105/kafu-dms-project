@@ -23,6 +23,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'documents',
+    
+    # NEW: For Supabase Storage
+    'storages',
 ]
 
 # MIDDLEWARE
@@ -89,9 +92,32 @@ STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# MEDIA FILES
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+# ========== MEDIA FILES - SUPABASE STORAGE ==========
+# NEW: Using Supabase Storage for uploaded documents
+
+# Supabase Storage Configuration
+SUPABASE_PROJECT_URL = os.getenv('SUPABASE_PROJECT_URL', 'https://xxtfvsrevwololmytkvu.supabase.co')
+SUPABASE_BUCKET_NAME = os.getenv('SUPABASE_BUCKET_NAME', 'documents')
+
+# S3-Compatible Storage (Supabase uses S3 API)
+AWS_ACCESS_KEY_ID = os.getenv('SUPABASE_ACCESS_KEY', '')
+AWS_SECRET_ACCESS_KEY = os.getenv('SUPABASE_SECRET_KEY', '')
+AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET_NAME
+AWS_S3_ENDPOINT_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/s3"
+AWS_S3_REGION_NAME = os.getenv('SUPABASE_REGION', 'eu-west-2')
+AWS_DEFAULT_ACL = 'public-read'
+AWS_QUERYSTRING_AUTH = False  # Don't add auth params to URLs
+AWS_S3_FILE_OVERWRITE = False  # Don't overwrite files with same name
+AWS_S3_OBJECT_PARAMETERS = {
+    'CacheControl': 'max-age=86400',
+}
+
+# Use S3 storage for uploaded files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# Keep local media root as fallback (for development)
+MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
+MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 
 # AUTH REDIRECTS
 LOGIN_URL = '/login/'
@@ -115,5 +141,3 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 # Fallback to console backend if no email credentials are provided
 if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    
-    #print("Email credentials not found. Using console backend. Reset links will appear in terminal logs.")
