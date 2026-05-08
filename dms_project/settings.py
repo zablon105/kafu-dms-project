@@ -61,9 +61,13 @@ WSGI_APPLICATION = 'dms_project.wsgi.application'
 DATABASES = {
     'default': dj_database_url.parse(
         "postgresql://postgres.xxtfvsrevwololmytkvu:Kinzi%40%400023@aws-1-eu-west-2.pooler.supabase.com:6543/postgres",
-        conn_max_age=60
+        conn_max_age=600,
+        ssl_require=True
     )
 }
+
+# Keeps Django checking dead DB connections automatically
+CONN_HEALTH_CHECKS = True
 
 # PASSWORD VALIDATION
 AUTH_PASSWORD_VALIDATORS = [
