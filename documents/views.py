@@ -527,7 +527,22 @@ def fetch_notifications(request):
         })
 
     return JsonResponse({"notifications": data})
-from django.http import HttpResponse
+from django.http import JsonResponse
+from django.db import connection
 
 def health_check(request):
-    return HttpResponse("OK")
+    db_status = "connected"
+
+    try:
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+            cursor.fetchone()
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+
+    status = {
+        "status": "healthy" if db_status == "connected" else "unhealthy",
+        "database": db_status,
+    }
+
+    return JsonResponse(status)
