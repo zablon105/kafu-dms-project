@@ -529,8 +529,16 @@ def fetch_notifications(request):
     return JsonResponse({"notifications": data})
 from django.http import JsonResponse
 from django.db import connection
+from django.conf import settings
+from pathlib import Path
+from datetime import datetime
+
+# App startup time
+START_TIME = datetime.now()
+
 
 def health_check(request):
+    # Database check
     db_status = "connected"
 
     try:
@@ -540,9 +548,26 @@ def health_check(request):
     except Exception as e:
         db_status = f"error: {str(e)}"
 
+    # Storage check
+    media_root = Path(settings.MEDIA_ROOT)
+
+    if media_root.exists() and media_root.is_dir():
+        storage_status = "connected"
+    else:
+        storage_status = "missing"
+
+    # Redis placeholder
+    redis_status = "not configured"
+
+    # Uptime calculation
+    uptime = datetime.now() - START_TIME
+
     status = {
         "status": "healthy" if db_status == "connected" else "unhealthy",
         "database": db_status,
+        "storage": storage_status,
+        "redis": redis_status,
+        "uptime": str(uptime).split('.')[0]
     }
 
     return JsonResponse(status)
