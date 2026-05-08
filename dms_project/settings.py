@@ -59,8 +59,9 @@ WSGI_APPLICATION = 'dms_project.wsgi.application'
 
 # DATABASE
 DATABASES = {
-    'default': dj_database_url.config(
-        default='sqlite:///db.sqlite3'
+    'default': dj_database_url.parse(
+        "postgresql://postgres.xxtfvsrevwololmytkvu:Kinzi%40%400023@aws-1-eu-west-2.pooler.supabase.com:6543/postgres",
+        conn_max_age=60
     )
 }
 
@@ -110,4 +111,5 @@ DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 # Fallback to console backend if no email credentials are provided
 if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-    print("Email credentials not found. Using console backend. Reset links will appear in terminal logs.")
+    
+    #print("Email credentials not found. Using console backend. Reset links will appear in terminal logs.")

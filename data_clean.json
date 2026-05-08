@@ -1,0 +1,9 @@
+[
+{
+  "model": "documents.category",
+  "pk": 1,
+  "fields": {
+    "name": "Test"
+  }
+}
+]
