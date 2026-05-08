@@ -527,3 +527,7 @@ def fetch_notifications(request):
         })
 
     return JsonResponse({"notifications": data})
+from django.http import HttpResponse
+
+def health_check(request):
+    return HttpResponse("OK")

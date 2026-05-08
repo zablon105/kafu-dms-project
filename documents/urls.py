@@ -4,6 +4,7 @@ from documents import views as doc_views
 from django.contrib.auth import views as auth_views
 from . import views 
 from django.views.generic import TemplateView
+from .views import health_check
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -11,7 +12,7 @@ urlpatterns = [
     # LANDING PAGE (Public - No Login Required)
     # Visitors see this first before logging in
     path('', TemplateView.as_view(template_name='landing.html'), name='landing'),
-    
+    path('health/', health_check, name='health'),
     # DASHBOARD HOME (Redirect after login - requires authentication)
     # Note: Your existing home view will check if user is logged in
     # If not logged in, it should redirect to landing page
