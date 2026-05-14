@@ -1,10 +1,9 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    {% load static %}
 
 <title>KAFU DMS</title>
 
@@ -233,7 +232,7 @@
 <div class="main" id="mainContent">
 
 <div class="top-bar">
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
+    <button type="button" class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode" aria-label="Toggle dark mode">
         <i class="fa-solid fa-moon"></i>
     </button>
 </div>
@@ -245,11 +244,11 @@
 </div>
 
 <!-- HAMBURGER MENU BUTTON -->
-<button class="hamburger-btn" id="hamburgerBtn">
+<button type="button" class="hamburger-btn" id="hamburgerBtn" title="Open navigation menu" aria-label="Open navigation menu">
     <i class="fa-solid fa-bars"></i>
 </button>
 
-<form style="display:none;">
+<form hidden>
     {% csrf_token %}
 </form>
 
