@@ -1,4 +1,7 @@
 import os
+import logging
+import boto3
+from botocore.exceptions import ClientError, EndpointConnectionError, NoCredentialsError
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
@@ -10,6 +13,8 @@ from django.core.paginator import Paginator
 from .models import Document, Category
 from .models import Notification
 from django.http import JsonResponse
+
+logger = logging.getLogger(__name__)
 
 # ==========notification backend===========#
 
@@ -185,20 +190,20 @@ def home(request):
         category_id = request.POST.get("category")
 
         if title and file:
-
-            Document.objects.create(
-                title=title,
-                file=file,
-                uploaded_by=user,
-                visibility=visibility,
-                category_id=category_id if category_id else None
-            )
-
-            messages.success(request, "Document uploaded successfully.")
-            create_notification(request.user, f"You uploaded '{title}'")
-
-            return redirect("home")
-
+            try:
+                Document.objects.create(
+                    title=title,
+                    file=file,
+                    uploaded_by=user,
+                    visibility=visibility,
+                    category_id=category_id if category_id else None
+                )
+                messages.success(request, "Document uploaded successfully.")
+                create_notification(request.user, f"You uploaded '{title}'")
+                return redirect("home")
+            except Exception as e:
+                logger.exception("Document upload failed")
+                messages.error(request, "Document upload failed. Please check storage settings and try again.")
         else:
             messages.error(request, "All fields are required.")
 
@@ -251,18 +256,19 @@ def upload_document(request):
         category_id = request.POST.get("category")
 
         if title and file:
-
-            Document.objects.create(
-                title=title,
-                file=file,
-                uploaded_by=request.user,
-                visibility=visibility,
-                category_id=category_id if category_id else None
-            )
-
-            messages.success(request, "Document uploaded successfully.")
-            return redirect("home")
-
+            try:
+                Document.objects.create(
+                    title=title,
+                    file=file,
+                    uploaded_by=request.user,
+                    visibility=visibility,
+                    category_id=category_id if category_id else None
+                )
+                messages.success(request, "Document uploaded successfully.")
+                return redirect('home')
+            except Exception as e:
+                logger.exception("Document upload failed")
+                messages.error(request, "Document upload failed. Please check storage settings and try again.")
         else:
             messages.error(request, "All fields are required.")
 
@@ -550,13 +556,25 @@ def health_check(request):
         db_status = f"error: {str(e)}"
 
     # Storage check
-    aws_key = os.getenv('SUPABASE_ACCESS_KEY') or os.getenv('AWS_ACCESS_KEY_ID')
-    aws_secret = os.getenv('SUPABASE_SECRET_KEY') or os.getenv('AWS_SECRET_ACCESS_KEY')
-    
-    if aws_key and aws_secret:
-        storage_status = "connected"
+    if getattr(settings, 'USE_SUPABASE_STORAGE', False):
+        try:
+            s3_client = boto3.client(
+                's3',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                endpoint_url=settings.AWS_S3_ENDPOINT_URL,
+                region_name=settings.AWS_S3_REGION_NAME,
+            )
+            s3_client.list_objects_v2(Bucket=settings.AWS_STORAGE_BUCKET_NAME, MaxKeys=1)
+            storage_status = "connected"
+        except (ClientError, EndpointConnectionError, NoCredentialsError) as e:
+            logger.exception("Supabase storage health check failed")
+            storage_status = f"error: {str(e)}"
+        except Exception as e:
+            logger.exception("Supabase storage health check failed")
+            storage_status = f"error: {str(e)}"
     else:
-        storage_status = "missing"
+        storage_status = "local" if settings.DEBUG else "missing"
 
     # Redis placeholder
     redis_status = "not configured"
@@ -573,3 +591,19 @@ def health_check(request):
     }
 
     return JsonResponse(status)
+
+
+def storage_status(request):
+    storage_info = {
+        "use_supabase_storage": getattr(settings, 'USE_SUPABASE_STORAGE', False),
+        "default_file_storage": getattr(settings, 'DEFAULT_FILE_STORAGE', None),
+        "media_url": getattr(settings, 'MEDIA_URL', None),
+        "supabase_project_url": getattr(settings, 'SUPABASE_PROJECT_URL', None),
+        "supabase_bucket_name": getattr(settings, 'SUPABASE_BUCKET_NAME', None),
+        "aws_s3_endpoint_url": getattr(settings, 'AWS_S3_ENDPOINT_URL', None),
+        "aws_s3_region_name": getattr(settings, 'AWS_S3_REGION_NAME', None),
+        "aws_access_key_set": bool(getattr(settings, 'AWS_ACCESS_KEY_ID', None)),
+        "aws_secret_key_set": bool(getattr(settings, 'AWS_SECRET_ACCESS_KEY', None)),
+        "debug": getattr(settings, 'DEBUG', False),
+    }
+    return JsonResponse(storage_info)

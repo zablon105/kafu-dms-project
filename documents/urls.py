@@ -17,6 +17,7 @@ urlpatterns = [
     # Note: Your existing home view will check if user is logged in
     # If not logged in, it should redirect to landing page
     path('home/', doc_views.home, name='home'),
+    path('storage-status/', doc_views.storage_status, name='storage_status'),
 
     # Profile
     path('profile/', doc_views.profile, name='profile'),

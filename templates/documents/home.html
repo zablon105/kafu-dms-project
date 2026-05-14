@@ -41,8 +41,8 @@
 <div class="card">
     <h3><i class="fa-solid fa-search"></i> Search & Filter</h3>
     <form method="GET" class="search-box">
-        <input type="text" id="searchInput" name="q" placeholder="Search by title..." value="{{ search_query|default:'' }}">
-        <select name="category">
+        <input type="text" id="searchInput" name="q" placeholder="Search by title..." value="{{ search_query|default:'' }}" aria-label="Search documents by title">
+        <select name="category" aria-label="Filter by category">
             <option value="">All Categories</option>
             {% for cat in categories %}
             <option value="{{ cat.id }}" {% if selected_category == cat.id|stringformat:"s" %}selected{% endif %}>
@@ -71,7 +71,7 @@
         <!-- SELECTED FILE NAME -->
         <p id="fileName" class="file-name"></p>
 
-        <select name="visibility" required>
+        <select name="visibility" required aria-label="Select document visibility">
             <option value="public">Public</option>
             <option value="staff">Staff Only</option>
             <option value="student">Students Only</option>
@@ -79,7 +79,7 @@
             <option value="shared">Shared Users Only</option>
         </select>
 
-        <select name="category">
+        <select name="category" aria-label="Select document category">
             <option value="">Select Category</option>
             {% for cat in categories %}
             <option value="{{ cat.id }}">{{ cat.name }}</option>
@@ -137,25 +137,25 @@
                     <td data-label="Date">{{ doc.created_at|date:"Y-m-d" }}</td>
                     <td data-label="Action" class="action-buttons">
                         <!-- PREVIEW -->
-                        <button class="btn preview-btn" onclick="previewFile('{{ doc.file.url }}')">
+                        <button class="btn preview-btn" type="button" title="Preview document" aria-label="Preview document" onclick="previewFile('{{ doc.file.url }}')">
                             <i class="fa-solid fa-eye"></i>
                         </button>
 
                         <!-- DOWNLOAD -->
-                        <a href="{{ doc.file.url }}" download class="btn download-btn">
+                        <a href="{{ doc.file.url }}" download class="btn download-btn" title="Download document" aria-label="Download document">
                             <i class="fa-solid fa-download"></i>
                         </a>
 
                         <!-- DELETE (ADMIN ONLY) -->
                         {% if is_admin %}
-                        <button class="btn delete-btn" data-id="{{ doc.id }}" onclick="deleteDocument(this)">
+                        <button class="btn delete-btn" type="button" data-id="{{ doc.id }}" onclick="deleteDocument(this)" title="Delete document" aria-label="Delete document">
                             <i class="fa-solid fa-trash"></i>
                         </button>
                         {% endif %}
 
                         <!-- SHARE (ADMIN ONLY) -->
                         {% if is_admin %}
-                        <button class="btn share-btn" data-id="{{ doc.id }}" onclick="openShareModal(this)">
+                        <button class="btn share-btn" type="button" data-id="{{ doc.id }}" onclick="openShareModal(this)" title="Share document" aria-label="Share document">
                             <i class="fa-solid fa-share"></i>
                         </button>
                         {% endif %}
@@ -186,7 +186,7 @@
 <div id="previewModal" class="preview-modal">
     <div class="preview-content">
         <span class="close-btn" onclick="closePreview()">×</span>
-        <iframe id="previewFrame" src="" width="100%" height="500px"></iframe>
+        <iframe id="previewFrame" src="" width="100%" height="500px" title="Document preview"></iframe>
     </div>
 </div>
 
@@ -195,7 +195,7 @@
     <div class="preview-content">
         <span class="close-btn" onclick="closeShareModal()">×</span>
         <h3>Share Document</h3>
-        <select id="lecturerSelect">
+        <select id="lecturerSelect" aria-label="Select lecturer to share document with">
             <option value="">Select Lecturer</option>
             {% for lecturer in lecturers %}
             <option value="{{ lecturer.id }}">
@@ -203,7 +203,7 @@
             </option>
             {% endfor %}
         </select>
-        <button onclick="shareDocument()">Share</button>
+        <button type="button" onclick="shareDocument()" title="Share selected document" aria-label="Share selected document">Share</button>
     </div>
 </div>
 
