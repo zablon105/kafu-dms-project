@@ -21,17 +21,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'documents',
-    
-    # NEW: For Supabase Storage
     'storages',
 ]
 
 # MIDDLEWARE
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',  # ✅ correct position
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -63,13 +60,12 @@ WSGI_APPLICATION = 'dms_project.wsgi.application'
 # DATABASE
 DATABASES = {
     'default': dj_database_url.parse(
-        "postgresql://postgres.xxtfvsrevwololmytkvu:Kinzi%40%400023@aws-1-eu-west-2.pooler.supabase.com:6543/postgres",
+        os.getenv('DATABASE_URL', "postgresql://postgres.xxtfvsrevwololmytkvu:Kinzi%40%400023@aws-1-eu-west-2.pooler.supabase.com:6543/postgres"),
         conn_max_age=600,
         ssl_require=True
     )
 }
 
-# Keeps Django checking dead DB connections automatically
 CONN_HEALTH_CHECKS = True
 
 # PASSWORD VALIDATION
@@ -93,31 +89,35 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # ========== MEDIA FILES - SUPABASE STORAGE ==========
-# NEW: Using Supabase Storage for uploaded documents
-
 # Supabase Storage Configuration
 SUPABASE_PROJECT_URL = os.getenv('SUPABASE_PROJECT_URL', 'https://xxtfvsrevwololmytkvu.supabase.co')
 SUPABASE_BUCKET_NAME = os.getenv('SUPABASE_BUCKET_NAME', 'documents')
 
 # S3-Compatible Storage (Supabase uses S3 API)
+# IMPORTANT: These MUST be set in Render environment variables
 AWS_ACCESS_KEY_ID = os.getenv('SUPABASE_ACCESS_KEY', '')
 AWS_SECRET_ACCESS_KEY = os.getenv('SUPABASE_SECRET_KEY', '')
 AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET_NAME
 AWS_S3_ENDPOINT_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/s3"
 AWS_S3_REGION_NAME = os.getenv('SUPABASE_REGION', 'eu-west-2')
 AWS_DEFAULT_ACL = 'public-read'
-AWS_QUERYSTRING_AUTH = False  # Don't add auth params to URLs
-AWS_S3_FILE_OVERWRITE = False  # Don't overwrite files with same name
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
 AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-# Use S3 storage for uploaded files
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# Only use S3 storage if keys are provided, otherwise fallback to local storage
+if AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
+    print(f"✅ Using Supabase Storage with bucket: {SUPABASE_BUCKET_NAME}")
+else:
+    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+    MEDIA_URL = '/media/'
+    print("⚠️ WARNING: Supabase credentials missing! Using local storage.")
 
-# Keep local media root as fallback (for development)
-MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
-MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
+MEDIA_ROOT = BASE_DIR / 'media'
 
 # AUTH REDIRECTS
 LOGIN_URL = '/login/'
@@ -125,12 +125,7 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 # ========== EMAIL CONFIGURATION ==========
-# For development - shows reset link in terminal
-# For production, set EMAIL_HOST_USER and EMAIL_HOST_PASSWORD in Render environment variables
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
-# Email settings (uses environment variables for security)
 EMAIL_HOST = os.getenv('EMAIL_HOST', 'smtp.gmail.com')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT', 587))
 EMAIL_USE_TLS = os.getenv('EMAIL_USE_TLS', 'True') == 'True'
@@ -138,6 +133,5 @@ EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', EMAIL_HOST_USER)
 
-# Fallback to console backend if no email credentials are provided
 if not EMAIL_HOST_USER or not EMAIL_HOST_PASSWORD:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
