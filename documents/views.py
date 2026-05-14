@@ -1,3 +1,4 @@
+import os
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
@@ -549,9 +550,10 @@ def health_check(request):
         db_status = f"error: {str(e)}"
 
     # Storage check
-    media_root = Path(settings.MEDIA_ROOT)
-
-    if media_root.exists() and media_root.is_dir():
+    aws_key = os.getenv('SUPABASE_ACCESS_KEY') or os.getenv('AWS_ACCESS_KEY_ID')
+    aws_secret = os.getenv('SUPABASE_SECRET_KEY') or os.getenv('AWS_SECRET_ACCESS_KEY')
+    
+    if aws_key and aws_secret:
         storage_status = "connected"
     else:
         storage_status = "missing"
