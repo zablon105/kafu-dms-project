@@ -1,1 +1,1 @@
-web: gunicorn kafu dms-project.wsgi
+web: gunicorn dms_project.wsgi

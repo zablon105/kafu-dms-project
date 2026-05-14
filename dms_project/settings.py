@@ -1,6 +1,7 @@
 import os
 import dj_database_url
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 
 """
 Django settings for dms_project project.
@@ -61,9 +62,13 @@ TEMPLATES = [
 WSGI_APPLICATION = 'dms_project.wsgi.application'
 
 # DATABASE
+DATABASE_URL = os.getenv('DATABASE_URL', '')
+if not DATABASE_URL:
+    raise ImproperlyConfigured('DATABASE_URL environment variable must be set.')
+
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv("DATABASE_URL", ""),
+        default=DATABASE_URL,
         conn_max_age=600,
         ssl_require=True
     )
