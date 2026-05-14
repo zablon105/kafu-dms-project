@@ -62,8 +62,8 @@ WSGI_APPLICATION = 'dms_project.wsgi.application'
 
 # DATABASE
 DATABASES = {
-    'default': dj_database_url.parse(
-        "postgresql://postgres.xxtfvsrevwololmytkvu:Kinzi%40%400023@aws-1-eu-west-2.pooler.supabase.com:6543/postgres",
+    'default': dj_database_url.config(
+        default=os.getenv("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True
     )
