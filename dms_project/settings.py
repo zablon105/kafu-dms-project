@@ -126,6 +126,9 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
 MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 
+# Enable Supabase S3 Storage
+USE_SUPABASE_STORAGE = os.getenv('USE_SUPABASE_STORAGE', 'False') == 'True'
+
 # AUTH REDIRECTS
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/'
