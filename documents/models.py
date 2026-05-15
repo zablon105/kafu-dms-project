@@ -20,7 +20,7 @@ class Document(models.Model):
     ]
 
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to='documents/')
+    file = models.FileField(upload_to='')
     uploaded_by = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
