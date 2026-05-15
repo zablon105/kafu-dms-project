@@ -1,9 +1,10 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    {% load static %}
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
 
 <title>KAFU DMS</title>
 
@@ -161,10 +162,6 @@
             margin-bottom: 15px;
         }
     }
-    
-    .csrf-form {
-        display: none;
-    }
 </style>
 
 </head>
@@ -236,7 +233,7 @@
 <div class="main" id="mainContent">
 
 <div class="top-bar">
-    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle" title="Toggle dark mode">
+    <button class="dark-mode-toggle" onclick="toggleDarkMode()" id="darkModeToggle">
         <i class="fa-solid fa-moon"></i>
     </button>
 </div>
@@ -248,11 +245,11 @@
 </div>
 
 <!-- HAMBURGER MENU BUTTON -->
-<button class="hamburger-btn" id="hamburgerBtn" title="Menu">
+<button class="hamburger-btn" id="hamburgerBtn">
     <i class="fa-solid fa-bars"></i>
 </button>
 
-<form class="csrf-form">
+<form style="display:none;">
     {% csrf_token %}
 </form>
 

@@ -2,7 +2,6 @@ import os
 import dj_database_url
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
-from dotenv import load_dotenv
 
 """
 Django settings for dms_project project.
@@ -10,18 +9,12 @@ Django settings for dms_project project.
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Load local environment variables from .env when available
-load_dotenv(BASE_DIR / '.env')
-
 # SECURITY
 SECRET_KEY = os.getenv('SECRET_KEY') or os.getenv('SECRETE_KEY')
 if not SECRET_KEY:
     raise ImproperlyConfigured('SECRET_KEY environment variable must be set.')
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '.onrender.com,localhost,127.0.0.1').split(',')
-RENDER_EXTERNAL_HOSTNAME = os.getenv('RENDER_EXTERNAL_HOSTNAME')
-if RENDER_EXTERNAL_HOSTNAME and RENDER_EXTERNAL_HOSTNAME not in ALLOWED_HOSTS:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
 # APPS
 INSTALLED_APPS = [
@@ -114,8 +107,8 @@ SUPABASE_PROJECT_URL = os.getenv('SUPABASE_PROJECT_URL', 'https://xxtfvsrevwolol
 SUPABASE_BUCKET_NAME = os.getenv('SUPABASE_BUCKET_NAME', 'documents')
 
 # S3-Compatible Storage (Supabase uses S3 API)
-AWS_ACCESS_KEY_ID = os.getenv('SUPABASE_ACCESS_KEY', '') or os.getenv('AWS_ACCESS_KEY_ID', '')
-AWS_SECRET_ACCESS_KEY = os.getenv('SUPABASE_SECRET_KEY', '') or os.getenv('AWS_SECRET_ACCESS_KEY', '')
+AWS_ACCESS_KEY_ID = os.getenv('SUPABASE_ACCESS_KEY', '')
+AWS_SECRET_ACCESS_KEY = os.getenv('SUPABASE_SECRET_KEY', '')
 AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET_NAME
 AWS_S3_ENDPOINT_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/s3"
 AWS_S3_REGION_NAME = os.getenv('SUPABASE_REGION', 'eu-west-2')
@@ -126,36 +119,12 @@ AWS_S3_OBJECT_PARAMETERS = {
     'CacheControl': 'max-age=86400',
 }
 
-USE_SUPABASE_STORAGE = bool(AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY)
+# Use S3 storage for uploaded files
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-if USE_SUPABASE_STORAGE:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    STORAGES = {
-        'default': {
-            'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage',
-        },
-        'staticfiles': {
-            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-        },
-    }
-    MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
-    MEDIA_ROOT = BASE_DIR / 'media'
-else:
-    if not DEBUG:
-        raise ImproperlyConfigured(
-            'SUPABASE_ACCESS_KEY and SUPABASE_SECRET_KEY must be set in production to use Supabase storage.'
-        )
-    DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    STORAGES = {
-        'default': {
-            'BACKEND': 'django.core.files.storage.FileSystemStorage',
-        },
-        'staticfiles': {
-            'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-        },
-    }
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = BASE_DIR / 'media'  # Local development fallback
+# Keep local media root as fallback (for development)
+MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
+MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 
 # AUTH REDIRECTS
 LOGIN_URL = '/login/'
