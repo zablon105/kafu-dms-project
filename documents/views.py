@@ -607,3 +607,11 @@ def storage_status(request):
         "debug": getattr(settings, 'DEBUG', False),
     }
     return JsonResponse(storage_info)
+
+
+from documents.models import Document
+from django.http import JsonResponse
+
+def debug_files(request):
+    files = list(Document.objects.values_list('file', flat=True))
+    return JsonResponse({'files': files})

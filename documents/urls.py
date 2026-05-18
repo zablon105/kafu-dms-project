@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 from . import views 
 from django.views.generic import TemplateView
 from .views import health_check
+from django.urls import path
+from .views import debug_files
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
@@ -30,6 +32,8 @@ urlpatterns = [
     # Upload Document
     path('upload/', doc_views.upload_document, name='upload_document'),
 
+    # View Document
+    path('debug-files/', debug_files),
     # Share document
     path('share/<int:doc_id>/', doc_views.share_document, name='share_document'),
 
