@@ -1,42 +1,33 @@
 // ================= PREVIEW =================
-function previewFile(fileUrl) {
-
-    const modal = document.getElementById("previewModal");
+function previewFile(url) {
     const frame = document.getElementById("previewFrame");
+    const modal = document.getElementById("previewModal");
 
-    if (!modal || !frame) return;
+    // Detect file type
+    const lowerUrl = url.toLowerCase();
 
-    let fullUrl = window.location.origin + fileUrl;
-    let viewerUrl = "";
+    let previewUrl = "";
 
-    if (fileUrl.toLowerCase().endsWith(".pdf")) {
-        viewerUrl = fullUrl;
+    if (lowerUrl.endsWith(".pdf")) {
+        // PDFs can be previewed directly
+        previewUrl = url;
+    } else if (
+        lowerUrl.endsWith(".doc") ||
+        lowerUrl.endsWith(".docx") ||
+        lowerUrl.endsWith(".xls") ||
+        lowerUrl.endsWith(".xlsx") ||
+        lowerUrl.endsWith(".txt")
+    ) {
+        // Use Google Docs Viewer (CORRECT way)
+        previewUrl = `https://docs.google.com/viewerng/viewer?url=${encodeURIComponent(url)}&embedded=true`;
     } else {
-        viewerUrl = "https://docs.google.com/gview?url=" + fullUrl + "&embedded=true";
+        // fallback
+        previewUrl = url;
     }
 
-    frame.src = viewerUrl;
-    modal.style.display = "block";
+    frame.src = previewUrl;
+    modal.style.display = "flex";
 }
-
-function closePreview() {
-
-    const modal = document.getElementById("previewModal");
-    const frame = document.getElementById("previewFrame");
-
-    if (!modal || !frame) return;
-
-    modal.style.display = "none";
-    frame.src = "";
-}
-
-// Close modal outside click
-window.addEventListener("click", function(event) {
-    const modal = document.getElementById("previewModal");
-    if (modal && event.target === modal) {
-        closePreview();
-    }
-});
 
 
 // ================= DELETE =================
