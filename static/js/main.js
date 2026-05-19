@@ -3,13 +3,15 @@ function previewFile(url) {
     const frame = document.getElementById("previewFrame");
     const modal = document.getElementById("previewModal");
 
-    // Detect file type
-    const lowerUrl = url.toLowerCase();
+    // 🔥 FIX: clean malformed URLs (double https)
+    if (url.includes("https://") && url.indexOf("https://") !== url.lastIndexOf("https://")) {
+        url = url.substring(url.lastIndexOf("https://"));
+    }
 
+    const lowerUrl = url.toLowerCase();
     let previewUrl = "";
 
     if (lowerUrl.endsWith(".pdf")) {
-        // PDFs can be previewed directly
         previewUrl = url;
     } else if (
         lowerUrl.endsWith(".doc") ||
@@ -18,18 +20,15 @@ function previewFile(url) {
         lowerUrl.endsWith(".xlsx") ||
         lowerUrl.endsWith(".txt")
     ) {
-        // Use Google Docs Viewer (CORRECT way)
-        previewUrl = `https://docs.google.com/viewerng/viewer?url=${encodeURIComponent(url)}&embedded=true`;
+        previewUrl = `https://docs.google.com/gview?url=${encodeURIComponent(url)}&embedded=true`;
     } else {
-        // fallback
         previewUrl = url;
     }
 
+    console.log("Preview URL:", previewUrl); // debug
     frame.src = previewUrl;
     modal.style.display = "flex";
 }
-
-
 // ================= DELETE =================
 function deleteDocument(button) {
 
