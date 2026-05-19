@@ -128,8 +128,7 @@ AWS_S3_CUSTOM_DOMAIN = f"https://xxtfvsrevwololmytkvu.supabase.co/storage/v1/obj
 MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
 
 # Enable Supabase S3 Storage
-if USE_SUPABASE_STORAGE:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+USE_SUPABASE_STORAGE = os.getenv('USE_SUPABASE_STORAGE', 'False') == 'True'
 
 # AUTH REDIRECTS
 LOGIN_URL = '/login/'
