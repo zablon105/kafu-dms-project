@@ -126,6 +126,8 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # MEDIA_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/object/public/{SUPABASE_BUCKET_NAME}/"
 AWS_S3_CUSTOM_DOMAIN = f"https://xxtfvsrevwololmytkvu.supabase.co/storage/v1/object/public/documents"
 MEDIA_ROOT = BASE_DIR / 'media'  # Fallback for local development
+MEDIA_URL = f"{AWS_S3_CUSTOM_DOMAIN}/"
+
 
 # Enable Supabase S3 Storage
 USE_SUPABASE_STORAGE = os.getenv('USE_SUPABASE_STORAGE', 'False') == 'True'
