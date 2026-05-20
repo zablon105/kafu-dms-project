@@ -142,9 +142,10 @@
                         </button>
 
                         <!-- DOWNLOAD -->
-                        <a href="{{ doc.file.url }}" download class="btn download-btn" title="Download document" aria-label="Download document">
+                        <a href="{% url 'download_document' doc.id %}" class="btn download-btn" title="Download document">
                             <i class="fa-solid fa-download"></i>
                         </a>
+
 
                         <!-- DELETE (ADMIN ONLY) -->
                         {% if is_admin %}

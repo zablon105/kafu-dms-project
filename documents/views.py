@@ -615,3 +615,24 @@ from django.http import JsonResponse
 def debug_files(request):
     files = list(Document.objects.values_list('file', flat=True))
     return JsonResponse({'files': files})
+
+# ================== download view ==================
+from django.http import FileResponse, Http404
+from django.conf import settings
+import os
+
+@login_required
+def download_document(request, doc_id):
+    document = get_object_or_404(Document, id=doc_id)
+
+    # If using Supabase/S3 storage
+    if settings.USE_SUPABASE_STORAGE:
+        # Redirect to public Supabase URL
+        return redirect(document.file.url)
+
+    # If using local MEDIA_ROOT
+    file_path = document.file.path
+    if not os.path.exists(file_path):
+        raise Http404("File not found")
+
+    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=document.title)

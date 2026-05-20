@@ -49,6 +49,10 @@ urlpatterns = [
     # Login
     path('login/', doc_views.login_view, name='login'),
 
+    # download document
+    path('download/<int:doc_id>/', views.download_document, name='download_document'),
+
+
     # Logout
     path('logout/', doc_views.logout_view, name='logout'),
     
