@@ -8,14 +8,6 @@
     <link rel="stylesheet" href="{% static 'css/landing.css' %}">
     <link rel="stylesheet" href="{% static 'css/auth.css' %}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        /* Modal overlay */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center; padding: 20px; }
-        .modal.active { display: flex; }
-        .modal .auth-container { max-width: 480px; width: 100%; }
-        .modal-close { position: absolute; right: 20px; top: 18px; background: none; border: none; font-size: 26px; color: #333; cursor: pointer; }
-        .modal .auth-links { justify-content: center; }
-    </style>
 </head>
 <body>
 
@@ -222,7 +214,7 @@
         </div>
     </section>
 
-    <!-- Messages (for auth feedback) -->
+    <!-- auth messages -->
     <div class="container" style="margin-top:20px; max-width:800px;">
         {% if messages %}
             {% for message in messages %}
@@ -231,7 +223,7 @@
         {% endif %}
     </div>
 
-    <!-- Auth Modals -->
+    <!-- Auth Modals (login/register/password reset) -->
     <div class="modal" id="loginModal" aria-hidden="true">
         <div class="auth-container">
             <button class="modal-close" aria-label="Close">&times;</button>
@@ -312,7 +304,7 @@
         </div>
     </div>
 
-    <!-- Mobile Menu + Modal JavaScript -->
+    <!-- Mobile Menu JavaScript -->
     <script>
         const mobileMenuBtn = document.getElementById('mobileMenuBtn');
         const navLinks = document.getElementById('navLinks');
@@ -329,75 +321,6 @@
                 navLinks.classList.remove('active');
             });
         });
-
-        // Modal handlers
-        function openModal(id) {
-            const m = document.getElementById(id);
-            if (m) { m.classList.add('active'); m.setAttribute('aria-hidden','false'); }
-        }
-
-        function closeModal(el) {
-            const modal = el.closest('.modal');
-            if (modal) { modal.classList.remove('active'); modal.setAttribute('aria-hidden','true'); }
-        }
-
-        document.querySelectorAll('[data-modal]').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                const id = this.getAttribute('data-modal');
-                openModal(id);
-            });
-        });
-
-        // CTA button
-        const ctaLogin = document.getElementById('ctaLogin');
-        if (ctaLogin) ctaLogin.addEventListener('click', e => { e.preventDefault(); openModal('loginModal'); });
-
-        // close buttons
-        document.querySelectorAll('.modal-close').forEach(b => b.addEventListener('click', function(){ closeModal(this); }));
-
-        // switch between modals
-        document.querySelectorAll('[data-switch]').forEach(link => {
-            link.addEventListener('click', function(e){
-                e.preventDefault();
-                const target = this.getAttribute('data-switch');
-                const currentModal = this.closest('.modal');
-                if (currentModal) currentModal.classList.remove('active');
-                openModal(target);
-            });
-        });
-
-        // ESC to close
-        document.addEventListener('keydown', function(e){ if (e.key === 'Escape') { document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active')); } });
-
-        // helper functions used by auth forms
-        function togglePassword(fieldId, btn) {
-            let field = document.getElementById(fieldId);
-
-            if (field.type === "password") {
-                field.type = "text";
-                btn.textContent = "Hide";
-            } else {
-                field.type = "password";
-                btn.textContent = "Show";
-            }
-        }
-
-        function checkPasswordMatchModal() {
-            let pass1 = document.getElementById("password1_modal").value;
-            let pass2 = document.getElementById("password2_modal").value;
-            let message = document.getElementById("match-message-modal");
-
-            if (pass2.length === 0) { message.innerHTML = ""; return; }
-
-            if (pass1 === pass2) {
-                message.style.color = "green";
-                message.innerHTML = "✓ Passwords match";
-            } else {
-                message.style.color = "red";
-                message.innerHTML = "✗ Passwords do not match";
-            }
-        }
     </script>
 </body>
 </html>
