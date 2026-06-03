@@ -1,28 +1,64 @@
 import os
 import logging
 import boto3
+import mimetypes
 from botocore.exceptions import ClientError, EndpointConnectionError, NoCredentialsError
 from botocore.config import Config
-from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import logout, login
+from django.conf import settings
 from django.contrib import messages
+from django.contrib.auth import logout, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
+from django.core.paginator import Paginator
 from django.db.models import Count, Q
 from django.db.models.functions import TruncMonth
-from django.core.paginator import Paginator
-from .models import Document, Category
-from .models import Notification
-from django.http import JsonResponse
+from django.http import FileResponse, Http404, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Category, Document, Notification
 
 logger = logging.getLogger(__name__)
+
+def create_s3_client():
+    default_endpoint = f"{settings.SUPABASE_PROJECT_URL}/storage/v1/s3"
+    endpoints = []
+    # Try the default Supabase S3 endpoint first (more likely to have valid cert)
+    endpoints.append(default_endpoint)
+    # Then try any custom endpoint provided in env
+    if settings.AWS_S3_ENDPOINT_URL and settings.AWS_S3_ENDPOINT_URL not in endpoints:
+        endpoints.append(settings.AWS_S3_ENDPOINT_URL)
+
+    s3_config = Config(
+        signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
+        s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
+    )
+
+    last_exception = None
+    for endpoint in endpoints:
+        client = boto3.client(
+            's3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            endpoint_url=endpoint,
+            region_name=settings.AWS_S3_REGION_NAME,
+            config=s3_config,
+        )
+        try:
+            client.list_objects_v2(Bucket=settings.AWS_STORAGE_BUCKET_NAME, MaxKeys=1)
+            if endpoint != settings.AWS_S3_ENDPOINT_URL:
+                logger.info('Using endpoint: %s', endpoint)
+            return client
+        except Exception as exc:
+            last_exception = exc
+            # Log SSL/handshake errors separately for clarity
+            logger.warning('S3 endpoint %s failed: %s', endpoint, getattr(exc, 'args', exc))
+            continue
+
+    raise last_exception
 
 # ==========notification backend===========#
 
 def create_notification(user, message):
     Notification.objects.create(user=user, message=message)
-
-from django.http import JsonResponse
 def mark_notifications_read(request):
     Notification.objects.filter(user=request.user, is_read=False).update(is_read=True)
     return JsonResponse({"status": "ok"})    
@@ -535,9 +571,7 @@ def fetch_notifications(request):
         })
 
     return JsonResponse({"notifications": data})
-from django.http import JsonResponse
 from django.db import connection
-from django.conf import settings
 from pathlib import Path
 from datetime import datetime
 
@@ -559,20 +593,7 @@ def health_check(request):
     # Storage check
     if getattr(settings, 'USE_SUPABASE_STORAGE', False):
         try:
-            s3_config = Config(
-                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
-                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
-            )
-
-            s3_client = boto3.client(
-                's3',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                endpoint_url=settings.AWS_S3_ENDPOINT_URL,
-                region_name=settings.AWS_S3_REGION_NAME,
-                config=s3_config,
-            )
-            s3_client.list_objects_v2(Bucket=settings.AWS_STORAGE_BUCKET_NAME, MaxKeys=1)
+            create_s3_client()
             storage_status = "connected"
         except (ClientError, EndpointConnectionError, NoCredentialsError) as e:
             logger.exception("Supabase storage health check failed")
@@ -637,19 +658,7 @@ def download_document(request, doc_id):
     if settings.USE_SUPABASE_STORAGE:
         # Try to stream the object from S3-compatible storage (Supabase)
         try:
-            s3_config = Config(
-                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
-                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
-            )
-
-            s3_client = boto3.client(
-                's3',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                endpoint_url=getattr(settings, 'AWS_S3_ENDPOINT_URL', settings.AWS_S3_ENDPOINT_URL),
-                region_name=settings.AWS_S3_REGION_NAME,
-                config=s3_config,
-            )
+            s3_client = create_s3_client()
 
             key = document.file.name
             obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
@@ -684,19 +693,7 @@ def preview_document(request, doc_id):
     # If using Supabase/S3 storage
     if settings.USE_SUPABASE_STORAGE:
         try:
-            s3_config = Config(
-                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
-                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
-            )
-
-            s3_client = boto3.client(
-                's3',
-                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
-                endpoint_url=getattr(settings, 'AWS_S3_ENDPOINT_URL', settings.AWS_S3_ENDPOINT_URL),
-                region_name=settings.AWS_S3_REGION_NAME,
-                config=s3_config,
-            )
+            s3_client = create_s3_client()
 
             key = document.file.name
             obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
