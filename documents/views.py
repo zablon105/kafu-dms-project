@@ -779,6 +779,35 @@ def preview_document(request, doc_id):
     return response
 
 
+def debug_storage_list(request):
+    # Public diagnostic endpoint (temporary for debugging)
+    prefix = request.GET.get('prefix', '')
+    max_items = int(request.GET.get('max', 100))
+    
+    try:
+        s3 = create_s3_client()
+        result = {
+            'status': 'success',
+            'bucket': settings.AWS_STORAGE_BUCKET_NAME,
+            'prefix': prefix,
+            'objects': [],
+        }
+        paginator = s3.get_paginator('list_objects_v2')
+        page_iter = paginator.paginate(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Prefix=prefix)
+        count = 0
+        for page in page_iter:
+            for obj in page.get('Contents', []):
+                result['objects'].append({'key': obj['Key'], 'size': obj.get('Size', 0)})
+                count += 1
+                if count >= max_items:
+                    break
+            if count >= max_items:
+                break
+        return JsonResponse(result)
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'error': str(e)}, status=500)
+
+
 @login_required
 def list_storage_objects(request):
     # Admin/staff-only UI to list objects in the configured Supabase bucket

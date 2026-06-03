@@ -34,6 +34,8 @@ urlpatterns = [
 
     # View Document
     path('debug-files/', debug_files),
+    # Debug storage listing (temporary, public JSON endpoint)
+    path('debug/storage-list/', doc_views.debug_storage_list, name='debug_storage_list'),
     # Admin-only storage browser (lists keys from Supabase bucket)
     path('admin/storage-list/', doc_views.list_storage_objects, name='list_storage_objects'),
     # Share document
