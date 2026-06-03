@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="card modern-card">
+    <h3>Storage Objects</h3>
+
+    {% if error %}
+        <div class="alert error">{{ error }}</div>
+    {% endif %}
+
+    <form method="get" class="search-box">
+        <input type="text" name="prefix" placeholder="Prefix (e.g. documents/)" value="{{ prefix }}">
+        <input type="number" name="max" value="{{ max }}" min="1" max="5000">
+        <button type="submit">Filter</button>
+    </form>
+
+    {% if objects %}
+        <table class="doc-table modern-table">
+            <thead>
+                <tr><th>Key</th><th>Size (bytes)</th></tr>
+            </thead>
+            <tbody>
+            {% for obj in objects %}
+                <tr>
+                    <td>{{ obj.key }}</td>
+                    <td>{{ obj.size }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No objects found.</p>
+    {% endif %}
+</div>
+{% endblock %}

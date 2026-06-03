@@ -21,11 +21,11 @@ logger = logging.getLogger(__name__)
 def create_s3_client():
     default_endpoint = f"{settings.SUPABASE_PROJECT_URL}/storage/v1/s3"
     endpoints = []
-    # Try the default Supabase S3 endpoint first (more likely to have valid cert)
-    endpoints.append(default_endpoint)
-    # Then try any custom endpoint provided in env
-    if settings.AWS_S3_ENDPOINT_URL and settings.AWS_S3_ENDPOINT_URL not in endpoints:
+    # Prefer any configured custom endpoint first; Supabase S3 often uses the storage subdomain.
+    if settings.AWS_S3_ENDPOINT_URL:
         endpoints.append(settings.AWS_S3_ENDPOINT_URL)
+    if default_endpoint not in endpoints:
+        endpoints.append(default_endpoint)
 
     s3_config = Config(
         signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
@@ -54,6 +54,46 @@ def create_s3_client():
             continue
 
     raise last_exception
+
+
+def get_s3_object_with_alternate_keys(s3_client, key):
+    tried_keys = [key]
+
+    if key.startswith('documents/'):
+        tried_keys.append('files/' + key[len('documents/'):])
+        tried_keys.append(key[len('documents/'):])
+    elif key.startswith('files/'):
+        tried_keys.append('documents/' + key[len('files/'):])
+        tried_keys.append(key[len('files/'):])
+    else:
+        tried_keys.append(f'documents/{key}')
+        tried_keys.append(f'files/{key}')
+
+    seen = set()
+    for candidate in tried_keys:
+        if candidate in seen:
+            continue
+        seen.add(candidate)
+        try:
+            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=candidate)
+            if candidate != key:
+                logger.info('Falling back to alternate S3 key %s for original key %s', candidate, key)
+            return obj, candidate
+        except ClientError as e:
+            error_code = e.response.get('Error', {}).get('Code', '')
+            if error_code in ('NoSuchKey', '404', 'NotFound'):
+                continue
+            raise
+
+    raise ClientError(
+        {
+            'Error': {
+                'Code': 'NoSuchKey',
+                'Message': 'None of the attempted keys were found',
+            }
+        },
+        'GetObject'
+    )
 
 # ==========notification backend===========#
 
@@ -661,10 +701,10 @@ def download_document(request, doc_id):
             s3_client = create_s3_client()
 
             key = document.file.name
-            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
+            obj, found_key = get_s3_object_with_alternate_keys(s3_client, key)
             body = obj['Body']  # StreamingBody
             content_type = obj.get('ContentType', 'application/octet-stream')
-            filename = os.path.basename(key)
+            filename = os.path.basename(found_key)
 
             response = FileResponse(body, as_attachment=True, filename=filename)
             response['Content-Type'] = content_type
@@ -696,10 +736,10 @@ def preview_document(request, doc_id):
             s3_client = create_s3_client()
 
             key = document.file.name
-            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
+            obj, found_key = get_s3_object_with_alternate_keys(s3_client, key)
             body = obj['Body']  # StreamingBody
             content_type = obj.get('ContentType', 'application/octet-stream')
-            filename = os.path.basename(key)
+            filename = os.path.basename(found_key)
 
             response = FileResponse(body, as_attachment=False)
             response['Content-Type'] = content_type
@@ -719,3 +759,42 @@ def preview_document(request, doc_id):
     response['Content-Type'] = mime
     response['Content-Disposition'] = f'inline; filename="{os.path.basename(file_path)}"'
     return response
+
+
+@login_required
+def list_storage_objects(request):
+    # Admin/staff-only UI to list objects in the configured Supabase bucket
+    if not (request.user.is_superuser or is_staff_user(request.user)):
+        raise Http404('Not authorized')
+
+    prefix = request.GET.get('prefix', '')
+    try:
+        s3 = create_s3_client()
+    except Exception as e:
+        context = {'error': f'Failed to create S3 client: {e}'}
+        return render(request, 'documents/storage_list.html', context)
+
+    max_items = int(request.GET.get('max', 1000))
+    objects = []
+    try:
+        paginator = s3.get_paginator('list_objects_v2')
+        page_iter = paginator.paginate(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Prefix=prefix)
+        count = 0
+        for page in page_iter:
+            for obj in page.get('Contents', []):
+                objects.append({'key': obj['Key'], 'size': obj.get('Size', 0)})
+                count += 1
+                if count >= max_items:
+                    break
+            if count >= max_items:
+                break
+    except ClientError as e:
+        context = {'error': f'S3 error: {e.response.get("Error", {})}'}
+        return render(request, 'documents/storage_list.html', context)
+
+    context = {
+        'objects': objects,
+        'prefix': prefix,
+        'max': max_items,
+    }
+    return render(request, 'documents/storage_list.html', context)
