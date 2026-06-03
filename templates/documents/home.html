@@ -137,7 +137,7 @@
                     <td data-label="Date">{{ doc.created_at|date:"Y-m-d" }}</td>
                     <td data-label="Action" class="action-buttons">
                         <!-- PREVIEW -->
-                        <button class="btn preview-btn" type="button" title="Preview document" aria-label="Preview document" onclick="previewFile('{{ doc.file.url }}')">
+                        <button class="btn preview-btn" type="button" title="Preview document" aria-label="Preview document" onclick="previewFile('{% url 'preview_document' doc.id %}')">
                             <i class="fa-solid fa-eye"></i>
                         </button>
 

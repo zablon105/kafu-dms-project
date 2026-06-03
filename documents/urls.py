@@ -51,6 +51,8 @@ urlpatterns = [
 
     # download document
     path('download/<int:doc_id>/', views.download_document, name='download_document'),
+    # preview document (iframe-friendly)
+    path('preview/<int:doc_id>/', doc_views.preview_document, name='preview_document'),
 
 
     # Logout

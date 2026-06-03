@@ -110,8 +110,15 @@ SUPABASE_BUCKET_NAME = os.getenv('SUPABASE_BUCKET_NAME', 'documents')
 AWS_ACCESS_KEY_ID = os.getenv('SUPABASE_ACCESS_KEY', '')
 AWS_SECRET_ACCESS_KEY = os.getenv('SUPABASE_SECRET_KEY', '')
 AWS_STORAGE_BUCKET_NAME = SUPABASE_BUCKET_NAME
-AWS_S3_ENDPOINT_URL = f"{SUPABASE_PROJECT_URL}/storage/v1/s3"
+AWS_S3_ENDPOINT_URL = os.getenv('AWS_S3_ENDPOINT_URL', f"{SUPABASE_PROJECT_URL}/storage/v1/s3")
+# Region name used for signing
 AWS_S3_REGION_NAME = os.getenv('SUPABASE_REGION', 'eu-west-2')
+
+# Ensure S3v4 signing and path-style addressing for S3-compatible providers
+# These can be overridden via environment variables if needed.
+AWS_S3_SIGNATURE_VERSION = os.getenv('AWS_S3_SIGNATURE_VERSION', 's3v4')
+AWS_S3_ADDRESSING_STYLE = os.getenv('AWS_S3_ADDRESSING_STYLE', 'path')
+
 AWS_DEFAULT_ACL = 'public-read'
 AWS_QUERYSTRING_AUTH = False  # Don't add auth params to URLs
 AWS_S3_FILE_OVERWRITE = False  # Don't overwrite files with same name

@@ -2,6 +2,7 @@ import os
 import logging
 import boto3
 from botocore.exceptions import ClientError, EndpointConnectionError, NoCredentialsError
+from botocore.config import Config
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
@@ -558,12 +559,18 @@ def health_check(request):
     # Storage check
     if getattr(settings, 'USE_SUPABASE_STORAGE', False):
         try:
+            s3_config = Config(
+                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
+                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
+            )
+
             s3_client = boto3.client(
                 's3',
                 aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
                 aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
                 endpoint_url=settings.AWS_S3_ENDPOINT_URL,
                 region_name=settings.AWS_S3_REGION_NAME,
+                config=s3_config,
             )
             s3_client.list_objects_v2(Bucket=settings.AWS_STORAGE_BUCKET_NAME, MaxKeys=1)
             storage_status = "connected"
@@ -620,6 +627,7 @@ def debug_files(request):
 from django.http import FileResponse, Http404
 from django.conf import settings
 import os
+import mimetypes
 
 @login_required
 def download_document(request, doc_id):
@@ -627,8 +635,38 @@ def download_document(request, doc_id):
 
     # If using Supabase/S3 storage
     if settings.USE_SUPABASE_STORAGE:
-        # Redirect to public Supabase URL
-        return redirect(document.file.url)
+        # Try to stream the object from S3-compatible storage (Supabase)
+        try:
+            s3_config = Config(
+                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
+                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
+            )
+
+            s3_client = boto3.client(
+                's3',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                endpoint_url=getattr(settings, 'AWS_S3_ENDPOINT_URL', settings.AWS_S3_ENDPOINT_URL),
+                region_name=settings.AWS_S3_REGION_NAME,
+                config=s3_config,
+            )
+
+            key = document.file.name
+            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
+            body = obj['Body']  # StreamingBody
+            content_type = obj.get('ContentType', 'application/octet-stream')
+            filename = os.path.basename(key)
+
+            response = FileResponse(body, as_attachment=True, filename=filename)
+            response['Content-Type'] = content_type
+            return response
+        except ClientError as e:
+            logger.exception('Error fetching file from Supabase storage')
+            # Map common S3 errors to 404
+            error_code = e.response.get('Error', {}).get('Code', '')
+            if error_code in ('NoSuchKey', '404', 'NotFound'):
+                raise Http404("File not found")
+            raise Http404("File not found")
 
     # If using local MEDIA_ROOT
     file_path = document.file.path
@@ -636,3 +674,51 @@ def download_document(request, doc_id):
         raise Http404("File not found")
 
     return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=document.title)
+
+
+# ========== preview endpoint ==========
+@login_required
+def preview_document(request, doc_id):
+    document = get_object_or_404(Document, id=doc_id)
+
+    # If using Supabase/S3 storage
+    if settings.USE_SUPABASE_STORAGE:
+        try:
+            s3_config = Config(
+                signature_version=getattr(settings, 'AWS_S3_SIGNATURE_VERSION', 's3v4'),
+                s3={'addressing_style': getattr(settings, 'AWS_S3_ADDRESSING_STYLE', 'path')}
+            )
+
+            s3_client = boto3.client(
+                's3',
+                aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+                aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+                endpoint_url=getattr(settings, 'AWS_S3_ENDPOINT_URL', settings.AWS_S3_ENDPOINT_URL),
+                region_name=settings.AWS_S3_REGION_NAME,
+                config=s3_config,
+            )
+
+            key = document.file.name
+            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=key)
+            body = obj['Body']  # StreamingBody
+            content_type = obj.get('ContentType', 'application/octet-stream')
+            filename = os.path.basename(key)
+
+            response = FileResponse(body, as_attachment=False)
+            response['Content-Type'] = content_type
+            response['Content-Disposition'] = f'inline; filename="{filename}"'
+            return response
+        except ClientError as e:
+            logger.exception('Error fetching file from Supabase storage for preview')
+            raise Http404("File not found")
+
+    # Local file fallback
+    file_path = document.file.path
+    if not os.path.exists(file_path):
+        raise Http404("File not found")
+
+    mime = mimetypes.guess_type(file_path)[0] or 'application/octet-stream'
+    response = FileResponse(open(file_path, 'rb'), as_attachment=False)
+    response['Content-Type'] = mime
+    response['Content-Disposition'] = f'inline; filename="{os.path.basename(file_path)}"'
+    return response
