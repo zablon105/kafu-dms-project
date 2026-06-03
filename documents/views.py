@@ -85,6 +85,24 @@ def get_s3_object_with_alternate_keys(s3_client, key):
                 continue
             raise
 
+    # Final fallback: attempt to find the object by basename if the stored path is wrong.
+    basename = os.path.basename(key)
+    if basename and basename != key:
+        logger.info('Attempting basename fallback for S3 key %s', key)
+        paginator = s3_client.get_paginator('list_objects_v2')
+        page_iter = paginator.paginate(Bucket=settings.AWS_STORAGE_BUCKET_NAME)
+        fallback_candidates = []
+        for page in page_iter:
+            for obj in page.get('Contents', []):
+                obj_key = obj['Key']
+                if obj_key.endswith(basename):
+                    fallback_candidates.append(obj_key)
+        if fallback_candidates:
+            fallback_key = fallback_candidates[0]
+            logger.info('Found fallback S3 key %s for basename %s', fallback_key, basename)
+            obj = s3_client.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=fallback_key)
+            return obj, fallback_key
+
     raise ClientError(
         {
             'Error': {
