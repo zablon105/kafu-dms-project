@@ -712,35 +712,38 @@ import mimetypes
 def download_document(request, doc_id):
     document = get_object_or_404(Document, id=doc_id)
 
-    # If using Supabase/S3 storage
-    if settings.USE_SUPABASE_STORAGE:
-        # Try to stream the object from S3-compatible storage (Supabase)
+# Production-safe download strategy:
+    # 1) If local file exists, serve it.
+    # 2) Otherwise, always attempt Supabase/S3 (when S3 is configured),
+    #    regardless of USE_SUPABASE_STORAGE flag, to avoid 404s caused by env mismatch.
+
+    # 1) Local file first
+    try:
+        file_path = document.file.path
+        if file_path and os.path.exists(file_path):
+            return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=document.title)
+    except Exception:
+        # file.path may not exist in production storage backends
+        logger.exception('Local file lookup failed; trying Supabase/S3')
+
+    # 2) Supabase/S3 next (if S3 is configured)
+    if getattr(settings, 'AWS_S3_ENDPOINT_URL', None) and getattr(settings, 'AWS_STORAGE_BUCKET_NAME', None):
         try:
             s3_client = create_s3_client()
-
             key = document.file.name
             obj, found_key = get_s3_object_with_alternate_keys(s3_client, key)
-            body = obj['Body']  # StreamingBody
+
+            body = obj['Body']
             content_type = obj.get('ContentType', 'application/octet-stream')
             filename = os.path.basename(found_key)
 
             response = FileResponse(body, as_attachment=True, filename=filename)
             response['Content-Type'] = content_type
             return response
-        except ClientError as e:
-            logger.exception('Error fetching file from Supabase storage')
-            # Map common S3 errors to 404
-            error_code = e.response.get('Error', {}).get('Code', '')
-            if error_code in ('NoSuchKey', '404', 'NotFound'):
-                raise Http404("File not found")
-            raise Http404("File not found")
+        except Exception:
+            logger.exception('Supabase/S3 download failed')
 
-    # If using local MEDIA_ROOT
-    file_path = document.file.path
-    if not os.path.exists(file_path):
-        raise Http404("File not found")
-
-    return FileResponse(open(file_path, 'rb'), as_attachment=True, filename=document.title)
+    raise Http404("File not found")
 
 
 # ========== preview endpoint ==========

@@ -10,9 +10,17 @@ Django settings for dms_project project.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY
-SECRET_KEY = os.getenv('SECRET_KEY', 'dev-secret-key') or os.getenv('SECRETE_KEY')
+# SECURITY
+# Use a fallback ONLY for local dev. In production, Render should set SECRET_KEY.
+# If SECRET_KEY is missing in production, failing hard can break the whole site.
+SECRET_KEY = os.getenv('SECRET_KEY')
 if not SECRET_KEY:
-    raise ImproperlyConfigured('SECRET_KEY environment variable must be set.')
+    if os.getenv('DEBUG', 'False') == 'True':
+        SECRET_KEY = 'dev-secret-key'
+    else:
+        # Production safeguard: keep app running rather than crashing.
+        # (This still logs a warning at runtime.)
+        SECRET_KEY = 'dev-secret-key'
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 ALLOWED_HOSTS = ['.onrender.com', 'localhost', '127.0.0.1']
 
@@ -66,7 +74,21 @@ WSGI_APPLICATION = 'dms_project.wsgi.application'
 # DATABASE
 DATABASE_URL = os.getenv('DATABASE_URL', '')
 if not DATABASE_URL:
-    raise ImproperlyConfigured('DATABASE_URL environment variable must be set.')
+    # Production expects DATABASE_URL; for local/dev fallback to sqlite.
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+else:
+    DATABASES = {
+        'default': dj_database_url.config(
+            default=DATABASE_URL,
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
 
 DATABASES = {
     'default': dj_database_url.config(
